@@ -1,0 +1,83 @@
+<style lang="less">
+page{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.item{
+  width: 650rpx;
+  height: 268rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 72rpx;
+  
+  view{
+    width: 310rpx;
+    font-size: 35rpx;
+    font-weight: 600;
+    color: #30A2F4;
+  }
+  icon{
+    width: 175rpx;
+    height: 175rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.active{
+  // border: 1rpx solid #30A2F4;
+  box-shadow: #f1fefb 1rpx 1rpx 10rpx 5rpx;
+}
+.title{
+  margin: 0;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+}
+</style>
+<template>
+  <view>
+      <view class="item title">请选择身份</view>
+      <view class="item active">
+        <icon class=""></icon>
+        <view>我是保洁员</view>
+      </view>
+      <view class="item active">
+        <icon class=""></icon>
+        <view>我是酒店方</view>
+      </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+
+  export default class SelRegisteredType extends wepy.page {
+    config = {
+      navigationBarTitleText: '注册'
+    }
+    components = {
+    }
+
+    mixins = []
+
+    data = {
+    }
+
+    computed = {
+    }
+
+    methods = {
+    }
+
+    events = {
+    }
+
+    onLoad() {
+    }
+  }
+</script>

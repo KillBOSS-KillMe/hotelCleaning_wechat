@@ -51,7 +51,9 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index'
+      'pages/selRegisteredType',  // 注册类型选择
+      'pages/index',
+      
     ],
     permission: {
       'scope.userLocation': {
