@@ -1,0 +1,86 @@
+<style lang="less">
+.item{
+  width: 690rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  input{
+    width: 508rpx;
+    height: 80rpx;
+    padding: 0 30rpx;
+    // border: 1rpx solid #ddd;
+    font-size: 26rpx;
+    color: #666;
+    border-radius: 10rpx;
+  }
+  label{
+    width: 152rpx;
+    height: 80rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+</style>
+<template>
+  <view>
+    <view class="item">
+      <label>楼层</label>
+      <input type="text" data-name="floor" @input="getSetData" placeholder="请输入身份证号码" />
+    </view>
+    <view class="item">
+      <label>房间号</label>
+      <input type="text" data-name="roomNum" @input="getSetData" placeholder="请输入真实姓名" />
+    </view>
+    <view class="item">
+      <label>房间类型</label>
+      <input type="text" data-name="roomType" @input="getSetData" placeholder="请输入联系电话" />
+    </view>
+    <view class="sub" @tap="sub">提交</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+
+  export default class RoomEntry extends wepy.page {
+    config = {
+      navigationBarTitleText: '房间录入'
+    }
+    components = {}
+
+    mixins = []
+
+    data = {
+      formNode: {}
+    }
+
+    computed = {}
+
+    methods = {
+      getSetData(e) {
+        let formNode = this.formNode
+        let name = e.currentTarget.dataset.name
+        let value = e.detail.value
+        formNode[name] = value
+        this.formNode = formNode
+        console.log(formNode)
+        this.$apply()
+      },
+      sub() {
+        console.log(this.formNode)
+      }
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>

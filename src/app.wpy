@@ -20,6 +20,9 @@
 // });
 // this.$navigate(url)
 
+// 阴影边框
+// box-shadow: #f1fefb 1rpx 1rpx 10rpx 5rpx;
+
 // flexflexflexflexflexflexflexflex
 // display: flex;
 // align-items: center;
@@ -43,6 +46,9 @@
 // text-overflow:ellipsis;
 // white-space:nowrap;
 
+
+
+// background: linear-gradient(to left,#30A2F4,#00E8BD);
 <script>
 
 import wepy from 'wepy'
@@ -51,8 +57,17 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/userInfoSetting',  // 用户--信息设置
+      'pages/selUserRegistered',  // 注册--保洁员
+      
+      
+      'pages/roomEntry',  // 房间录入
+      'pages/selHoteRegistered',  // 注册--酒店
+      
+      
+      
       'pages/selRegisteredType',  // 注册类型选择
-      'pages/index',
+      'pages/index', // 首页
       
     ],
     permission: {
@@ -76,8 +91,8 @@ export default class extends wepy.app {
     imgUrl: 'http://192.168.1.132',
   }
 
-  constructor () {
-  }
+  // constructor () {
+  // }
 
   onLaunch() {
   }
@@ -197,6 +212,21 @@ export default class extends wepy.app {
   right: 0;
   opacity: 0;
   z-index: 999;
+}
+.sub{
+  position: absolute;
+  left: 30rpx;
+  bottom: 50rpx;
+  width: 690rpx;
+  height: 90rpx;
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-radius: 90rpx;
+  background: linear-gradient(to left,#30A2F4,#00E8BD);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 button::after{
   border: 0;

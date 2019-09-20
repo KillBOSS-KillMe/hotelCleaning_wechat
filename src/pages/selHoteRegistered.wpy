@@ -16,25 +16,25 @@
   }
 </style>
 <template>
-  <view>viewviewviewviewview</view>
+  <view>SelHoteRegistered</view>
 </template>
 
 <script>
   import wepy from 'wepy'
 
 
-  export default class Index extends wepy.page {
+  export default class SelHoteRegistered extends wepy.page {
     config = {
-      navigationBarTitleText: '酒店保洁'
+      navigationBarTitleText: '注册'
     }
-    // components = {}
+    components = {}
 
     mixins = []
 
     data = {
     }
 
-    // computed = {}
+    computed = {}
 
     methods = {
 

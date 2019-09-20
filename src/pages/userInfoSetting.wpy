@@ -1,0 +1,107 @@
+<style lang="less">
+.item{
+  width: 690rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  input{
+    width: 508rpx;
+    height: 80rpx;
+    padding: 0 30rpx;
+    border: 1rpx solid #ddd;
+    font-size: 26rpx;
+    color: #666;
+    border-radius: 10rpx;
+  }
+  label{
+    width: 152rpx;
+    height: 80rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+.code{
+  justify-content: flex-start;
+  input{
+    width: 310rpx;
+    margin-right: 20rpx;
+  }
+  .getCode{
+    width: 174rpx;
+    height: 80rpx;
+    border-radius: 10rpx;
+    border: 1rpx solid #30A2F4;
+    color: #30A2F4;
+    font-size: 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
+<template>
+  <view>
+    <view class="item">
+      <label>原电话</label>
+      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入原电话" />
+    </view>
+    <view class="item">
+      <label>身份证</label>
+      <input type="text" data-name="name" @input="getSetData" placeholder="请输入身份证号码" />
+    </view>
+    <view class="item">
+      <label>新电话</label>
+      <input type="text" data-name="phone" @input="getSetData" placeholder="请输入新电话" />
+    </view>
+    <view class="item code">
+      <label>验证码</label>
+      <input type="text" data-name="code" @input="getSetData" placeholder="请输入验证码" />
+      <view class="getCode" @tap="getCode">发送验证码</view>
+    </view>
+    <view class="sub" @tap="sub">提交</view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class UserInfoSetting extends wepy.page {
+    config = {
+      navigationBarTitleText: '设置'
+    }
+    components = {}
+
+    mixins = []
+
+    data = {
+      formNode: {}
+    }
+
+    computed = {}
+
+    methods = {
+      getSetData(e) {
+        let formNode = this.formNode
+        let name = e.currentTarget.dataset.name
+        let value = e.detail.value
+        formNode[name] = value
+        this.formNode = formNode
+        console.log(formNode)
+        this.$apply()
+      },
+      sub() {
+        console.log(this.formNode)
+      }
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
