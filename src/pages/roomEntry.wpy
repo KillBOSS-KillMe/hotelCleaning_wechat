@@ -39,7 +39,9 @@
       <label>房间类型</label>
       <input type="text" data-name="roomType" @input="getSetData" placeholder="请输入联系电话" />
     </view>
-    <view class="sub" @tap="sub">提交</view>
+    <view class="sub">
+      <view @tap="sub">提交</view>
+    </view>
   </view>
 </template>
 

@@ -57,12 +57,13 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/selHoteRegistered',  // 注册--酒店
       'pages/userInfoSetting',  // 用户--信息设置
       'pages/selUserRegistered',  // 注册--保洁员
       
       
       'pages/roomEntry',  // 房间录入
-      'pages/selHoteRegistered',  // 注册--酒店
+      
       
       
       
@@ -214,19 +215,28 @@ export default class extends wepy.app {
   z-index: 999;
 }
 .sub{
-  position: absolute;
-  left: 30rpx;
-  bottom: 50rpx;
-  width: 690rpx;
-  height: 90rpx;
-  color: #fff;
-  font-size: 32rpx;
-  font-weight: 600;
-  border-radius: 90rpx;
-  background: linear-gradient(to left,#30A2F4,#00E8BD);
+  z-index: 999;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 750rpx;
+  height: 190rpx;
+  background-color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
+  view{
+    width: 690rpx;
+    height: 90rpx;
+    color: #fff;
+    font-size: 32rpx;
+    font-weight: 600;
+    border-radius: 90rpx;
+    background: linear-gradient(to left,#30A2F4,#00E8BD);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 button::after{
   border: 0;

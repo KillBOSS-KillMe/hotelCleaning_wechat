@@ -1,22 +1,157 @@
 <style lang="less">
-  .userinfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .userinfo-avatar {
-    width: 80rpx;
+.item{
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  input{
+    width: 508rpx;
     height: 80rpx;
-    border-radius: 50%;
+    padding: 0 30rpx;
+    margin-left: 20rpx;
+    border: 1rpx solid #ddd;
+    font-size: 26rpx;
+    color: #666;
+    border-radius: 10rpx;
   }
+  label{
+    height: 80rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    padding-right: 40rpx;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+}
+.floor{
+  align-items: flex-start;
+}
+.floorType{
+  width: 508rpx;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  view{
+    font-size: 25rpx;
+    color: #222;
+    padding: 20rpx 25rpx;
+    background-color: #EFF8FF;
+    border-radius: 10rpx;
+    margin: 5rpx;
+  }
+}
+.imgList{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0 30rpx;
+  image{
+    width: 224rpx;
+    height: 224rpx;
+    border-radius: 10rpx;
+    margin: 2rpx;
+  }
+}
 
-  .userinfo-nickname {
-    color: #aaa;
-  }
 </style>
 <template>
-  <view>SelHoteRegistered</view>
+  <view>
+    <view class="item">
+      <label>酒店名</label>
+      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入身份证号码" />
+    </view>
+    <view class="item">
+      <label>地址</label>
+      <input type="text" data-name="name" @input="getSetData" placeholder="请输入真实姓名" />
+    </view>
+    <view class="item">
+      <label>详细地址</label>
+      <input type="text" data-name="phone" @input="getSetData" placeholder="请输入联系电话" />
+    </view>
+    <view class="item">
+      <label>房间总数</label>
+      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入身份证号码" />
+    </view>
+    <view class="item floor">
+      <label>房间总数</label>
+      <view class="floorType">
+        <view>
+          <text>类型111</text>
+          <icon></icon>
+        </view>
+        <view>
+          <text>类型111</text>
+          <icon></icon>
+        </view>
+        <view>
+          <text>类型111</text>
+          <icon></icon>
+        </view>
+        <view>
+          <text>类型111</text>
+          <icon></icon>
+        </view>
+        <view>
+          <text>类型111</text>
+          <icon></icon>
+        </view>
+      </view>
+      <icon></icon>
+    </view>
+    <view class="item">
+      <label>布草车数</label>
+      <input type="text" data-name="name" @input="getSetData" placeholder="请输入真实姓名" />
+    </view>
+    <view class="item">
+      <label>酒店方负责人</label>
+      <input type="text" data-name="phone" @input="getSetData" placeholder="请输入联系电话" />
+    </view>
+    <view class="item">
+      <label>负责人电话</label>
+      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入身份证号码" />
+    </view>
+    <view class="item">
+      <label>前台固话</label>
+      <input type="text" data-name="name" @input="getSetData" placeholder="请输入真实姓名" />
+    </view>
+    <view class="item">
+      <label>酒店logo</label>
+    </view>
+    <view class="item imgList">
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/upImg.png" />
+    </view>
+    <view class="item">
+      <label>酒店图片</label>
+      <label>0/9</label>
+    </view>
+    <view class="item imgList">
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" />
+      <image src="/img/upImg.png" />
+    </view>
+    <view class="sub">
+      <view @tap="sub">提交</view>
+    </view>
+  </view>
 </template>
 
 <script>

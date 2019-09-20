@@ -62,7 +62,9 @@
       <input type="text" data-name="code" @input="getSetData" placeholder="请输入验证码" />
       <view class="getCode" @tap="getCode">发送验证码</view>
     </view>
-    <view class="sub" @tap="sub">提交</view>
+    <view class="sub">
+      <view @tap="sub">提交</view>
+    </view>
   </view>
 </template>
 
