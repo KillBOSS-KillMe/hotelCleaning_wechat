@@ -1,10 +1,50 @@
+// customData = {}  // 自定义数据
+// customFunction ()　{}  // 自定义方法
+// onLoad () {}  // 在Page和Component共用的生命周期函数
+// onShow () {}  // 只在Page中存在的页面生命周期函数
+// config = {};  // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+// data = {};  // 页面所需数据均需在这里声明，可用于模板数据绑定
+// components = {};  // 声明页面中所引用的组件，或声明组件中所引用的子组件
+// mixins = [];  // 声明页面所引用的Mixin实例
+// computed = {};  // 声明计算属性（详见后文介绍）
+// watch = {};  // 声明数据watcher（详见后文介绍）
+// methods = {};  // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+// 普通自定义方法在methods对象外声明，与methods平级
+// events = {};  // 声明组件之间的事件处理函数
+//props  {传值}  在WePY中属于  父子组件之间  传值的一种机制
 
+// 页面跳转，传参写法
+// this.$redirect('./page2', {a: 1, b: 2})
+// this.$redirect({
+//   url: './pages?a=1&b=2'
+// });
+// this.$navigate(url)
 
-<script>
+// flexflexflexflexflexflexflexflex
 // display: flex;
 // align-items: center;
 // justify-content: space-between;
 // flex-direction: column;
+
+// 居右
+// flex-direction:row;
+// justify-content:flex-end
+
+// vertical-align:middle;
+
+// overflow:hidden;
+// text-overflow:ellipsis;
+// white-space:nowrap;
+
+// 自动换行
+// word-break:break-all;
+
+// overflow:hidden;
+// text-overflow:ellipsis;
+// white-space:nowrap;
+
+<script>
+
 import wepy from 'wepy'
 import 'wepy-async-function'
 
@@ -13,6 +53,11 @@ export default class extends wepy.app {
     pages: [
       'pages/index'
     ],
+    permission: {
+      'scope.userLocation': {
+        desc: '你的位置信息将用于小程序位置接口的效果展示'
+      }
+    },
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
@@ -22,7 +67,11 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    userInfo: null
+    userInfo: {},
+    // 接口请求路径
+    requestUrl: 'http://192.168.1.132',
+    // 图片路径
+    imgUrl: 'http://192.168.1.132',
   }
 
   constructor () {
@@ -30,11 +79,150 @@ export default class extends wepy.app {
 
   onLaunch() {
   }
+  // 删除照片
+  deleImg(that, e) {
+    var idx = e.currentTarget.dataset.idx
+    var imgArr = that.data.imgArr || []
+    imgArr.splice(idx, 1)
+    that.setData({
+      imgArr
+    })
+  }
+  // 上传图片
+  uploadImg(that) {
+    var self = this
+    wx.chooseImage({
+      success: function (res) {
+        wx.showToast({
+          title: '图片上传中',
+          icon: 'loading'
+        });
+        var imgArr = that.data.imgArr || [] // 放图片的数组
+        var imgLength = that.data.imgLength || 6 //默认上传6张图片
+        if (imgArr.length + res.tempFiles.length > imgLength) {
+          wx.showToast({
+            title: `最多上传${imgLength}张图片`,
+            icon: 'none'
+          })
+          return false
+        }
+        Promise.all(res.tempFiles.map(item => {
+          return new Promise((resolve, reject) => {
+            wx.uploadFile({
+              url: `${self.globalData.requestUrl}/work/upload_file`,
+              filePath: item.path,
+              name: 'photo',
+              success(res) {
+                resolve({
+                  path: JSON.parse(res.data).data
+                })
+              }
+            })
+          })
+        })).then(e => {
+          wx.hideToast();
+          that.setData({
+            imgArr: imgArr.concat(e)
+          })
+        }).catch(err => console.log(err))
+      },
+    })
+  }
+  /**
+  * 时间戳转时间
+  */
+  transformTime(timestamp = +new Date()) {
+    if (timestamp) {
+      var time = new Date(timestamp);
+      var y = time.getFullYear(); //getFullYear方法以四位数字返回年份
+      var M = time.getMonth() + 1; // getMonth方法从 Date 对象返回月份 (0 ~ 11)，返回结果需要手动加一
+      var d = time.getDate(); // getDate方法从 Date 对象返回一个月中的某一天 (1 ~ 31)
+      var h = time.getHours(); // getHours方法返回 Date 对象的小时 (0 ~ 23)
+      var m = time.getMinutes(); // getMinutes方法返回 Date 对象的分钟 (0 ~ 59)
+      var s = time.getSeconds(); // getSeconds方法返回 Date 对象的秒数 (0 ~ 59)
+      return y + '-' + M + '-' + d + ' ' + h + ':' + m + ':' + s;
+    } else {
+      return '';
+    }
+  }
+  /**
+  * null => ''
+  * @param {*} data 要处理的数据
+  */
+  null2str(data) {
+    for (let x in data) {
+      if (data[x] === null) { // 如果是null 把直接内容转为 ''
+        data[x] = ''
+      } else {
+        if (Array.isArray(data[x])) { // 是数组遍历数组 递归继续处理
+          data[x] = data[x].map(z => {
+            return this.null2str(z)
+          })
+        }
+        if(typeof(data[x]) === 'object'){ // 是json 递归继续处理
+          data[x] = this.null2str(data[x])
+        }
+      }
+    }
+    return data
+  }
+  setStorageCityNode(cityList) {
+    wx.setStorage({
+      key: 'cityname',
+      data: cityList.name
+    })
+    wx.setStorage({
+      key: 'cityid',
+      data: cityList.id
+    })
+  }
+  getStorageCityNode() {
+    var cityname = wx.getStorageSync('cityname')
+    var cityid = wx.getStorageSync('cityid')
+    return [cityname, cityid]
+  }
 
 }
 </script>
 
 
 <style lang="less">
+#getUserInfo{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  z-index: 999;
+}
+button::after{
+  border: 0;
+}
+button{
+  background-color: none;
+}
+// 多选框样式
+checkbox .wx-checkbox-input{
+  border-radius: 50%;/* 圆角 */
+  width: 40rpx; /* 背景的宽 */
+  height: 40rpx; /* 背景的高 */
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked{
+  border: none;
+  background: #fc6800;
+}
+checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
+  border-radius: 50%;/* 圆角 */
+  width: 40rpx;/* 选中后对勾大小，不要超过背景的尺寸 */
+  height: 40rpx;/* 选中后对勾大小，不要超过背景的尺寸 */
+  line-height: 40rpx;
+  text-align: center;
+  font-size:40rpx; /* 对勾大小 30rpx */
+  color:#fff; /* 对勾颜色 白色 */
+  background: transparent;
+  // transform:translate(-50%, -50%) scale(1);
+  // -webkit-transform:translate(-50%, -50%) scale(1);
+}
 
 </style>
