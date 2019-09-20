@@ -1,28 +1,64 @@
-<style lang="less">
-  .userinfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
 
-  .userinfo-avatar {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 50%;
-  }
-
-  .userinfo-nickname {
-    color: #aaa;
-  }
-</style>
 <template>
-  <view>viewviewviewviewview</view>
+  <view>
+    <view class="address">
+      <image src="/img/address.png" />
+      adsfasadsfasdfasdf
+    </view>
+    <swiper class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
+      <repeat for="{{swiperList}}" item="item">
+        <swiper-item>
+          <image src="{{ requestImgUrl + item.img }}" bindtap='shareQRCodeImg' data-imgurl="{{requestImgUrl + item.img}}" />
+        </swiper-item>
+      </repeat>
+    </swiper>
+    <view class="title">
+      <label>酒店推荐</label>
+      <view>
+        更多<icon class="iconfont iconxiayibu"></icon>
+      </view>
+    </view>
+    <view class="hotelList">
+      <repeat for="{{3}}" item="item">
+        <view class="item">
+          <image src="/img/daw.jpg" />
+          <view class="info">
+            <view class="hotelTitle">
+              <view class="name">酒店名称称酒店名称酒店名称称酒店名称</view>
+              <view class="label">经济型</view>
+            </view>
+            <view class="hotelAddress">
+              <icon class="iconfont iconxiayibu"></icon>
+              酒店名称称酒店名称酒店名称称酒店名称
+            </view>
+            <view class="hotelInfo">
+              <text>距您约10.2km</text>
+              <text>完成100单</text>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </view>
+    <view class="title">
+      <label>酒店推荐</label>
+      <view>
+        更多<icon class="iconfont iconxiayibu"></icon>
+      </view>
+    </view>
+    <scroll-view scroll-x="true" class="recommendCleaning">
+      <repeat for="{{cleaningList}}" item="item">
+        <view class="item" data-id="{{item.id}}" @tap="updataLocal">
+          <image src="{{requestImgUrl + item.img}}" />
+          <view class="name">{{item.name}}</view>
+          <view class="info">{{item.num}}</view>
+        </view>
+      </repeat>
+    </scroll-view>
+  </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-
-
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '酒店保洁'
@@ -32,6 +68,22 @@
     mixins = []
 
     data = {
+      requestImgUrl: '',
+      swiperList: [
+        {img: '/img/daw.jpg'},
+        {img: '/img/daw.jpg'},
+        {img: '/img/daw.jpg'},
+      ],
+      cleaningList: [
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+      ]
     }
 
     // computed = {}
@@ -48,3 +100,180 @@
     }
   }
 </script>
+<style lang="less">
+.address{
+  width: 690rpx;
+  padding: 30rpx;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  image{
+    width: 35rpx;
+    height: 35rpx;
+    margin-right: 10rpx;
+  }
+}
+.swiper {
+  width: 690rpx;
+  height: 315rpx;
+  padding: 20rpx 30rpx;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+.swiper image {
+  width: 100%;
+  height: 100%;
+  border-radius: 10rpx;
+}
+.title{
+  border-top: 10rpx solid #F3F3F3;
+  border-bottom: 1rpx solid #E9E9E9;
+  width: 690rpx;
+  height: auto;
+  padding: 20rpx 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  label{
+    font-size: 32rpx;
+    font-weight: 600;
+    font-size: #222222;
+  }
+  view{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25rpx;
+    color: #898989;
+    icon{
+      font-size: 25rpx;
+      color: #898989;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+.hotelList{
+  width: 750rpx;
+  height: auto;
+  .item{
+    width: 690rpx;
+    height: 230rpx;
+    border-radius: 10rpx;
+    padding: 20rpx 30rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  image{
+    width: 230rpx;
+    height: 230rpx;
+    border-radius: 10rpx 0 0 10rpx;
+  }
+  .info{
+    width: 430rpx;
+    height: 230rpx;
+  }
+  .hotelTitle{
+    width: 100%;
+    height: auto;
+    padding: 30rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10rpx;
+    .name{
+      width: auto;
+      max-width: 300rpx;
+      font-size: 32rpx;
+      font-weight: 600;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .label{
+      margin-left: 20rpx;
+      font-size: 20rpx;
+      color: #fff;
+      padding: 10rpx;
+      border-radius: 40rpx;
+      background: linear-gradient(to left,#30A2F4,#00E8BD);
+    }
+  }
+  .hotelAddress{
+    font-size: 25rpx;
+    color: #898989;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    icon{
+      font-size: 25rpx;
+      color: #898989;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .hotelInfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 25rpx;
+    color: #898989;
+    padding: 20rpx 0;
+  }
+}
+.recommendCleaning{
+  width: 690rpx;
+  padding: 30rpx;
+  white-space: nowrap;
+  overflow:hidden;
+  // display: flex;
+  // align-items: center;
+  // justify-content: flex-start;
+  .item{
+    display: inline-block;
+  //   display: flex;
+  // align-items: center;
+  // justify-content: flex-start;
+  //   flex-flow: column;
+    width: 240rpx;
+    height: 300rpx;
+    margin-right: 20rpx;
+    background-color: #F7F7F7;
+    border-radius: 10rpx;
+  }
+  image{
+    width: 140rpx;
+    height: 140rpx;
+    border-radius: 140rpx;
+    margin: 0 50rpx;
+    margin-top: 30rpx;
+    margin-bottom: 20rpx
+  }
+  .name{
+    text-align: center;
+    padding: 10rpx;
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #222;
+  }
+  .info{
+    text-align: center;
+    font-size: 24rpx;
+    color: #898989;
+  }
+}
+</style>
