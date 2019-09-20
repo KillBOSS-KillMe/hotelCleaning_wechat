@@ -1,0 +1,40 @@
+
+
+<script>
+// display: flex;
+// align-items: center;
+// justify-content: space-between;
+// flex-direction: column;
+import wepy from 'wepy'
+import 'wepy-async-function'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/index'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    }
+  }
+
+  globalData = {
+    userInfo: null
+  }
+
+  constructor () {
+  }
+
+  onLaunch() {
+  }
+
+}
+</script>
+
+
+<style lang="less">
+
+</style>
