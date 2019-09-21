@@ -3,7 +3,7 @@
   <view>
     <view class="address">
       <image src="/img/address.png" />
-      adsfasadsfasdfasdf
+      <view>当前位置当前位当前位置当前位当前位置当前位当前位置当前位</view>
     </view>
     <swiper class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
       <repeat for="{{swiperList}}" item="item">
@@ -28,8 +28,8 @@
               <view class="label">经济型</view>
             </view>
             <view class="hotelAddress">
-              <icon class="iconfont iconxiayibu"></icon>
-              酒店名称称酒店名称酒店名称称酒店名称
+              <icon class="iconfont icondingwei"></icon>
+              地址地址地址地址地址地址地址地址地址地址
             </view>
             <view class="hotelInfo">
               <text>距您约10.2km</text>
@@ -41,13 +41,13 @@
     </view>
     <view class="title">
       <label>酒店推荐</label>
-      <view>
+      <view @tap="goCleaningList">
         更多<icon class="iconfont iconxiayibu"></icon>
       </view>
     </view>
     <scroll-view scroll-x="true" class="recommendCleaning">
       <repeat for="{{cleaningList}}" item="item">
-        <view class="item" data-id="{{item.id}}" @tap="updataLocal">
+        <view class="item" data-id="{{item.id}}" @tap="goCleaningInfo">
           <image src="{{requestImgUrl + item.img}}" />
           <view class="name">{{item.name}}</view>
           <view class="info">已完成{{item.num}}单</view>
@@ -89,7 +89,18 @@
     // computed = {}
 
     methods = {
-
+      // 进入保洁员详情
+      goCleaningInfo(e) {
+        console.log(e)
+        let id = e.currentTarget.dataset.id
+        let url = `/pages/cleaningInfo?id=${id}`
+        this.$navigate(url)
+      },
+      // 进入保洁员列表
+      goCleaningList(e) {
+        let url = `/pages/cleaningList`
+        this.$navigate(url)
+      }
     }
 
     events = {
@@ -111,13 +122,17 @@
   font-size: 32rpx;
   font-weight: 600;
   color: #222;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  
   image{
     width: 35rpx;
     height: 35rpx;
     margin-right: 10rpx;
+  }
+  view{
+    width: 645rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
   }
 }
 .swiper {
