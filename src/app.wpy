@@ -57,12 +57,12 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/citySel', // 城市选择
       'pages/index', // 首页
+      'pages/hotelInfo', // 酒店详情
       'pages/hoteList', // 酒店推荐
-      
       'pages/cleaningInfo', // 保洁信息
       'pages/cleaningList', // 保洁推荐
-      
       'pages/selHoteRegistered',  // 注册--酒店
       'pages/userInfoSetting',  // 用户--信息设置
       'pages/selUserRegistered',  // 注册--保洁员
@@ -85,9 +85,9 @@ export default class extends wepy.app {
   globalData = {
     userInfo: {},
     // 接口请求路径
-    requestUrl: 'http://192.168.1.132',
+    requestUrl: 'https://jiuyou.beaconway.cn/api',
     // 图片路径
-    imgUrl: 'http://192.168.1.132',
+    requestImgUrl: 'http://192.168.1.132',
   }
 
   // constructor () {

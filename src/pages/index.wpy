@@ -20,7 +20,7 @@
     </view>
     <view class="hotelList">
       <repeat for="{{hotelList}}" item="item">
-        <view class="item" data-id="{{item.id}}">
+        <view class="item" data-id="{{item.id}}" @tap="gohotelInfo">
           <image src="{{requestImgUrl + item.img}}" />
           <view class="info">
             <view class="hotelTitle">
@@ -128,9 +128,13 @@
 
     methods = {
       gohotelList(e) {
+        let url = `/pages/hoteList`
+        this.$navigate(url)
+      },
+      gohotelInfo(e) {
         console.log(e)
         let id = e.currentTarget.dataset.id
-        let url = `/pages/hoteList?id=${id}`
+        let url = `/pages/hotelInfo?id=${id}`
         this.$navigate(url)
       },
       // 进入保洁员详情
