@@ -1,0 +1,90 @@
+
+<template>
+  <view>
+    <view class="recommendCleaning">
+      <repeat for="{{cleaningList}}" item="item">
+        <view class="item" data-id="{{item.id}}" @tap="updataLocal">
+          <image src="{{requestImgUrl + item.img}}" />
+          <view class="name">{{item.name}}</view>
+          <view class="info">已完成{{item.num}}单</view>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class CleaningList extends wepy.page {
+    config = {
+      navigationBarTitleText: '保洁推荐'
+    }
+    // components = {}
+
+    mixins = []
+
+    data = {
+      requestImgUrl: '',
+      cleaningList: [
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+      ]
+    }
+
+    // computed = {}
+
+    methods = {
+
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.recommendCleaning{
+  width: 690rpx;
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  .item{
+    width: 225rpx;
+    height: 300rpx;
+    margin: 10rpx 3rpx;
+    background-color: #F7F7F7;
+    border-radius: 10rpx;
+  }
+  image{
+    width: 140rpx;
+    height: 140rpx;
+    border-radius: 140rpx;
+    margin: 0 50rpx;
+    margin-top: 30rpx;
+    margin-bottom: 20rpx
+  }
+  .name{
+    text-align: center;
+    padding: 10rpx;
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #222;
+  }
+  .info{
+    text-align: center;
+    font-size: 24rpx;
+    color: #898989;
+  }
+}
+</style>

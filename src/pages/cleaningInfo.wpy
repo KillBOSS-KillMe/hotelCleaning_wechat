@@ -1,0 +1,133 @@
+
+<template>
+  <view>
+    <view class="cleaningInfo">
+      <view class="imageBg">
+        <image src="{{requestImgUrl + cleaningInfo.img}}" />
+      </view>
+      <view class="name">{{cleaningInfo.name}}</view>
+      <view class="info">已完成{{cleaningInfo.num}}单</view>
+      <view class="lv">
+        <icon class="iconfont iconguanbi1 active"></icon>
+        <icon class="iconfont iconguanbi1 active"></icon>
+        <icon class="iconfont iconguanbi1 active"></icon>
+        <icon class="iconfont iconguanbi1 active"></icon>
+        <icon class="iconfont iconguanbi1"></icon>
+      </view>
+    </view>
+    <view class="list">
+      <view class="item">
+        <label>实名认证</label>
+        <text>已认证</text>
+        <!-- <text>未认证</text> -->
+      </view>
+      <view class="item">
+        <label>联系电话</label>
+        <text>188888888888</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class CleaningInfo extends wepy.page {
+    config = {
+      navigationBarTitleText: '保洁推荐'
+    }
+    // components = {}
+
+    mixins = []
+
+    data = {
+      requestImgUrl: '',
+      cleaningInfo: {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'}
+    }
+
+    // computed = {}
+
+    methods = {
+
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.cleaningInfo{
+  width: 750rpx;
+  height: 415rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .imageBg{
+    width: 140rpx;
+    height: 140rpx;
+    border-radius: 140rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to left,#30A2F4,#00E8BD);
+  }
+  image{
+    width: 135rpx;
+    height: 135rpx;
+    border-radius: 134rpx;
+  }
+  .name{
+    text-align: center;
+    padding: 20rpx;
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #222;
+  }
+  .info{
+    text-align: center;
+    font-size: 25rpx;
+    color: #898989;
+  }
+  .lv{
+    width: 100%;
+    height: auto;
+    padding: 30rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  icon{
+    font-size: 45rpx;
+    color: #D3D3D3;
+    padding: 5rpx;
+  }
+  .active{
+    color: #f0b543;
+  }
+}
+.list{
+  width: 750rpx;
+  height: auto;
+  border-top: 10rpx solid #F3F3F3;
+  .item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #222;
+    width: 690rpx;
+    height: auto;
+    padding: 30rpx;
+    text{
+      font-size: 25rpx;
+    }
+    label{
+      font-size: 32rpx;
+      font-weight: 600;
+    }
+  }
+}
+</style>

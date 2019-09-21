@@ -50,7 +50,7 @@
         <view class="item" data-id="{{item.id}}" @tap="updataLocal">
           <image src="{{requestImgUrl + item.img}}" />
           <view class="name">{{item.name}}</view>
-          <view class="info">{{item.num}}</view>
+          <view class="info">已完成{{item.num}}单</view>
         </view>
       </repeat>
     </scroll-view>

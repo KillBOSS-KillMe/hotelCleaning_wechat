@@ -57,6 +57,8 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      'pages/cleaningInfo', // 保洁信息
+      'pages/cleaningList', // 保洁推荐
       'pages/index', // 首页
       'pages/selHoteRegistered',  // 注册--酒店
       'pages/userInfoSetting',  // 用户--信息设置
