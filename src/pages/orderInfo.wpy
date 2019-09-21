@@ -1,0 +1,250 @@
+
+<template>
+  <view>
+    <view class="hotelName">
+      <image src="{{requestImgUrl + orderInfo.img}}" />
+      <view class="name">{{orderInfo.name}}</view>
+      <icon class="iconfont iconxiayibu"></icon>
+    </view>
+    <view class="hotelInfo">
+      <view class="title">打扫地点</view>
+      <view class="item">
+        <image src="/img/address.png" />
+        <view>地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址</view>
+        <icon class="iconfont iconxiayibu"></icon>
+      </view>
+      <view class="item">
+        <image src="/img/phone.png" />
+        <view>029-8888888888</view>
+        <icon class="iconfont iconxiayibu"></icon>
+      </view>
+    </view>
+    <view class="title">预约信息</view>
+    <view class="time">
+      <image src="/img/time.png" />
+      预约{{orderInfo.time}}到店
+    </view>
+    <view class="roomList">
+      <view class="item">
+        <view>
+          <image src="/img/phone.png" />
+          房间号
+        </view>
+        <view>
+          <image src="/img/phone.png" />
+          楼层
+        </view>
+        <view>
+          <image src="/img/phone.png" />
+          房间类型
+        </view>
+      </view>
+    </view>
+    <scroll-view scroll-y="true" class="roomList roomListCon">
+      <repeat for="{{orderInfo.roomList}}" item="item">
+        <view class="item">
+          <view>{{item.roomCode}}</view>
+          <view>{{item.floor}}</view>
+          <view>{{item.typeName}}</view>
+        </view>
+      </repeat>
+    </scroll-view>
+    <view class="prompt">
+      <view>温馨提示</view>
+      <repeat for="{{prompt}}" item="item">
+        <view>{{item}}</view>
+      </repeat>
+    </view>
+    <view class="sub">
+      <view @tap="sub">提交</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class OrderInfo extends wepy.page {
+    config = {
+      navigationBarTitleText: '酒店详情'
+    }
+    components = {
+    }
+
+    mixins = []
+
+    data = {
+      requestImgUrl: '',
+      orderInfo: {
+          id: '1', 
+          name: '酒店名称酒店', 
+          time: '2019-9-21 14:07',
+          img: '/img/daw.jpg', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          roomList: [
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
+          ]
+        },
+        prompt: [
+          '1.推服务车到客人房间外，不要正对着门口，也不要放在走廊正中央',
+          '2.充分的回应时间．如无回应，用钥匙打开门，进入房间'
+        ]
+    }
+
+    // computed = {}
+    methods = {
+      // 底部导航跳转
+      // goPage (url, evt) {
+      //   // 销毁当前页{跳转}
+      //   this.$redirect(url)
+      // }
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+image{
+  width: 25rpx;
+  height: 25rpx;
+  margin-right: 10rpx;
+}
+.hotelName{
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  image{
+    width: 90rpx;
+    height: 90rpx;
+    border-radius: 10rpx;
+  }
+  .name{
+    width: 540rpx;
+    padding: 20rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #222;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  icon{
+    font-size: 20rpx;
+    color: #B4B4B4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.title{
+  width: 690rpx !important;
+  font-size: 32rpx !important;
+  font-weight: 600;
+  color: #222222;
+  padding: 0 30rpx;
+  padding-bottom: 20rpx !important;
+}
+.hotelInfo{
+  width: 630rpx;
+  height: auto;
+  margin: 30rpx;
+  padding: 30rpx;
+  box-shadow: #898989 1rpx 1rpx 10rpx 5rpx;
+  border-radius: 10rpx;
+  margin-bottom: 100rpx;
+  .title{
+    width: 100% !important;
+    font-size: 32rpx !important;
+    font-weight: 600;
+    color: #222222;
+    padding: 0 !important;
+    padding-bottom: 20rpx !important;
+  }
+  .item{
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10rpx 0;
+  }
+  image{
+    position: absolute;
+    left: 0;
+    top: 15rpx;
+  }
+  view{
+    width: 605rpx;
+    padding: 0 20rpx;
+    padding-left: 45rpx;
+    font-size: 28rpx;
+    color: #222;
+  }
+  icon{
+    height: 100%;
+    font-size: 20rpx;
+    color: #B4B4B4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.time{
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #222;
+  font-size: 25rpx;
+}
+.roomListCon{
+  height: 300rpx !important;
+}
+.roomList{
+  width: 750rpx;
+  height: auto;
+  .item{
+    width: 690rpx;
+    height: auto;
+    padding: 20rpx 30rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    view{
+      width: 30%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    view:nth-child(1){
+      width: 40%;
+    }
+  }
+}
+.prompt{
+  width: 690rpx;
+  padding: 30rpx;
+  font-size: 28rpx;
+  color: #898989;
+  margin-bottom: 250rpx;
+}
+</style>
