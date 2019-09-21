@@ -1,0 +1,102 @@
+<template>
+  <view>
+    <view class="search">
+      <input type="text" placeholder="请输入转单人员姓名" />
+      <icon class="iconfont iconsousuo"></icon>
+    </view>
+    <view class="cleaningList">
+      <checkbox-group bindchange="selCleaning" data-index="{{index}}" data-checks="{{item.checks}}">
+        <repeat for="{{cleaningList}}" item="item">
+          <view class="item">
+            <checkbox data-index="{{index}}" id="{{item.id}}" value="{{index}}" checked="{{item.checks}}"/>
+            <text>{{item.name}}</text>
+            <text>{{item.phone}}</text>
+          </view>
+        </repeat>
+      </checkbox-group>
+    </view>
+    <view class="sub">
+      <view @tap="sub">提交</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class OrderTransfer extends wepy.page {
+    config = {
+      navigationBarTitleText: '转单'
+    }
+    components = {
+    }
+
+    mixins = []
+
+    data = {
+      cleaningList: [
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+        {id: '1', name: '许蛋蛋', phone: '18888888888'},
+      ]
+    }
+
+    // computed = {}
+    methods = {
+      // 底部导航跳转
+      // goPage (url, evt) {
+      //   // 销毁当前页{跳转}
+      //   this.$redirect(url)
+      // },
+      selCleaning(e) {
+        let i = 0
+        let cartIndex = e.detail.value
+        let cleaningList = this.cleaningList
+        let selCleaning = []
+        // 需要加入去重操作
+        for(i in cartIndex) {
+          selCleaning.push(cleaningList[parseInt(cartIndex[i])])
+        }
+        console.log(selCleaning)
+        // 选中的用户存入全局
+        // this.$parent.globalData.reportLocalList = selList
+        wx.navigateBack({
+          data: -1
+        })
+      },
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.cleaningList{
+  margin-bottom: 250rpx;
+}
+.item{
+  width: 690rpx;
+  height: auto;
+  padding: 20rpx 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+text{
+  color: #333333;
+  font-size: 28rpx;
+  padding-left: 30rpx;
+}
+</style>

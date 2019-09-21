@@ -57,9 +57,10 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/orderInfo', // 订单详情
+      'pages/orderTransfer', // 转单
       'pages/index', // 首页
       'pages/orderList', // 订单列表
+      'pages/orderInfo', // 订单详情
       'pages/citySel', // 城市选择
       'pages/hotelInfo', // 酒店详情
       'pages/hoteList', // 酒店推荐
@@ -213,6 +214,31 @@ export default class extends wepy.app {
   right: 0;
   opacity: 0;
   z-index: 999;
+}
+.search{
+  width: 690rpx;
+  height: 90rpx;
+  margin: 30rpx;
+  border-radius: 90rpx;
+  background-color: #F6F6F6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  input{
+    width: 540rpx;
+    height: 30rpx;
+    padding: 30rpx;
+    color: #333333;
+  }
+  icon{
+    width: 90rpx;
+    height: 90rpx;
+    font-size: 40rpx;
+    color: #898989;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .sub{
   z-index: 999;

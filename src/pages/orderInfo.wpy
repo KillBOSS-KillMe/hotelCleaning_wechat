@@ -1,4 +1,3 @@
-
 <template>
   <view>
     <view class="hotelName">
@@ -27,15 +26,15 @@
     <view class="roomList">
       <view class="item">
         <view>
-          <image src="/img/phone.png" />
+          <image src="/img/room.png" />
           房间号
         </view>
         <view>
-          <image src="/img/phone.png" />
+          <image src="/img/floor.png" />
           楼层
         </view>
         <view>
-          <image src="/img/phone.png" />
+          <image src="/img/shape.png" />
           房间类型
         </view>
       </view>
