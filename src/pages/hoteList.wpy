@@ -1,0 +1,168 @@
+<template>
+  <view>
+    <view class="hotelList">
+      <repeat for="{{hotelList}}" item="item">
+        <view class="item" data-id="{{item.id}}">
+          <image src="{{requestImgUrl + item.img}}" />
+          <view class="info">
+            <view class="hotelTitle">
+              <view class="name">{{item.name}}</view>
+              <view class="label">{{item.type}}</view>
+            </view>
+            <view class="hotelAddress">
+              <icon class="iconfont icondingwei"></icon>
+              {{item.address}}
+            </view>
+            <view class="hotelInfo">
+              <text>距您约{{item.distance}}km</text>
+              <text>完成{{item.monad}}单</text>
+            </view>
+          </view>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class HoteList extends wepy.page {
+    config = {
+      navigationBarTitleText: '酒店推荐'
+    }
+    // components = {}
+
+    mixins = []
+
+    data = {
+      requestImgUrl: '',
+      hotelList: [
+        {
+          id: '1', 
+          name: '酒店名称酒店名称酒店名称酒店名称', 
+          img: '/img/daw.jpg', 
+          type: '经济型', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          monad: 100
+        },
+        {
+          id: '1', 
+          name: '酒店名称酒店名称酒店名称酒店名称', 
+          img: '/img/daw.jpg', 
+          type: '经济型', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          monad: 100
+        },
+        {
+          id: '1', 
+          name: '酒店名称酒店名称酒店名称酒店名称', 
+          img: '/img/daw.jpg', 
+          type: '经济型', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          monad: 100
+        },
+        {
+          id: '1', 
+          name: '酒店名称酒店名称酒店名称酒店名称', 
+          img: '/img/daw.jpg', 
+          type: '经济型', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          monad: 100
+        }
+      ]
+    }
+
+    // computed = {}
+
+    methods = {
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.hotelList{
+  width: 750rpx;
+  height: auto;
+  .item{
+    width: 690rpx;
+    height: 230rpx;
+    border-radius: 10rpx;
+    padding: 20rpx 30rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  image{
+    width: 230rpx;
+    height: 230rpx;
+    border-radius: 10rpx 0 0 10rpx;
+  }
+  .info{
+    width: 430rpx;
+    height: 230rpx;
+  }
+  .hotelTitle{
+    width: 100%;
+    height: auto;
+    padding: 30rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10rpx;
+    .name{
+      width: auto;
+      max-width: 300rpx;
+      font-size: 32rpx;
+      font-weight: 600;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .label{
+      margin-left: 20rpx;
+      font-size: 20rpx;
+      color: #fff;
+      padding: 10rpx;
+      border-radius: 40rpx;
+      background: linear-gradient(to left,#30A2F4,#00E8BD);
+    }
+  }
+  .hotelAddress{
+    font-size: 25rpx;
+    color: #898989;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    icon{
+      font-size: 25rpx;
+      color: #898989;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .hotelInfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 25rpx;
+    color: #898989;
+    padding: 20rpx 0;
+  }
+}
+
+</style>

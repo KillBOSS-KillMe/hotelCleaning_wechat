@@ -58,6 +58,8 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index', // 首页
+      'pages/hoteList', // 酒店推荐
+      
       'pages/cleaningInfo', // 保洁信息
       'pages/cleaningList', // 保洁推荐
       
