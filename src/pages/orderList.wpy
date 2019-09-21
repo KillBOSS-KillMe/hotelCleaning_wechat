@@ -3,7 +3,7 @@
   <view>
     <view class="orderList">
       <repeat for="{{orderList}}" item="item">
-        <view class="item" data-id="{{item.id}}" @tap="goOrderInfo">
+        <view class="item">
           <image src="{{requestImgUrl + item.img}}" />
           <view class="info">
             <view class="hotelTitle">
@@ -21,15 +21,15 @@
               <icon class="iconfont icondingwei"></icon>
               {{item.address}}
             </view>
-            <!-- <view class="hotelInfo">
+            <!-- <view class="hotelInfo" data-id="{{item.id}}" @tap="goOrderInfo">
               <text>距您约{{item.distance}}km</text>
             </view> -->
             <view class="hotelInfo">
               <text>{{item.time}}</text>
               <view>
-                <button class="transfer" wx:if="{{item.str == '1'}}">转单</button>
-                <button wx:if="{{item.str == '1'}}">接单</button>
-                <button wx:if="{{item.str == '2'}}">确认订单</button>
+                <button class="transfer" wx:if="{{item.str == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button>
+                <button wx:if="{{item.str == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button>
+                <button wx:if="{{item.str == '2'}}" >确认订单</button>
                 <button class="carryOut" wx:if="{{item.str == '3'}}">已完成</button>
                 <button wx:if="{{item.str == '4'}}">评价订单</button>
               </view>
@@ -113,7 +113,21 @@
       goPage (url, evt) {
         // 销毁当前页{跳转}
         this.$redirect(url)
-      }
+      },
+      // 进入订单详情
+      goOrderInfo(e) {
+        console.log(e)
+        let id = e.currentTarget.dataset.id
+        let url = `/pages/orderInfo?id=${id}`
+        this.$navigate(url)
+      },
+      // 进入订单详情
+      goOrderTransfer(e) {
+        console.log(e)
+        let id = e.currentTarget.dataset.id
+        let url = `/pages/orderTransfer?id=${id}`
+        this.$navigate(url)
+      },
     }
 
     events = {
