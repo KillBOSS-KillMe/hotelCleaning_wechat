@@ -8,7 +8,7 @@
       </view>
     </view>
     <view class="ft_item {{navAction[1]}}">
-      <view @tap="goUserList">
+      <view @tap="goOrderList">
         <view class="iconfont icon-kehu"></view>
         <text class="text">客户</text>
       </view>
@@ -44,57 +44,57 @@ export default class Nav extends wepy.component {
       this.$emit('childFn', '/pages/index')
     },
     // 客户
-    goUserList() {
-      this.userInfo = this.$parent.$parent.globalData.userInfo
-      if (this.userInfo.mobile == '') {
-        wx.showModal({
-          title: '',
-          content: '请先注册',
-          success: sm => {
-            if (sm.confirm) {
-              this.$emit('childFn', '/pages/loginRegistered')
-            } else if (sm.cancel) {
-              // 用户点击取消
-            }
-          }
-        })
-        return ''
-      }
-      if (this.userInfo.store == '' || this.userInfo.store == undefined || this.userInfo.store == null ) {
-        wx.showModal({
-          title: '',
-          content: '请先绑定公司',
-          success: sm => {
-            if (sm.confirm) {
-              this.$emit('childFnOrReturn', '/pages/modifyUserInfo')
-            } else if (sm.cancel) {
-              // 用户点击取消
-            }
-          }
-        })
-        return ''
-      }
+    goOrderList() {
+      // this.userInfo = this.$parent.$parent.globalData.userInfo
+      // if (this.userInfo.mobile == '') {
+      //   wx.showModal({
+      //     title: '',
+      //     content: '请先注册',
+      //     success: sm => {
+      //       if (sm.confirm) {
+      //         this.$emit('childFn', '/pages/loginRegistered')
+      //       } else if (sm.cancel) {
+      //         // 用户点击取消
+      //       }
+      //     }
+      //   })
+      //   return ''
+      // }
+      // if (this.userInfo.store == '' || this.userInfo.store == undefined || this.userInfo.store == null ) {
+      //   wx.showModal({
+      //     title: '',
+      //     content: '请先绑定公司',
+      //     success: sm => {
+      //       if (sm.confirm) {
+      //         this.$emit('childFnOrReturn', '/pages/modifyUserInfo')
+      //       } else if (sm.cancel) {
+      //         // 用户点击取消
+      //       }
+      //     }
+      //   })
+      //   return ''
+      // }
       // 顶部导航状态初始化
       this.$parent.$parent.globalData.navAction = ['noAction', 'action', 'noAction']
-      this.$emit('childFn', '/pages/userList')
+      this.$emit('childFn', '/pages/orderList')
     },
     // 我的
     goUser() {
-      this.userInfo = this.$parent.$parent.globalData.userInfo
-       if (this.userInfo.mobile == '') {
-        wx.showModal({
-          title: '',
-          content: '请先注册',
-          success: sm => {
-            if (sm.confirm) {
-              this.$emit('childFn', '/pages/loginRegistered')
-            } else if (sm.cancel) {
-              // 用户点击取消
-            }
-          }
-        })
-        return ''
-      }
+      // this.userInfo = this.$parent.$parent.globalData.userInfo
+      //  if (this.userInfo.mobile == '') {
+      //   wx.showModal({
+      //     title: '',
+      //     content: '请先注册',
+      //     success: sm => {
+      //       if (sm.confirm) {
+      //         this.$emit('childFn', '/pages/loginRegistered')
+      //       } else if (sm.cancel) {
+      //         // 用户点击取消
+      //       }
+      //     }
+      //   })
+      //   return ''
+      // }
       this.$parent.$parent.globalData.navAction = ['noAction', 'noAction', 'action']
       this.$emit('childFn', '/pages/user')
     }

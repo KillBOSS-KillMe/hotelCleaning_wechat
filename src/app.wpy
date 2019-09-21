@@ -57,8 +57,10 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/citySel', // 城市选择
+      
+      'pages/orderList', // 订单列表
       'pages/index', // 首页
+      'pages/citySel', // 城市选择
       'pages/hotelInfo', // 酒店详情
       'pages/hoteList', // 酒店推荐
       'pages/cleaningInfo', // 保洁信息

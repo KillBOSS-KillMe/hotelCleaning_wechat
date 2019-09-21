@@ -1,7 +1,7 @@
 
 <template>
   <view>
-    <view class="address">
+    <view class="address" @tap="goCitySel">
       <image src="/img/address.png" />
       <view>当前位置当前位当前位置当前位当前位置当前位当前位置当前位</view>
     </view>
@@ -54,16 +54,20 @@
         </view>
       </repeat>
     </scroll-view>
+    <nav @childFn.user="goPage" @childFnOrReturn.user="goModifyUserInfo" />
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import nav from '../components/nav' // 底部导航
   export default class Index extends wepy.page {
     config = {
       navigationBarTitleText: '酒店保洁'
     }
-    // components = {}
+    components = {
+      nav: nav
+    }
 
     mixins = []
 
@@ -127,6 +131,15 @@
     // computed = {}
 
     methods = {
+      // 底部导航跳转
+      goPage (url, evt) {
+        // 销毁当前页{跳转}
+        this.$redirect(url)
+      },
+      goCitySel(e) {
+        let url = `/pages/citySel`
+        this.$navigate(url)
+      },
       gohotelList(e) {
         let url = `/pages/hoteList`
         this.$navigate(url)
