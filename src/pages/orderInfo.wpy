@@ -10,12 +10,12 @@
       <view class="title">打扫地点</view>
       <view class="item">
         <image src="/img/address.png" />
-        <view>地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址</view>
+        <view>{{orderInfo.address}}</view>
         <icon class="iconfont iconxiayibu"></icon>
       </view>
       <view class="item">
         <image src="/img/phone.png" />
-        <view>029-8888888888</view>
+        <view>{{orderInfo.phone}}</view>
         <icon class="iconfont iconxiayibu"></icon>
       </view>
     </view>
@@ -80,6 +80,7 @@
           time: '2019-9-21 14:07',
           img: '/img/daw.jpg', 
           address: '地址地址地址地址地址地址地址地址地址地址', 
+          phone: '029-88888888',
           roomList: [
             {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
             {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
