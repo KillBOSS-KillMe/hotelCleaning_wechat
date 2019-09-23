@@ -68,7 +68,7 @@ export default class extends wepy.app {
     pages: [
       
       
-      
+      'pages/userMyShare',  // 个人中心--我的分享
       'pages/user', // 个人中心
       'pages/index', // 首页
       
@@ -77,6 +77,7 @@ export default class extends wepy.app {
       'pages/userInfoSetting',  // 个人中心--信息设置
       'pages/userCleaningCertification',  // 个人中心--保洁认证
       'pages/userhotelgCertification',  // 个人中心--酒店认证
+      
       'pages/orderList', // 订单-列表
       'pages/orderInfo', // 订单-详情
       'pages/orderTransfer', // 订单-转单
@@ -280,6 +281,13 @@ export default class extends wepy.app {
     font-weight: 600;
     border-radius: 90rpx;
     background: linear-gradient(to left,#30A2F4,#00E8BD);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  icon{
+    font-size: 32rpx;
+    margin-right: 20rpx;
     display: flex;
     align-items: center;
     justify-content: center;
