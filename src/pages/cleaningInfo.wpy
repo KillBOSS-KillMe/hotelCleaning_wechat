@@ -8,11 +8,11 @@
       <view class="name">{{cleaningInfo.name}}</view>
       <view class="info">已完成{{cleaningInfo.num}}单</view>
       <view class="lv">
-        <icon class="iconfont iconguanbi1 active"></icon>
-        <icon class="iconfont iconguanbi1 active"></icon>
-        <icon class="iconfont iconguanbi1 active"></icon>
-        <icon class="iconfont iconguanbi1 active"></icon>
-        <icon class="iconfont iconguanbi1"></icon>
+        <icon class="iconfont iconwuxing2 active"></icon>
+        <icon class="iconfont iconwuxing2 active"></icon>
+        <icon class="iconfont iconwuxing2 active"></icon>
+        <icon class="iconfont iconwuxing2 active"></icon>
+        <icon class="iconfont iconwuxing2"></icon>
       </view>
     </view>
     <view class="list">
