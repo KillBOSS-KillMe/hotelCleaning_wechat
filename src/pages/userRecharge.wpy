@@ -1,39 +1,15 @@
 <template>
   <view>
-    <view class="allMoney">
-      <view class="money">￥120000</view>
-      <view>总金额</view>
-      <view class="button" @tap="recharge">立即充值</view>
-      <!-- <view class="button">立即提现</view> -->
+    <view class="title">
+      账户余额：<text>￥200</text>
     </view>
-    <view class="title">资金明细</view>
     <view class="list">
-      <view class="item">
-        <view>
-          <view class="name">发工资</view>
-          <view class="money">
-            <text>+￥60</text>
-            ￥1200
-          </view>
-        </view>
-        <view>
-          <view>二狗子</view>
-          <view>2019.12.21 12:23</view>
-        </view>
-      </view>
-      <view class="item">
-        <view>
-          <view class="name">发工资</view>
-          <view class="money">
-            <text>+￥60</text>
-            ￥1200
-          </view>
-        </view>
-        <view>
-          <view>二狗子</view>
-          <view>2019.12.21 12:23</view>
-        </view>
-      </view>
+      <repeat for="{{selRechargeList}}" item="item">
+        <view data-index="{{index}}" class="{{index == serNode?'active':''}}">{{item.num}}元</view>
+      </repeat>
+    </view>
+    <view class="sub">
+      <view @tap="sub">充值</view>
     </view>
   </view>
 </template>
@@ -49,16 +25,23 @@
     mixins = []
 
     data = {
+      serNode: 0,
+      selRechargeList: [
+        {id: '1', num: 50},
+        {id: '1', num: 100},
+        {id: '1', num: 150},
+        {id: '1', num: 200},
+        {id: '1', num: 500},
+        {id: '1', num: 1000},
+        {id: '1', num: 1500},
+        {id: '1', num: 2000},
+        {id: '1', num: 3000}
+      ]
     }
 
     computed = {}
 
     methods = {
-      recharge(e) {
-        // 进入充值页
-        let url = `/pages/userRecharge`
-        this.$navigate(url)
-      }
     }
 
     events = {
@@ -70,70 +53,41 @@
   }
 </script>
 <style lang="less">
-.allMoney{
-  position: relative;
-  width: 690rpx;
-  height: auto;
-  padding: 50rpx 30rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  color: #222;
-  font-size: 32rpx;
-  font-weight: 600;
-  border-top: 1rpx solid #E9E9E9;
-  .money{
-    color: #FE892F;
-    margin-bottom: 20rpx;
-  }
-  .button{
-    position: absolute;
-    bottom: 45rpx;
-    right: 50rpx;
-    color: #fff;
-    font-size: 26rpx;
-    font-weight: 600;
-    padding: 15rpx 20rpx;
-    border-radius: 70rpx;
-    background: linear-gradient(to left,#30A2F4,#00E8BD);
-  }
-}
 .title{
   width: 690rpx;
   height: auto;
   padding: 30rpx;
+  border-top: 1rpx solid #E9E9E9;
   font-size: 32rpx;
   color: #222;
-}
-.list{
-  width: 750rpx;
-  height: auto;
-  font-size: 26rpx;
-  color: #898989;
-  .item{
-    width: 690rpx;
-    height: auto;
-    padding: 20rpx 30rpx;
-    view{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10rpx;
-    }
-  }
   text{
-    font-size: 28rpx;
-    font-weight: 600;
     color: #FE892F;
   }
-  .name{
-    font-size: 32rpx;
-    font-weight: 600;
+}
+.list{
+  width: 690rpx;
+  height: auto;
+  padding: 0 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  view{
+    width: 215rpx;
+    height: 110rpx;
+    border: 1rpx solid #30A2F4;
+    border-radius: 10rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #222;
+    font-size: 40rpx;
+    margin-bottom: 15rpx;
   }
-  .money{
-    font-weight: 600;
+  .active{
+    background-color: #30A2F4;
+    color: #fff;
   }
 }
 </style>
