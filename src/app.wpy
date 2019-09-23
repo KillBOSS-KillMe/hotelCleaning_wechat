@@ -67,9 +67,12 @@ export default class extends wepy.app {
   config = {
     pages: [
       
-      'pages/userWallet', // 个人--钱包
-      'pages/user', // 个人中心
+      'pages/userRecharge', // 个人--充值
+      
+      
       'pages/index', // 首页
+      'pages/user', // 个人中心
+      'pages/userWallet', // 个人--钱包
       'pages/orderList', // 订单-列表
       'pages/orderInfo', // 订单-详情
       'pages/orderTransfer', // 订单-转单

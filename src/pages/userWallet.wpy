@@ -1,10 +1,5 @@
 <template>
   <view>
-    <view class="allMoney">
-      <view class="money">￥120000</view>
-      <view>总金额</view>
-      <view class="button">立即充值</view>
-    </view>
   </view>
 </template>
 
@@ -24,18 +19,6 @@
     computed = {}
 
     methods = {
-      getSetData(e) {
-        let formNode = this.formNode
-        let name = e.currentTarget.dataset.name
-        let value = e.detail.value
-        formNode[name] = value
-        this.formNode = formNode
-        console.log(formNode)
-        this.$apply()
-      },
-      sub() {
-        console.log(this.formNode)
-      }
     }
 
     events = {
@@ -47,81 +30,9 @@
   }
 </script>
 <style lang="less">
-.allMoney{
-  position: relative;
-  width: 690rpx;
-  height: auto;
-  padding: 50rpx 30rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: column;
-  color: #222;
-  font-size: 32rpx;
-  font-weight: 600;
-  border-top: 1rpx solid #E9E9E9;
-  .money{
-    color: #FE892F;
-    margin-bottom: 20rpx;
-  }
-  .button{
-    position: absolute;
-    bottom: 45rpx;
-    right: 50rpx;
-    color: #fff;
-    font-size: 26rpx;
-    font-weight: 600;
-    padding: 15rpx 20rpx;
-    border-radius: 70rpx;
-    background: linear-gradient(to left,#30A2F4,#00E8BD);
-  }
-}
-.title{
-  width: 690rpx;
-  height: auto;
-  padding: 30rpx;
-}
-// .item{
-//   width: 690rpx;
-//   padding: 30rpx;
-//   display: flex;
+//  display: flex;
 //   align-items: center;
-//   justify-content: center;
-//   input{
-//     width: 508rpx;
-//     height: 80rpx;
-//     padding: 0 30rpx;
-//     border: 1rpx solid #ddd;
-//     font-size: 26rpx;
-//     color: #666;
-//     border-radius: 10rpx;
-//   }
-//   label{
-//     width: 152rpx;
-//     height: 80rpx;
-//     font-size: 32rpx;
-//     font-weight: 600;
-//     display: flex;
-//     align-items: center;
-//     justify-content: flex-start;
-//   }
-// }
-// .code{
-//   justify-content: flex-start;
-//   input{
-//     width: 310rpx;
-//     margin-right: 20rpx;
-//   }
-//   .getCode{
-//     width: 174rpx;
-//     height: 80rpx;
-//     border-radius: 10rpx;
-//     border: 1rpx solid #30A2F4;
-//     color: #30A2F4;
-//     font-size: 28rpx;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//   }
-// }
+//   justify-content: space-between;
+//   flex-direction: column;
+
 </style>
