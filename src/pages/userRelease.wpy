@@ -1,0 +1,165 @@
+<template>
+  <view>
+    <view>
+      <view class="item">
+        <label>预约信息</label>
+        <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入原电话" />
+      </view>
+      <view class="item">
+        <label>房间号</label>
+        <view class="roomList">
+          <checkbox-group bindchange="selCleaning" data-index="{{index}}" data-checks="{{item.checks}}">
+            <repeat for="{{roomList}}" item="item">
+              <view class="itemRoom">
+                <checkbox data-index="{{index}}" id="{{item.id}}" value="{{index}}" checked="{{item.checks}}"/>
+                <text>{{item.name}}</text>
+              </view>
+            </repeat>
+          </checkbox-group>
+        </view>
+        
+      </view>
+      <view class="item code">
+        <label>预约时间</label>
+        <input type="text" data-name="code" @input="getSetData" placeholder="请输选择日期" />
+        <view class="getCode" @tap="getCode">发送验证码</view>
+      </view>
+      <view class="sub">
+        <view @tap="sub">提交</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class UserRelease extends wepy.page {
+    config = {
+      navigationBarTitleText: '发单列表'
+    }
+    components = {}
+
+    mixins = []
+
+    data = {
+      requestImgUrl: '',
+      orderList: [
+        {
+          id: '1', 
+          name: '酒店名称酒店', 
+          num: 2,
+          time: '2019-9-21 14:07',
+          str: '1',  // 1-待处理，2-待确认，3-已完成, 4-待评价
+          img: '/img/daw.jpg', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          room: "12层、12层、12层、12层所有房间"
+        },
+        {
+          id: '1', 
+          name: '酒店名店名称', 
+          num: 2,
+          time: '2019-9-21 14:07',
+          str: '2', 
+          img: '/img/daw.jpg', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          room: "12层、12层、12层、12层所有房间"
+        },
+        {
+          id: '1', 
+          name: '酒店名称酒店名称酒店名称酒店名称', 
+          num: 2,
+          time: '2019-9-21 14:07',
+          str: '3', 
+          img: '/img/daw.jpg', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          room: "12层、12层、12层、12层所有房间"
+        },
+        {
+          id: '1', 
+          name: '酒店名称酒店名称酒店名称酒店名称', 
+          num: 2,
+          time: '2019-9-21 14:07',
+          str: '4', 
+          img: '/img/daw.jpg', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          room: "12层、12层、12层、12层所有房间"
+        },
+      ],
+      
+      roomList: [
+        {id: '1', name: '1201'},
+        {id: '1', name: '1201'},
+        {id: '1', name: '1201'},
+        {id: '1', name: '1201'}
+      ]
+    }
+
+    computed = {}
+
+    methods = {
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.item{
+  width: 690rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  input{
+    width: 508rpx;
+    height: 80rpx;
+    padding: 0 30rpx;
+    font-size: 26rpx;
+    color: #666;
+    border-radius: 10rpx;
+  }
+  label{
+    width: 152rpx;
+    height: 80rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+.code{
+  justify-content: flex-start;
+  input{
+    width: 310rpx;
+    margin-right: 20rpx;
+  }
+  .getCode{
+    width: 174rpx;
+    height: 80rpx;
+    border-radius: 10rpx;
+    border: 1rpx solid #30A2F4;
+    color: #30A2F4;
+    font-size: 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.roomList{
+  width: 538rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+</style>
