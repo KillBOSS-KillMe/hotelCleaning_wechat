@@ -1,0 +1,391 @@
+<template>
+  <view>
+    <image class="userBg" src="/img/userBg.png" />
+    <view class="pageName">我的</view>
+    <view class="user">
+      <image src="/img/daw.jpg" />
+      <view class="info">
+        <view class="name">
+          二狗子
+          <view class="lv">
+            <icon class="iconfont iconwuxing2 active"></icon>
+            <icon class="iconfont iconwuxing2 active"></icon>
+            <icon class="iconfont iconwuxing2 active"></icon>
+            <icon class="iconfont iconwuxing2 active"></icon>
+            <icon class="iconfont iconwuxing2"></icon>
+          </view>
+        </view>
+        <view class="phone">电话：18888888888</view>
+      </view>
+      <!-- <view class="certification">
+        <icon class="iconfont iconrenzheng"></icon>
+        未认证
+      </view> -->
+      <view class="certification isCertification">
+        <icon class="iconfont iconrenzheng"></icon>
+        已认证
+      </view>
+      
+    </view>
+    <view class="userInfo">
+      <view class="month">
+        <view class="item">
+          <view class="name">本月发单</view>
+          <view class="num">122</view>
+        </view>
+        <view class="item">
+          <view class="name">本月完成</view>
+          <view class="num">122</view>
+        </view>
+        <view class="item">
+          <view class="name">本月支出</view>
+          <view class="num">122</view>
+        </view>
+      </view>
+      <view class="order">
+        <view class="item">
+          <view class="name">全部</view>
+          <view class="num">122</view>
+        </view>
+        <view class="item">
+          <view class="name">待确认</view>
+          <view class="num">122</view>
+        </view>
+        <view class="item">
+          <view class="name">待处理</view>
+          <view class="num">122</view>
+        </view>
+        <view class="item">
+          <view class="name">待评价</view>
+          <view class="num">122</view>
+        </view>
+        <view class="item">
+          <view class="name">已完成</view>
+          <view class="num">122</view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'}, -->
+    <view class="list">
+      <!-- 酒店方 -->
+      <repeat for="{{hotelFunctionList}}" item="item">
+        <view class="item" data-id="{{item.id}}" @tap="hotelFunction">
+          <view>
+            <image src="/img/{{item.img}}.png" />
+            <view class="name">{{item.name}}</view>
+          </view>
+          <view>
+            <view class="val {{item.active == '1'?'active':''}}">{{item.val}}</view>
+            <icon class="iconfont iconxiayibu" wx:if="{{item.showIcon == '1'}}"></icon>
+          </view>
+        </view>
+      </repeat>
+      <!-- 保洁方 -->
+      <repeat for="{{cleaningFunctionList}}" item="item">
+        <view class="item" data-id="{{item.id}}" @tap="cleaningFunction">
+          <view>
+            <image src="/img/{{item.img}}.png" />
+            <view class="name">{{item.name}}</view>
+          </view>
+          <view>
+            <view class="val {{item.active == '1'?'active':''}}">{{item.val}}</view>
+            <icon class="iconfont iconxiayibu" wx:if="{{item.showIcon == '1'}}"></icon>
+          </view>
+        </view>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class User extends wepy.page {
+    config = {
+      navigationBarTitleText: '我的',
+      navigationStyle: "custom",
+    }
+    components = {}
+
+    mixins = []
+
+    data = {
+      formNode: {},
+      hotelFunctionList: [
+        {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'},
+        {id: '2', name: '酒店信息', img: 'wallet', val: '', showIcon: '1', active: '0'},
+        {id: '3', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
+        {id: '4', name: '建议与反馈', img: 'suggest', val: '029-88888888', showIcon: '0', active: '0'},
+      ],
+      cleaningFunctionList: [
+        {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'},
+        {id: '2', name: '我的分享', img: 'share', val: '', showIcon: '1', active: '0'},
+        {id: '2', name: '我发分享码', img: 'QRCode', val: '', showIcon: '1', active: '0'},
+        {id: '3', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
+        {id: '4', name: '建议与反馈', img: 'suggest', val: '029-88888888', showIcon: '0', active: '0'},
+      ],
+    }
+
+    computed = {}
+
+    methods = {
+      getSetData(e) {
+        let formNode = this.formNode
+        let name = e.currentTarget.dataset.name
+        let value = e.detail.value
+        formNode[name] = value
+        this.formNode = formNode
+        console.log(formNode)
+        this.$apply()
+      },
+      sub() {
+        console.log(this.formNode)
+      }
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.pageName{
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  color: #fff;
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-top: 40rpx;
+}
+.userBg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 750rpx;
+  height: 386rpx;
+  z-index: -1;
+}
+.user{
+  position: relative;
+  width: 750rpx;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  image{
+    width: 108rpx;
+    height: 108rpx;
+    border-radius: 108rpx;
+    border: 3rpx solid #fff;
+    margin: 20rpx 30rpx;
+  }
+  .info{
+    width: 350rpx;
+  }
+  .name{
+    font-size: 35rpx;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .lv{
+    margin-left: 20rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .active{
+    color: #f0b543 !important;
+  }
+  icon{
+    font-size: 35rpx;
+    color: #D3D3D3;
+    padding: 5rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .phone{
+    width: 240rpx;
+    height: 40rpx;
+    padding: 0 15rpx;
+    font-size: 24rpx;
+    color: #fff;
+    border-radius: 60rpx;
+    background-color: rgba(255, 255, 255, .7);
+    border: 1rpx solid #fff;
+    margin-top: 10rpx;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .certification{
+    width: 164rpx;
+    height: 56rpx;
+    font-size: 24rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: #C8C8C8;
+    border-radius: 56rpx 0 0 56rpx;
+    icon{
+      color: #fff;
+      margin-right: 10rpx;
+    }
+  }
+  .isCertification{
+    background: linear-gradient(to left,#00A8D1,#0080DD) !important;
+  }
+}
+.userInfo{
+  box-shadow: #ebebeb 1rpx 1rpx 10rpx 5rpx;
+  width: 630rpx;
+  // height: 260rpx;
+  height: auto;
+  padding: 0 20rpx;
+  border-radius: 10rpx;
+  background-color: #fff;
+  margin: auto;
+  margin-bottom: 30rpx;
+  .item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+  .name{
+    font-size: 26rpx;
+    color: #898989;
+  }
+  .month{
+    width: 630rpx;
+    height: auto;
+    padding: 20rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border-bottom: 2rpx dashed #D9DCEE;
+    .item{
+      height: 70rpx;
+    }
+    view{
+      text-align: center;
+    }
+    .num{
+      font-size: 24rpx;
+      font-weight: 600;
+      color: #f0b543;
+    }
+    
+  }
+  .order{
+    width: 630rpx;
+    height: auto;
+    padding: 30rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    view{
+      text-align: center;
+    }
+    .num{
+      font-size: 28rpx;
+      font-weight: 600;
+      color: #222;
+    }
+  }
+
+}
+.list{
+  width: 690rpx;
+  padding: 0 30rpx;
+  height: auto;
+  border-top: 20rpx solid #f3f3f3;
+  .item{
+    width: 690rpx;
+    padding: 30rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1rpx solid #E9E9E9;
+    color: #222;
+    view{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    image{
+      width: 30rpx;
+      height: 30rpx;
+      margin-right: 20rpx;
+    }
+    .name{
+      font-size: 28rpx;
+      font-weight: 600;
+    }
+    .val{
+      margin-right: 10rpx;
+    }
+    .active{
+      color: #f0b543 !important;
+    }
+    icon{
+      font-size: 25rpx;
+      color: #B4B4B4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+// .item{
+//   width: 690rpx;
+//   padding: 30rpx;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   input{
+//     width: 508rpx;
+//     height: 80rpx;
+//     padding: 0 30rpx;
+//     border: 1rpx solid #ddd;
+//     font-size: 26rpx;
+//     color: #666;
+//     border-radius: 10rpx;
+//   }
+//   label{
+//     width: 152rpx;
+//     height: 80rpx;
+//     font-size: 32rpx;
+//     font-weight: 600;
+//     display: flex;
+//     align-items: center;
+//     justify-content: flex-start;
+//   }
+// }
+// .code{
+//   justify-content: flex-start;
+//   input{
+//     width: 310rpx;
+//     margin-right: 20rpx;
+//   }
+//   .getCode{
+//     width: 174rpx;
+//     height: 80rpx;
+//     border-radius: 10rpx;
+//     border: 1rpx solid #30A2F4;
+//     color: #30A2F4;
+//     font-size: 28rpx;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//   }
+// }
+</style>

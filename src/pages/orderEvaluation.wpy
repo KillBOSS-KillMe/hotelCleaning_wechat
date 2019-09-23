@@ -26,6 +26,9 @@
       <view class="item">依照整洁</view>
       <view class="item">行为规范</view>
     </view>
+    <view class="sub">
+      <view @tap="sub">提交评价</view>
+    </view>
   </view>
 </template>
 

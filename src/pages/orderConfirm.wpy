@@ -1,0 +1,239 @@
+
+<template>
+  <view>
+    <view class="title">接单保洁</view>
+    <view class="cleaningInfo">
+      <view class="imageBg">
+        <image src="{{requestImgUrl + cleaningInfo.img}}" />
+      </view>
+      <view class="name">{{cleaningInfo.name}}</view>
+      <view class="info active">打扫结束</view>
+      <view class="info">接单时间：阿斯顿发斯蒂芬</view>
+    </view>
+    <view class="orderList">
+      <view class="item">
+        <image src="{{requestImgUrl + orderInfo.img}}" />
+        <view class="info">
+          <view class="hotelTitle">
+            <view class="name">{{orderInfo.name}}({{orderInfo.num}}间)</view>
+          </view>
+          <view class="hotelAddress">
+            <icon class="iconfont iconfangjian"></icon>
+            {{orderInfo.room}}
+          </view>
+          <view class="hotelAddress">
+            <icon class="iconfont icondingwei"></icon>
+            {{orderInfo.address}}
+          </view>
+          <view class="hotelInfo">
+            <text>{{orderInfo.time}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="sub">
+      <view @tap="sub">确认订单</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class OrderConfirm extends wepy.page {
+    config = {
+      navigationBarTitleText: '评价订单'
+    }
+    // components = {}
+
+    mixins = []
+
+    data = {
+      requestImgUrl: '',
+      cleaningInfo: {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
+      orderInfo: {
+          id: '1', 
+          name: '酒店名称酒店', 
+          num: 2,
+          time: '2019-9-21 14:07',
+          str: '1',  // 1-待处理，2-待确认，3-已完成, 4-待评价
+          img: '/img/daw.jpg', 
+          address: '地址地址地址地址地址地址地址地址地址地址', 
+          distance: 12.55,
+          room: "12层、12层、12层、12层所有房间"
+        }
+      
+    }
+
+    // computed = {}
+
+    methods = {
+
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.title{
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  border-top: 2rpx solid #E9E9E9;
+}
+.cleaningInfo{
+  width: 750rpx;
+  height: 415rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .imageBg{
+    width: 140rpx;
+    height: 140rpx;
+    border-radius: 140rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to left,#30A2F4,#00E8BD);
+  }
+  image{
+    width: 135rpx;
+    height: 135rpx;
+    border-radius: 134rpx;
+  }
+  .name{
+    text-align: center;
+    padding-top: 20rpx;
+    font-size: 30rpx;
+    font-weight: 600;
+    color: #222;
+  }
+  .info{
+    text-align: center;
+    font-size: 25rpx;
+    color: #898989;
+  }
+  .active{
+    color: #f0b543;
+    padding-bottom: 30rpx;
+  }
+}
+.orderList{
+  width: 750rpx;
+  height: auto;
+  border-top: 2rpx solid #E9E9E9;
+  .item{
+    width: 690rpx;
+    height: 230rpx;
+    border-radius: 10rpx;
+    padding: 20rpx 0;
+    margin: 0 30rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  image{
+    width: 190rpx;
+    height: 190rpx;
+    border-radius: 10rpx;
+  }
+  .info{
+    width: 480rpx;
+    height: 190rpx;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+  .hotelTitle{
+    width: 100%;
+    height: auto;
+    // padding: 30rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    // margin-bottom: 10rpx;
+    .name{
+      width: auto;
+      max-width: 300rpx;
+      font-size: 32rpx;
+      font-weight: 600;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .label{
+      // margin-left: 20rpx;
+      font-size: 28rpx;
+      color: #C1C1C1;
+      // padding: 10rpx;
+      // border-radius: 40rpx;
+      // background: linear-gradient(to left,#30A2F4,#00E8BD);
+    }
+    .active{
+      color: #FE892F;
+    }
+  }
+  .hotelAddress{
+    font-size: 25rpx;
+    color: #898989;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    // margin-top: 10rpx;
+    // padding: 20rpx 0;
+    icon{
+      font-size: 25rpx;
+      color: #898989;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .hotelInfo{
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    font-size: 25rpx;
+    color: #898989;
+    view{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .transfer{
+      background: none;
+      background-color: #30A2F4;
+    }
+    .carryOut{
+      background: none;
+      background-color: #C1C1C1;
+    }
+    button{
+      padding: 15rpx 20rpx;
+      font-size: 25rpx;
+      color: #fff;
+      height: 55rpx;
+      border-radius: 55rpx;
+      background: linear-gradient(to left,#30A2F4,#00E8BD);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 20rpx;
+    }
+  }
+}
+
+</style>
