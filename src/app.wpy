@@ -66,11 +66,12 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/orderEvaluation', // 订单评价
+      
       'pages/index', // 首页
       'pages/orderList', // 订单-列表
       'pages/orderInfo', // 订单-详情
       'pages/orderTransfer', // 订单-转单
+      'pages/orderEvaluation', // 订单评价
       'pages/citySel', // 城市选择
       'pages/hotelInfo', // 酒店详情
       'pages/hoteList', // 酒店推荐

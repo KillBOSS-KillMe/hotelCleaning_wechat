@@ -31,7 +31,7 @@
                 <button wx:if="{{item.str == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button>
                 <button wx:if="{{item.str == '2'}}" >确认订单</button>
                 <button class="carryOut" wx:if="{{item.str == '3'}}">已完成</button>
-                <button wx:if="{{item.str == '4'}}">评价订单</button>
+                <button wx:if="{{item.str == '4'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
               </view>
             </view>
           </view>
@@ -126,6 +126,13 @@
         console.log(e)
         let id = e.currentTarget.dataset.id
         let url = `/pages/orderTransfer?id=${id}`
+        this.$navigate(url)
+      },
+      // 进入订单评价
+      goOrderEvaluation(e) {
+        console.log(e)
+        let id = e.currentTarget.dataset.id
+        let url = `/pages/orderEvaluation?id=${id}`
         this.$navigate(url)
       },
     }
