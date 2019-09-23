@@ -17,14 +17,14 @@
         </view>
         <view class="phone">电话：18888888888</view>
       </view>
-      <!-- <view class="certification">
+      <view class="certification" @tap="goCertification">
         <icon class="iconfont iconrenzheng"></icon>
         未认证
-      </view> -->
-      <view class="certification isCertification">
+      </view>
+      <!-- <view class="certification isCertification">
         <icon class="iconfont iconrenzheng"></icon>
         已认证
-      </view>
+      </view> -->
       
     </view>
     <view class="userInfo">
@@ -95,17 +95,21 @@
         </view>
       </repeat>
     </view>
+    <nav @childFn.user="goPage" @childFnOrReturn.user="goModifyUserInfo" />
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import nav from '../components/nav' // 底部导航
   export default class User extends wepy.page {
     config = {
       navigationBarTitleText: '我的',
       navigationStyle: "custom",
     }
-    components = {}
+    components = {
+      nav: nav
+    }
 
     mixins = []
 
@@ -120,27 +124,87 @@
       cleaningFunctionList: [
         {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'},
         {id: '2', name: '我的分享', img: 'share', val: '', showIcon: '1', active: '0'},
-        {id: '2', name: '我发分享码', img: 'QRCode', val: '', showIcon: '1', active: '0'},
-        {id: '3', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
-        {id: '4', name: '建议与反馈', img: 'suggest', val: '029-88888888', showIcon: '0', active: '0'},
+        {id: '3', name: '我发分享码', img: 'QRCode', val: '', showIcon: '1', active: '0'},
+        {id: '4', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
+        {id: '5', name: '建议与反馈', img: 'suggest', val: '029-88888888', showIcon: '0', active: '0'},
       ],
     }
 
     computed = {}
 
     methods = {
-      getSetData(e) {
-        let formNode = this.formNode
-        let name = e.currentTarget.dataset.name
-        let value = e.detail.value
-        formNode[name] = value
-        this.formNode = formNode
-        console.log(formNode)
-        this.$apply()
+      // 底部导航跳转
+      goPage (url, evt) {
+        // 销毁当前页{跳转}
+        this.$redirect(url)
       },
-      sub() {
-        console.log(this.formNode)
-      }
+      // 进入认证页
+      goCertification() {
+        // let url = '/pages/userCleaningCertification'  // 个人中心--保洁认证
+        let url = '/pages/userhotelgCertification'  // 个人中心--酒店认证
+        this.$navigate(url)
+      },
+      // 进入酒店功能
+      hotelFunction(e) {
+        let id = e.currentTarget.dataset.id
+        let url = ``
+        switch(id) {
+          case '1':
+            // 我的钱包
+            url += '/pages/userWallet'
+            break;
+          case '2':
+            // 酒店信息
+            url += ''
+            break;
+          case '3':
+            // 设置
+            url += '/pages/userInfoSetting'
+            break;
+          case '4':
+            // 建议与反馈
+            url += ''
+            break;
+          default:
+            url += ''
+        }
+        console.log(url)
+        if (url) {
+          this.$navigate(url)
+        }
+      },
+      // 进入保洁功能
+      cleaningFunction(e) {
+        let id = e.currentTarget.dataset.id
+        let url = ``
+        switch(id) {
+          case '1':
+            // 我的钱包
+            url += '/pages/userWallet'
+            break;
+          case '2':
+            // 我的分享
+            url += ''
+            break;
+          case '3':
+            // 我的分享码
+            url += ''
+            break;
+          case '4':
+            // 设置
+            url += '/pages/userInfoSetting'
+            break;
+          case '5':
+            // 建议与反馈
+            url += ''
+            break;
+          default:
+            url += ''
+        }
+        if (url) {
+          this.$navigate(url)
+        }
+      },
     }
 
     events = {

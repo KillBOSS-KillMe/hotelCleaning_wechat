@@ -1,0 +1,122 @@
+<template>
+  <view>
+    <view class="form">
+      <view class="item">
+        <label>酒店名</label>
+        <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入酒店名" />
+      </view>
+      <view class="item">
+        <label>统一信用代码</label>
+        <input type="text" data-name="name" @input="getSetData" placeholder="请输入统一信用代码" />
+      </view>
+      <view class="item">
+        <label>法人/负责人</label>
+        <input type="text" data-name="name" @input="getSetData" placeholder="请输入法人/负责人" />
+      </view>
+      <view class="item">
+        <label>法人/负责人联系电话</label>
+        <input type="text" data-name="name" @input="getSetData" placeholder="请输入法人/负责人联系电话" />
+      </view>
+    </view>
+    <view class="title">请上传酒店营业执照</view>
+    <view class="img">
+      <image src="/img/card2.png" />
+    </view>
+    <view class="sub">
+      <view @tap="sub">认证</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class UserhotelgCertification extends wepy.page {
+    config = {
+      navigationBarTitleText: '认证'
+    }
+    components = {}
+
+    mixins = []
+
+    data = {
+    }
+
+    computed = {}
+
+    methods = {
+    }
+
+    events = {
+      
+    }
+
+    onLoad() {
+    }
+  }
+</script>
+<style lang="less">
+.form{
+  border-top: 1rpx solid #E9E9E9;
+  border-bottom: 10rpx solid #F3F3F3;
+}
+.item{
+  width: 690rpx;
+  padding: 10rpx 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  input{
+    // width: 508rpx;
+    height: 80rpx;
+    padding: 0 30rpx;
+    font-size: 26rpx;
+    color: #666;
+    border-radius: 10rpx;
+  }
+  label{
+    // width: 515rpx;
+    width: auto;
+    height: 80rpx;
+    font-size: 32rpx;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
+.title{
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  color: #222;
+  font-size: 32rpx;
+  font-weight: 600;
+}
+.img{
+  width: 600rpx;
+  height: 365rpx;
+  margin: 30rpx 75rpx;
+  image{
+    width: 100%;
+    height: 100%;
+  }
+}
+.prompt{
+  width: 750rpx;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 250rpx;
+  font-size: 24rpx;
+  color:#898989;
+  icon{
+    margin-left: 10rpx;
+    font-size: 24rpx;
+    color:#898989;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
