@@ -1,23 +1,23 @@
 <template>
 <view>
   <view class="footer">
-    <view class="ft_item {{navAction[0]}}">
-      <view @tap="goIndex">
-        <view class="iconfont icon-shouye"></view>
-        <text class="text">首页</text>
-      </view>
+    <view class="ft_item {{navAction[0]}}" @tap="goIndex">
+      <!-- <view class="iconfont icon-shouye"></view> -->
+      <image wx:if="{{navAction[0] == 'action'}}" src="/img/home1.png" />
+      <image wx:if="{{navAction[0] == 'noAction'}}" src="/img/home0.png" />
+      <text class="text">首页</text>
     </view>
-    <view class="ft_item {{navAction[1]}}">
-      <view @tap="goOrderList">
-        <view class="iconfont icon-kehu"></view>
-        <text class="text">客户</text>
-      </view>
+    <view class="ft_item {{navAction[1]}}" @tap="goOrderList">
+      <!-- <view class="iconfont icon-kehu"></view> -->
+      <image wx:if="{{navAction[1] == 'action'}}" src="/img/order1.png" />
+      <image wx:if="{{navAction[1] == 'noAction'}}" src="/img/order0.png" />
+      <text class="text">客户</text>
     </view>
-    <view class="ft_item {{navAction[2]}}">
-      <view @tap="goUser">
-        <view class="iconfont icon-wode"></view>
-        <text class="text">我的</text>
-      </view>
+    <view class="ft_item {{navAction[2]}}" @tap="goUser">
+      <!-- <view class="iconfont icon-wode"></view> -->
+      <image wx:if="{{navAction[2] == 'action'}}" src="/img/user1.png" />
+      <image wx:if="{{navAction[2] == 'noAction'}}" src="/img/user0.png" />
+      <text class="text">我的</text>
     </view>
   </view>
 </view>
@@ -123,9 +123,18 @@ export default class Nav extends wepy.component {
   text-align: center;
   float: left;
   padding: 10rpx 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
 }
 .footer .ft_item text {
   font-size: 25rpx;
+}
+.footer .ft_item image {
+  width: 46rpx;
+  height: 46rpx;
+  margin: 10rpx;
 }
 
 .appointment {
@@ -195,7 +204,7 @@ export default class Nav extends wepy.component {
 
 .footer .action .iconfont,
 .footer .action{
-  color: #7bb312 !important;
+  color: #30A2F4 !important;
 }
 .footer,
 .footer .noAction .iconfont{

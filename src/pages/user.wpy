@@ -15,7 +15,7 @@
             <icon class="iconfont iconwuxing2"></icon>
           </view>
         </view>
-        <view class="phone">电话：18888888888</view>
+        <view class="phone" data-phone="18888888888" @tap="runCall">电话：18888888888</view>
       </view>
       <view class="certification" @tap="goCertification">
         <icon class="iconfont iconrenzheng"></icon>
@@ -155,7 +155,7 @@
             break;
           case '2':
             // 酒店信息
-            url += ''
+            url += '/pages/userRelease'
             break;
           case '3':
             // 设置
@@ -184,11 +184,11 @@
             break;
           case '2':
             // 我的分享
-            url += ''
+            url += '/pages/userMyShare'
             break;
           case '3':
             // 我的分享码
-            url += ''
+            url += '/pages/userMyShare'
             break;
           case '4':
             // 设置
@@ -204,6 +204,10 @@
         if (url) {
           this.$navigate(url)
         }
+      },
+      // 拨打电话
+      runCall(e){
+        this.$parent.runCall(e)
       },
     }
 
@@ -372,6 +376,7 @@
   padding: 0 30rpx;
   height: auto;
   border-top: 20rpx solid #f3f3f3;
+  padding-bottom: 150rpx;
   .item{
     width: 690rpx;
     padding: 30rpx 0;

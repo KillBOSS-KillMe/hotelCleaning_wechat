@@ -316,15 +316,9 @@
   padding: 30rpx;
   white-space: nowrap;
   overflow:hidden;
-  // display: flex;
-  // align-items: center;
-  // justify-content: flex-start;
+  margin-bottom: 150rpx;
   .item{
     display: inline-block;
-  //   display: flex;
-  // align-items: center;
-  // justify-content: flex-start;
-  //   flex-flow: column;
     width: 240rpx;
     height: 300rpx;
     margin-right: 20rpx;
