@@ -234,7 +234,7 @@
         }
       })
     }
-    // 提交用户信息
+    // 获取token
     getToken() {
       wepy.login({
         success: res => {

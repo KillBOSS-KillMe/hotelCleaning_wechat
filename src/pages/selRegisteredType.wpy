@@ -1,12 +1,12 @@
 <template>
   <view>
       <view class="item title">请选择身份</view>
-      <view class="item active">
-        <icon class=""></icon>
+      <view class="item active" data-type="1" @tap="goRegistered">
+        <image src="/img/hotelRegistered.png" />
         <view>我是保洁员</view>
       </view>
-      <view class="item active">
-        <icon class=""></icon>
+      <view class="item active" data-type="2" @tap="goRegistered">
+        <image src="/img/cleaningRegistered.png" />
         <view>我是酒店方</view>
       </view>
   </view>
@@ -32,6 +32,16 @@
     }
 
     methods = {
+      goRegistered(e) {
+        let type = e.currentTarget.dataset.type
+        let url = ``
+        if (type == 1) {
+          url = `/pages/selUserRegistered`
+        } else {
+          url = `/pages/selHoteRegistered`
+        }
+        this.$navigate(url)
+      }
     }
 
     events = {
@@ -57,22 +67,24 @@ page{
   margin-bottom: 72rpx;
   
   view{
-    width: 310rpx;
+    width: auto;
     font-size: 35rpx;
     font-weight: 600;
     color: #30A2F4;
   }
-  icon{
+  image{
     width: 175rpx;
     height: 175rpx;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 100rpx;
   }
 }
 .active{
   // border: 1rpx solid #30A2F4;
-  box-shadow: #f1fefb 1rpx 1rpx 10rpx 5rpx;
+  // box-shadow: #f1fefb 1rpx 1rpx 10rpx 5rpx;
+  box-shadow: #30A2F4 1rpx 1rpx 10rpx 5rpx;
 }
 .title{
   margin: 0;
