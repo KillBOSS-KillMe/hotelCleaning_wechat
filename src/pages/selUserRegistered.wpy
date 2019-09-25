@@ -155,7 +155,7 @@
             name: formNode.name,
             phone: formNode.phone,
             code: formNode.code,
-            pid: 1
+            pid: 0
           },
           success: data => {
             wx.hideToast()
