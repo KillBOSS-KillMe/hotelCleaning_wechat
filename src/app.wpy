@@ -110,9 +110,10 @@ export default class extends wepy.app {
   globalData = {
     userInfo: {},
     // 接口请求路径
-    requestUrl: 'https://jiuyou.beaconway.cn/api',
+    requestUrl: 'http://192.168.1.181:8011',
     // 图片路径
-    requestImgUrl: 'http://192.168.1.132',
+    requestImgUrl: 'http://192.168.1.181',
+    apikey: '123456'
   }
 
   // constructor () {
@@ -120,9 +121,50 @@ export default class extends wepy.app {
 
   onLaunch() {
   }
+  getToken() {
+    wx.login({
+        success: res => {
+          if (res.code) {
+            console.log(res.code)
+            wx.request({
+              url: `${this.globalData.requestUrl}/auth/get_token`,
+              method: 'POST',
+              header: {
+                apikey: this.globalData.apikey
+              },
+              data: {
+                code: res.code
+              },
+              success: data => {
+                if (data.data.code == 1) {
+                  let localList = this.null2str(data.data.data)
+                  this.localList = this.localList.concat(localList)
+                  this.$apply()
+                } else {
+                  wx.showModal({
+                    title: '',
+                    content: data.data.msg
+                  })
+                }
+              }
+            })
+          }
+        }
+    })
+    
+  }
+  // 拨打电话
   runCall(e) {
     wx.makePhoneCall({
       phoneNumber: e.currentTarget.dataset.phone
+    })
+  }
+  // 点击图片放大，长按后可操作
+  shareQRCodeImg(e) {
+    let url =  e.currentTarget.dataset.imgurl
+    wx.previewImage({
+      current: [url], // 当前显示图片的http链接   
+      urls: [url] // 需要预览的图片http链接列表   
     })
   }
   // 删除照片
