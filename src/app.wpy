@@ -59,10 +59,8 @@
 
 // background: linear-gradient(to left,#30A2F4,#00E8BD);
 <script>
-
-import wepy from 'wepy'
-import 'wepy-async-function'
-
+import wepy from 'wepy';
+import 'wepy-async-function';
 export default class extends wepy.app {
   config = {
     pages: [
@@ -110,18 +108,59 @@ export default class extends wepy.app {
   globalData = {
     userInfo: {},
     // 接口请求路径
-    requestUrl: 'http://192.168.1.181:8011',
+    requestUrl: 'http://192.168.1.181:8011/api/v1/wine_shop_api',
     // 图片路径
     requestImgUrl: 'http://192.168.1.181',
-    apikey: '123456'
+    apikey: '123456',
+    token: ''
   }
 
-  // constructor () {
-  // }
+  // constructor () {}
 
   onLaunch() {
+    this.getToken()
   }
+  // 获取用户信息
+  // getUserInfo() {
+  //   const that = this
+  //   if (this.globalData.userInfo) {
+  //     return this.globalData.userInfo
+  //   }
+  //   wepy.getUserInfo({
+  //     success (res) {
+  //       return res.userInfo
+  //     }
+  //   })
+  // };
+  // getCode() {
+  //   wx.login({
+  //       success: res => {
+  //         if (res.code) {
+  //           return res.code
+  //         }
+  //       }
+  //   })
+  // }
   getToken() {
+    // wx.request({
+    //   url: `${this.globalData.requestUrl}/auth/get_token`,
+    //   method: 'POST',
+    //   header: {
+    //     apikey: this.globalData.apikey
+    //   },
+    //   data: {
+    //     code: code
+    //   },
+    //   success: data => {
+    //     data = this.null2str(data)
+    //     console.log(data)
+    //     let token = `${data.data.token_type} ${data.data.token}`
+    //     console.log(token)
+    //     return token
+    //     // this.globalData['token'] = token
+    //     // console.log(this.globalData.token)
+    //   }
+    // })
     wx.login({
         success: res => {
           if (res.code) {
@@ -136,16 +175,11 @@ export default class extends wepy.app {
                 code: res.code
               },
               success: data => {
-                if (data.data.code == 1) {
-                  let localList = this.null2str(data.data.data)
-                  this.localList = this.localList.concat(localList)
-                  this.$apply()
-                } else {
-                  wx.showModal({
-                    title: '',
-                    content: data.data.msg
-                  })
-                }
+                data = this.null2str(data)
+                console.log(data)
+                let token = `${data.data.token_type} ${data.data.token}`
+                console.log(token)
+                return token
               }
             })
           }
