@@ -156,15 +156,14 @@
 
 <script>
   import wepy from 'wepy'
-
-
+  import check from '../mixins/check'
   export default class SelHoteRegistered extends wepy.page {
     config = {
       navigationBarTitleText: '注册'
     }
     components = {}
 
-    mixins = []
+    mixins = [check]
 
     data = {
     }

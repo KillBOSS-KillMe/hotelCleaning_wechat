@@ -64,8 +64,6 @@ import 'wepy-async-function';
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/selRegisteredType',  // 注册类型选择
-
       'pages/index', // 首页
       'pages/citySel', // 城市选择
       'pages/hotelInfo', // 酒店详情
@@ -89,7 +87,7 @@ export default class extends wepy.app {
       'pages/orderEvaluation', // 订单-评价
       'pages/orderConfirm', // 订单-确认
 
-      
+      'pages/selRegisteredType',  // 注册类型选择
       'pages/selHoteRegistered',  // 注册--酒店
       'pages/roomEntry',  // 房间录入
       'pages/selUserRegistered',  // 注册--保洁员

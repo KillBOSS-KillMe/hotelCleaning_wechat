@@ -105,6 +105,18 @@ export default class testMixin extends wepy.mixin {
       var rex = /^(http|https){1}:\/\/[^\s]+$/
       if (rex.test(trim(str)))return false
       else return true
+    },
+    // 是否为15位身份证号
+    isIdentity_15(str) {
+      var rex = /^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}$/
+      if (rex.test(trim(str)))return false
+      else return true
+    },
+    // 是否为18位身份证号
+    isIdentity_18(str) {
+      var rex = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+      if (rex.test(trim(str)))return false
+      else return true
     }
   }
 }
