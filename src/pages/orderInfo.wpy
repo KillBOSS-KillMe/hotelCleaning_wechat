@@ -1,62 +1,135 @@
 <template>
   <view>
-    <view class="hotelName">
-      <image src="{{requestImgUrl + orderInfo.img}}" />
-      <view class="name">{{orderInfo.name}}</view>
-      <icon class="iconfont iconxiayibu"></icon>
-    </view>
-    <view class="hotelInfo">
-      <view class="title">打扫地点</view>
-      <view class="item">
-        <image src="/img/address.png" />
-        <view>{{orderInfo.address}}</view>
+    <!-- 酒店订单 -->
+    <view wx:if="{{userInfo.type == 1}}">
+      <view class="hotelName">
+        <image src="{{requestImgUrl + orderInfo.img}}" />
+        <view class="name">{{orderInfo.name}}</view>
         <icon class="iconfont iconxiayibu"></icon>
       </view>
-      <view class="item">
-        <image src="/img/phone.png" />
-        <view>{{orderInfo.phone}}</view>
-        <icon class="iconfont iconxiayibu"></icon>
-      </view>
-    </view>
-    <view class="title">预约信息</view>
-    <view class="time">
-      <image src="/img/time.png" />
-      预约{{orderInfo.time}}到店
-    </view>
-    <view class="roomList">
-      <view class="item">
-        <view>
-          <image src="/img/room.png" />
-          房间号
-        </view>
-        <view>
-          <image src="/img/floor.png" />
-          楼层
-        </view>
-        <view>
-          <image src="/img/shape.png" />
-          房间类型
-        </view>
-      </view>
-    </view>
-    <scroll-view scroll-y="true" class="roomList roomListCon">
-      <repeat for="{{orderInfo.roomList}}" item="item">
+      <view class="hotelInfo">
+        <view class="title">打扫地点</view>
         <view class="item">
-          <view>{{item.roomCode}}</view>
-          <view>{{item.floor}}</view>
-          <view>{{item.typeName}}</view>
+          <image src="/img/address.png" />
+          <view>{{orderInfo.address}}</view>
+          <icon class="iconfont iconxiayibu"></icon>
         </view>
-      </repeat>
-    </scroll-view>
-    <view class="prompt">
-      <view>温馨提示</view>
-      <repeat for="{{prompt}}" item="item">
-        <view>{{item}}</view>
-      </repeat>
+        <view class="item">
+          <image src="/img/phone.png" />
+          <view>{{orderInfo.principal_phone}}</view>
+          <icon class="iconfont iconxiayibu"></icon>
+        </view>
+      </view>
+      <view class="title">预约信息</view>
+      <view class="time">
+        <image src="/img/time.png" />
+        预约{{orderInfo.make_time}}到店
+      </view>
+      <view class="roomList">
+        <view class="item">
+          <view>
+            <image src="/img/room.png" />
+            房间号
+          </view>
+          <view>
+            <image src="/img/floor.png" />
+            楼层
+          </view>
+          <view>
+            <image src="/img/shape.png" />
+            房间类型
+          </view>
+        </view>
+      </view>
+      <scroll-view scroll-y="true" class="roomList roomListCon">
+        <repeat for="{{orderInfo.content}}" item="item">
+          <view class="item">
+            <view>{{item.room_number}}</view>
+            <view>{{item.floor}}</view>
+            <view>{{item.type}}</view>
+            <view>{{item.money}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="prompt">
+        <view>温馨提示</view>
+        <repeat for="{{prompt}}" item="item">
+          <view>{{item}}</view>
+        </repeat>
+      </view>
+      <view class="sub">
+        <view @tap="sub">确定打扫</view>
+      </view>
     </view>
-    <view class="sub">
-      <view @tap="sub">提交</view>
+    <!-- 保洁订单 -->
+    <view wx:if="{{userInfo.type == 2}}">
+      <view class="hotelName">
+        <image src="{{orderInfo.image_url}}" />
+        <view class="name">{{orderInfo.hotel_name}}</view>
+        <icon class="iconfont iconxiayibu"></icon>
+      </view>
+      <view class="hotelInfo">
+        <view class="title">打扫地点</view>
+        <view class="item">
+          <image src="/img/address.png" />
+          <view>{{orderInfo.detailed_address}}</view>
+          <icon class="iconfont iconxiayibu"></icon>
+        </view>
+        <!-- 负责人电话 -->
+        <view class="item">
+          <image src="/img/phone.png" />
+          <view>{{orderInfo.principal_phone}}</view>
+          <icon class="iconfont iconxiayibu"></icon>
+        </view>
+        <!-- 固定电话 -->
+        <view class="item">
+          <image src="/img/phone.png" />
+          <view>{{orderInfo.desk_tel}}</view>
+          <icon class="iconfont iconxiayibu"></icon>
+        </view>
+      </view>
+      <view class="title">预约信息</view>
+      <view class="time">
+        <image src="/img/time.png" />
+        预约{{orderInfo.make_time}}到店
+      </view>
+      <view class="roomList">
+        <view class="item">
+          <view>
+            <image src="/img/room.png" />
+            房间号
+          </view>
+          <view>
+            <image src="/img/floor.png" />
+            楼层
+          </view>
+          <view>
+            <image src="/img/shape.png" />
+            房间类型
+          </view>
+        </view>
+      </view>
+      <scroll-view scroll-y="true" class="roomList roomListCon">
+        <repeat for="{{orderInfo.content}}" item="item">
+          <view class="item">
+            <view>{{item.room_number}}</view>
+            <view>{{item.floor}}</view>
+            <view>{{item.type}}</view>
+            <view>{{item.money}}</view>
+          </view>
+        </repeat>
+      </scroll-view>
+      <view class="prompt">
+        <view>温馨提示</view>
+        <repeat for="{{prompt}}" item="item">
+          <view>{{item}}</view>
+        </repeat>
+      </view>
+      <view class="sub">
+        <view @tap="sub">确定打扫</view>
+      </view>
     </view>
+      
   </view>
 </template>
 
@@ -80,7 +153,7 @@
           img: '/img/daw.jpg', 
           address: '地址地址地址地址地址地址地址地址地址地址', 
           phone: '029-88888888',
-          roomList: [
+          content: [
             {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
             {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
             {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
@@ -113,7 +186,82 @@
       
     }
 
-    onLoad() {
+    onLoad(options) {
+      this.options = options
+      this.userInfo = this.$parent.globalData.userInfo
+      // 执行列表加载
+      this.getOrderList()
+    }
+    // 执行列表加载
+    getOrderList() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      let url = ''
+      if (this.userInfo.type == 2) {
+        // 执行酒店加载
+        url = 'get_wine_order_details'
+      } else if (this.userInfo.type == 1) {
+        // 执行保洁加载
+        url = 'set_clean_order_details'
+      }
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/order/${url}`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          id: this.options.id
+        },
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          console.log(data)
+          if (data.data.code === 8888) {
+            this.orderInfo = data.data.data
+            this.$apply()
+          }
+        }
+      })
+    }
+    sub() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/order/set_clean_order_take`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          id: this.options.id
+        },
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          console.log(data)
+          if (data.data.code === 8888) {
+            wx.showToast({
+              title: "接单成功",
+              icon: 'success',
+              duration: 2000
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                data: -1
+              })
+            }, 2000)
+          }
+        }
+      })
     }
   }
 </script>

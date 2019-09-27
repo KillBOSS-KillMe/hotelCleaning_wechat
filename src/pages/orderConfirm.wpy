@@ -74,7 +74,45 @@
       
     }
 
-    onLoad() {
+    onLoad(options) {
+      this.options = options
+      this.userInfo = this.$parent.globalData.userInfo
+    }
+    sub() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/order/set_clean_order_take`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          id: this.options.id
+        },
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          console.log(data)
+          if (data.data.code === 8888) {
+            wx.showToast({
+              title: "评价成功",
+              icon: 'success',
+              duration: 2000
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                data: -1
+              })
+            }, 2000)
+            
+          }
+        }
+      })
     }
   }
 </script>
