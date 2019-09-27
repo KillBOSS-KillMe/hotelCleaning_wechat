@@ -46,6 +46,17 @@
     background-color: #EFF8FF;
     border-radius: 10rpx;
     margin: 5rpx;
+    position: relative;
+  }
+  icon{
+    position: absolute;
+    top: -20rpx;
+    right: -15rpx;
+    width: 40rpx;
+    height: 40rpx;
+    font-size: 40rpx;
+    color: #aaa;
+    z-index: 10;
   }
 }
 .imgList{
@@ -61,92 +72,99 @@
     margin: 2rpx;
   }
 }
-
+.code{
+  justify-content: flex-start;
+  input{
+    width: 310rpx;
+    margin-right: 20rpx;
+  }
+  .getCode{
+    width: 174rpx;
+    height: 80rpx;
+    border-radius: 10rpx;
+    border: 1rpx solid #30A2F4;
+    color: #30A2F4;
+    font-size: 28rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+view .item:last-child{
+  margin-bottom: 150rpx;
+}
 </style>
 <template>
   <view>
     <view class="item">
       <label>酒店名</label>
-      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入身份证号码" />
+      <input data-name="hotel_name" @input="getSetData" placeholder="请输入酒店名称" />
     </view>
     <view class="item">
       <label>地址</label>
-      <input type="text" data-name="name" @input="getSetData" placeholder="请输入真实姓名" />
+      <picker bindchange="changeRegin" mode="region" value="{{region}}">
+        <input data-name="name" value="{{region[0]}} - {{region[1]}} - {{region[2]}}" disabled placeholder="请选择地址" />
+      </picker>
     </view>
     <view class="item">
       <label>详细地址</label>
-      <input type="text" data-name="phone" @input="getSetData" placeholder="请输入联系电话" />
+      <input data-name="detailed_address" @input="getSetData" placeholder="请输入地址" />
     </view>
     <view class="item">
       <label>房间总数</label>
-      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入身份证号码" />
+      <input value="{{roomList.length}}" data-name="total_number" disabled @input="getSetData" placeholder="请输入房间总数" />
     </view>
     <view class="item floor">
-      <label>房间总数</label>
+      <label>房间列表</label>
       <view class="floorType">
-        <view>
-          <text>类型111</text>
-          <icon></icon>
-        </view>
-        <view>
-          <text>类型111</text>
-          <icon></icon>
-        </view>
-        <view>
-          <text>类型111</text>
-          <icon></icon>
-        </view>
-        <view>
-          <text>类型111</text>
-          <icon></icon>
-        </view>
-        <view>
-          <text>类型111</text>
-          <icon></icon>
-        </view>
+        <repeat for="{{roomList}}" item="item">
+          <view>
+            <text>{{item.room_number}}({{item.roomType}})</text>
+            <icon class="iconfont iconguanbi1" data-index="{{index}}" @tap="delRoom"></icon>
+          </view>
+        </repeat>
       </view>
-      <icon></icon>
+      <icon class="iconfont iconxiayibu" @tap="goRoomType"></icon>
     </view>
     <view class="item">
       <label>布草车数</label>
-      <input type="text" data-name="name" @input="getSetData" placeholder="请输入真实姓名" />
+      <input type="number" data-name="car_number" @input="getSetData" placeholder="请输入布草车数量" />
     </view>
     <view class="item">
       <label>酒店方负责人</label>
-      <input type="text" data-name="phone" @input="getSetData" placeholder="请输入联系电话" />
+      <input data-name="principal" @input="getSetData" placeholder="请输入负责人姓名" />
     </view>
     <view class="item">
       <label>负责人电话</label>
-      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入身份证号码" />
+      <input type="number" data-name="principal_phone" @input="getSetData" placeholder="请输入负责人电话" />
+    </view>
+    <view class="item code">
+      <label>验证码</label>
+      <input type="number" data-name="code" @input="getSetData" placeholder="请输入验证码" />
+      <view class="getCode" @tap="getCode">{{time}}</view>
     </view>
     <view class="item">
       <label>前台固话</label>
-      <input type="text" data-name="name" @input="getSetData" placeholder="请输入真实姓名" />
+      <input type="text" data-name="desk_tel" @input="getSetData" placeholder="请输入前台电话" />
     </view>
     <view class="item">
       <label>酒店logo</label>
     </view>
     <view class="item imgList">
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/upImg.png" />
+      <repeat for="{{hotelLogo}}" item="item">
+        <image src="{{item.path.image_url}}" />
+      </repeat>
+      <image src="/img/upImg.png" @tap="upHotelLogo" wx:if="{{hotelLogo.length == 0}}" />
     </view>
     <view class="item">
       <label>酒店图片</label>
-      <label>0/9</label>
+      <label>{{hotelImgList.length}}/9</label>
     </view>
-    <view class="item imgList">
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/daw.jpg" />
-      <image src="/img/upImg.png" />
+    <view class="item imgList" style="margin-bottom: 200rpx;">
+      <repeat for="{{hotelImgList}}" item="item">
+        <image src="{{item.path.image_url}}" />
+      </repeat>
+      <image src="/img/upImg.png" @tap="upHotelImgList" wx:if="{{hotelImgList.length < 9}}" />
     </view>
     <view class="sub">
       <view @tap="sub">提交</view>
@@ -166,12 +184,79 @@
     mixins = [check]
 
     data = {
+      // 省市区三级联动初始化
+      region: ["", "", ""],
+      hotelLogo: [],
+      hotelImgList: [],
+      roomList: [],
+      formNode: {
+        hotel_name: '',         // 酒店名称
+        province_id: '1',       // 地址省id
+        province_name: '',      // 地址省名称
+        city_id: '1',           // 地址市id
+        city_name: '',          // 地址市名称
+        county_id: '1',         // 地址县id
+        county_name: '',        // 地址县名称
+        detailed_address: '',   // 详细地址
+        total_number: '',       // 房间总数
+        car_number: '',         // 布草车数
+        principal: '',          // 酒店方负责人
+        principal_phone: '',    // 酒店负责人电话
+        admin_id: '0',          // 上级id  0表示没有上级
+        code: '',               // 验证码六位数字
+        desk_tel: '',           // 酒店前台固话
+        logo: '',               // 酒店logo（单图）
+        hotel_image: '',        // 酒店图片（多图用|线隔开）
+        rooms: []               // 酒店房间信息
+      },
+      disabled: false,
+      currentTime: 60,   // 倒计时初始值
+      time: '发送验证码'
     }
 
     computed = {}
 
     methods = {
-
+      goRoomType() {
+        let url = `/pages/roomEntry`
+        this.$navigate(url)
+      },
+      // 表单数据获取
+      getSetData(e) {
+        let formNode = this.formNode
+        let name = e.currentTarget.dataset.name
+        let value = e.detail.value
+        formNode[name] = value
+        this.formNode = formNode
+        this.$apply()
+      },
+      // 删除房间
+      delRoom(e) {
+        let index = e.currentTarget.dataset.index
+        let roomList = this.roomList
+        console.log(index)
+        console.log(roomList)
+        roomList = roomList.splice(index, 1)
+        console.log(roomList)
+        this.roomList = roomList
+        this.$apply()
+      },
+      // 选择省市区函数
+      changeRegin(e) {
+        let region = e.detail.value
+        console.log(region)
+        this.formNode['province_name'] = region[0]
+        this.formNode['city_name'] = region[1]
+        this.formNode['county_name'] = region[2]
+        this.region = region
+        this.$apply()
+      },
+      upHotelLogo() {
+        this.runUpLogoImg()
+      },
+      upHotelImgList() {
+        this.runUpHotelImgList()
+      }
     }
 
     events = {
@@ -179,6 +264,300 @@
     }
 
     onLoad() {
+
+    }
+    onShow() {
+      this.roomList = this.$parent.globalData.roomList
+      this.formNode['rooms'] = this.roomList
+      this.formNode['total_number'] = this.roomList.length
+      
+      // this.roomList = [
+      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "122"},
+      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "33"},
+      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "44"},
+      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "55"},
+      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "66"},
+      // ]
+      // console.log(this.roomList)
+    }
+    sub() {
+      console.log(this.formNode)
+      let formNode = this.formNode
+      let rooms = formNode.rooms
+      for (var i = 0; i < rooms.length; i++) {
+        delete rooms[i]["roomType"]
+      }
+      formNode['rooms'] = rooms
+      console.log(formNode)
+      
+      // if (this.check.isNull(formNode.hotel_name)) {
+      //   wx.showToast({
+      //     title: '请输入酒店名称',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isNull(formNode.province_name)) {
+      //   wx.showToast({
+      //     title: '请选择详情地址',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isNull(formNode.detailed_address)) {
+      //   wx.showToast({
+      //     title: '请输入详细地址',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (formNode.rooms.length <= 0) {
+      //   wx.showToast({
+      //     title: '请输入录入房间信息',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isNull(formNode.car_number)) {
+      //   wx.showToast({
+      //     title: '请输入布草车数量',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      
+      // if (this.check.isNull(formNode.principal)) {
+      //   wx.showToast({
+      //     title: '请输入酒店负责人',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isPhone(formNode.principal_phone)) {
+      //   wx.showToast({
+      //     title: '请输入酒店负责人电话',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isNull(formNode.code)) {
+      //   wx.showToast({
+      //     title: '请输入手机验证码',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isNull(formNode.desk_tel)) {
+      //   wx.showToast({
+      //     title: '请输入前台固定电话',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isNull(formNode.logo)) {
+      //   wx.showToast({
+      //     title: '请上传酒店logo',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      // if (this.check.isNull(formNode.hotel_image)) {
+      //   wx.showToast({
+      //     title: '请上传酒店图片',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      this.upformData(formNode)
+    }
+    upformData(formNode) {
+      wx.showToast({
+        title: "注册中...",
+        icon: 'loading',
+        duration: 10000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/auth/wine_register`,
+        method: 'POST',
+        header: {
+          'content-type':'application/json',
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: formNode,
+        success: data => {
+          console.log(data)
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            wx.showToast({
+              title: "注册成功",
+              icon: 'success',
+              duration: 2000
+            });
+            setTimeout(() => {
+              this.$redirect('/pages/index')
+            }, 2000)
+          } else {
+            wx.showModal({
+              title: '',
+              content: data.data.msg
+            })
+          }
+        }
+      })
+    }
+    runUpLogoImg() {
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: res => {
+          wx.showToast({
+            title: '图片上传中',
+            icon: 'loading'
+          });
+          Promise.all(res.tempFiles.map(item => {
+            return new Promise((resolve, reject) => {
+              wx.uploadFile({
+                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                filePath: item.path,
+                name: 'file',
+                header: {
+                  authorization: this.$parent.globalData.token,
+                  apikey: this.$parent.globalData.apikey
+                },
+                success: res => {
+                  resolve({
+                    path: JSON.parse(res.data).data
+                  })
+                }
+              })
+            })
+          })).then(e => {
+            wx.hideToast()
+            this.hotelLogo = this.hotelLogo.concat(e)
+            console.log(this.hotelLogo)
+            this.formNode['logo'] = this.hotelLogo[0].path.image_id
+            this.$apply()
+            console.log(this.formNode)
+          }).catch(err => console.log(err))
+        }
+      })
+    }
+    runUpHotelImgList() {
+      let count = 9 - this.hotelImgList.length
+      wx.chooseImage({
+        count: count,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: res => {
+          wx.showToast({
+            title: '图片上传中',
+            icon: 'loading'
+          });
+          Promise.all(res.tempFiles.map(item => {
+            return new Promise((resolve, reject) => {
+              wx.uploadFile({
+                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                filePath: item.path,
+                name: 'file',
+                header: {
+                  authorization: this.$parent.globalData.token,
+                  apikey: this.$parent.globalData.apikey
+                },
+                success: res => {
+                  resolve({
+                    path: JSON.parse(res.data).data
+                  })
+                }
+              })
+            })
+          })).then(e => {
+            wx.hideToast()
+            this.hotelImgList = this.hotelImgList.concat(e)
+            let hotelImgList = this.hotelImgList
+            let hotel_image = ''
+            for (let i = 0; i < hotelImgList.length; i++) {
+              hotel_image += '|'
+              hotel_image += hotelImgList[i].path.image_id
+            }
+            hotel_image = hotel_image.substr(1)
+            this.formNode['hotel_image'] = hotel_image
+            console.log(this.formNode)
+            this.$apply()
+          }).catch(err => console.log(err))
+        }
+      })
+    }
+    // 获取验证码
+    getCode() {
+      if (this.disabled) {
+        return false
+      }
+      if (this.check.isPhone(this.formNode.principal_phone)) {
+        wepy.showModal({
+          title: '',
+          content: '请输入电话',
+          showCancel: false
+        })
+        return
+      }
+      wx.showToast({
+        title: "请求发送中...",
+        icon: 'loading',
+        duration: 10000
+      });
+      this.disabled = true
+      this.$apply()
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/auth/send_code`,
+        method: 'POST',
+        header: {
+          'content-type':'application/json',
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          phone: this.formNode.principal_phone
+        },
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'success',
+              duration: 1000
+            });
+            this.$apply()
+            this.countdown()
+          } else {
+            wx.showModal({
+              title: '',
+              content: data.data.errmsg
+            })
+          }
+        }
+      })
+    }
+    // 倒计时
+    countdown() {
+      var currentTime = this.currentTime;
+      this.time = `倒计时${currentTime}秒`
+      this.$apply()
+      var interval = setInterval(() => {
+        this.time = '倒计时' + (currentTime - 1) + '秒'
+        this.$apply()
+        currentTime--
+        if (currentTime <= 0) {
+          clearInterval(interval)
+          this.time = '重新获取'
+          this.currentTime = 60
+          this.disabled = false
+          this.$apply()
+        }
+      }, 1000)
     }
   }
 </script>

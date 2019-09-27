@@ -112,7 +112,9 @@ export default class extends wepy.app {
     // 图片路径
     requestImgUrl: 'http://192.168.1.181',
     apikey: '123456',
-    token: ''
+    token: '',
+    roomList: [],
+    roomTypeList: [],
   }
 
   // constructor () {}
@@ -220,7 +222,7 @@ export default class extends wepy.app {
           icon: 'loading'
         });
         var imgArr = that.data.imgArr || [] // 放图片的数组
-        var imgLength = that.data.imgLength || 6 //默认上传6张图片
+        var imgLength = that.data.imgLength || 9 //默认上传9张图片
         if (imgArr.length + res.tempFiles.length > imgLength) {
           wx.showToast({
             title: `最多上传${imgLength}张图片`,

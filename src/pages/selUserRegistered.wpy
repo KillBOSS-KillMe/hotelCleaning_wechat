@@ -84,7 +84,8 @@
         IDCard: '',
         name: '',
         phone: '',
-        code: ''
+        code: '',
+        pid: '0'
       },
       disabled: false,
       currentTime: 60,   // 倒计时初始值
@@ -155,7 +156,7 @@
             name: formNode.name,
             phone: formNode.phone,
             code: formNode.code,
-            pid: 0
+            pid: formNode.pid
           },
           success: data => {
             wx.hideToast()
@@ -219,7 +220,7 @@
                 duration: 1000
               });
               this.$apply()
-              this.getCode()
+              this.countdown()
             } else {
               wx.showModal({
                 title: '',
@@ -238,7 +239,7 @@
     onLoad() {
     }
     // 倒计时
-    getCode() {
+    countdown() {
       var currentTime = this.currentTime;
       this.time = `倒计时${currentTime}秒`
       this.$apply()
