@@ -2,28 +2,46 @@
 <template>
   <view>
     <swiper class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
-      <repeat for="{{hotelInfo.img}}" item="item">
+      <repeat for="{{hotelInfo.hotel_image}}" item="item">
         <swiper-item>
-          <image src="{{ requestImgUrl + item.img }}" bindtap='shareQRCodeImg' data-imgurl="{{requestImgUrl + item.img}}" />
+          <image src="{{ item.url }}" bindtap='shareQRCodeImg' data-imgurl="{{item.url}}" />
         </swiper-item>
       </repeat>
     </swiper>
+    <view class="hotelInfo">
+      <image class="logo" src="{{hotelInfo.image_url}}" />
+      <view class="info">
+        <view class="name">{{hotelInfo.hotel_name}}</view>
+        <view class="item addressitem">
+          <view class="address">
+            <image src="/img/address.png" />
+            {{hotelInfo.detailed_address}}
+          </view>
+          <text>距离您约2km</text>
+        </view>
+        <view class="item">
+          <image src="/img/phone.png" />
+          <text data-phone="{{hotelInfo.desk_tel}}">{{hotelInfo.desk_tel}}</text>
+        </view>
+      </view>
+    </view>
     <view class="list">
       <view class="item">
         <label>基本信息</label>
       </view>
       <view class="item">
         <text>酒店名称</text>
-        <label>七天国际酒店</label>
+        <label>{{hotelInfo.hotel_name}}</label>
       </view>
       <view class="item">
         <text>客服电话</text>
-        <label>029-00000000000</label>
+        <label data-phone="{{hotelInfo.desk_tel}}">{{hotelInfo.desk_tel}}</label>
       </view>
       <view class="item">
         <text>酒店资质</text>
-        <label>已认证</label>
-        <label>未认证</label>
+        <label wx:if="{{hotelInfo.status == 0}}">未认证</label>
+        <label wx:if="{{hotelInfo.status == 1}}">已认证</label>
+        <label wx:if="{{hotelInfo.status == 3}}">审核中</label>
       </view>
     </view>
   </view>
@@ -41,37 +59,45 @@
 
     data = {
       requestImgUrl: '',
-      swiperList: [
-        {img: '/img/daw.jpg'},
-        {img: '/img/daw.jpg'},
-        {img: '/img/daw.jpg'},
-      ],
-      hotelInfo: {
-          id: '1', 
-          name: '酒店名称酒店名称酒店名称酒店名称', 
-          type: '经济型', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          monad: 100,
-          img: [
-            {img: '/img/daw.jpg'},
-            {img: '/img/daw.jpg'},
-            {img: '/img/daw.jpg'}
-          ]
-        }
-      
+      swiperList: [],
+      hotelInfo: {}
     }
-
     // computed = {}
 
     methods = {
+
     }
 
     events = {
       
     }
 
-    onLoad() {
+    onLoad(options) {
+      this.options = options
+      // 获取楼盘详情
+      this.getWineInfo()
+    }
+    // 获取楼盘详情
+    getWineInfo() {
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/index/get_wine_info`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          id: this.options.id
+        },
+        method: 'GET',
+        success: data => {
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            this.hotelInfo = data.data.data
+
+            this.$apply()
+          }
+        }
+      })
     }
   }
 </script>
@@ -89,7 +115,59 @@
   height: 100%;
   border-radius: 10rpx;
 }
-
+.hotelInfo{
+  width: 690rpx;
+  height: auto;
+  padding: 30rpx;
+  display: flex;
+  justify-content: flex-start;
+  .logo{
+    width: 90rpx;
+    height: 90rpx;
+    border-radius: 10rpx;
+    margin-right: 20rpx;
+  }
+  .info{
+    width: 680rpx;
+  }
+  .name{
+    width: 100%;
+    font-size: 32rpx;
+    font-weight: 600;
+    color: #222;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    margin-bottom: 30rpx;
+  }
+  .item{
+    width: 100%;
+    font-size: 26rpx;
+    color: #898989;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    
+    .address{
+      width: 300rpx;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      // margin-left: 30rpx;
+    }
+    image{
+      width: 25rpx;
+      height: 25rpx;
+      margin-right: 10rpx;
+    }
+  }
+  .addressitem{
+    justify-content: space-between !important;
+  }
+}
 .list{
   width: 750rpx;
   height: auto;

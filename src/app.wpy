@@ -115,6 +115,9 @@ export default class extends wepy.app {
     token: '',
     roomList: [],
     roomTypeList: [],
+    swiperList: [],
+    hotelListIndex: [],
+    cleaningListIndex: [],
   }
 
   // constructor () {}
@@ -122,47 +125,7 @@ export default class extends wepy.app {
   onLaunch() {
     this.getToken()
   }
-  // 获取用户信息
-  // getUserInfo() {
-  //   const that = this
-  //   if (this.globalData.userInfo) {
-  //     return this.globalData.userInfo
-  //   }
-  //   wepy.getUserInfo({
-  //     success (res) {
-  //       return res.userInfo
-  //     }
-  //   })
-  // };
-  // getCode() {
-  //   wx.login({
-  //       success: res => {
-  //         if (res.code) {
-  //           return res.code
-  //         }
-  //       }
-  //   })
-  // }
   getToken() {
-    // wx.request({
-    //   url: `${this.globalData.requestUrl}/auth/get_token`,
-    //   method: 'POST',
-    //   header: {
-    //     apikey: this.globalData.apikey
-    //   },
-    //   data: {
-    //     code: code
-    //   },
-    //   success: data => {
-    //     data = this.null2str(data)
-    //     console.log(data)
-    //     let token = `${data.data.token_type} ${data.data.token}`
-    //     console.log(token)
-    //     return token
-    //     // this.globalData['token'] = token
-    //     // console.log(this.globalData.token)
-    //   }
-    // })
     wx.login({
         success: res => {
           if (res.code) {

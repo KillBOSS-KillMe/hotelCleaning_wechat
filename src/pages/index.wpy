@@ -5,52 +5,53 @@
       <image src="/img/address.png" />
       <view>当前位置当前位当前位置当前位当前位置当前位当前位置当前位</view>
     </view>
-    <swiper class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
+    <swiper wx:if="{{swiperList.length > 0}}" class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
       <repeat for="{{swiperList}}" item="item">
-        <swiper-item>
-          <image src="{{ requestImgUrl + item.img }}" bindtap='shareQRCodeImg' data-imgurl="{{requestImgUrl + item.img}}" />
+        <swiper-item data-id="{{ item.id }}">
+          <image src="{{ item.image_url }}" bindtap='shareQRCodeImg' data-imgurl="{{requestImgUrl + item.img}}" />
         </swiper-item>
       </repeat>
     </swiper>
-    <view class="title">
+    <view class="title" wx:if="{{hotelList.length > 0}}">
       <label>酒店推荐</label>
       <view @tap="gohotelList">
         更多<icon class="iconfont iconxiayibu"></icon>
       </view>
     </view>
-    <view class="hotelList">
+    <view class="hotelList" wx:if="{{hotelList.length > 0}}">
       <repeat for="{{hotelList}}" item="item">
         <view class="item" data-id="{{item.id}}" @tap="gohotelInfo">
-          <image src="{{requestImgUrl + item.img}}" />
+          <image src="{{item.image_url}}" />
           <view class="info">
             <view class="hotelTitle">
-              <view class="name">{{item.name}}</view>
+              <view class="name">{{item.hotel_name}}</view>
               <view class="label">{{item.type}}</view>
             </view>
             <view class="hotelAddress">
               <icon class="iconfont icondingwei"></icon>
-              {{item.address}}
+              {{item.detailed_address}}
             </view>
             <view class="hotelInfo">
-              <text>距您约{{item.distance}}km</text>
-              <text>完成{{item.monad}}单</text>
+              <text>距您约{{item.wine_order_one_count}}km</text>
+              <text>完成{{item.wine_order_one_count}}单</text>
             </view>
           </view>
         </view>
       </repeat>
     </view>
+    <!-- <view class="title" wx:if="{{cleaningList.length > 0}}"> -->
     <view class="title">
       <label>保洁推荐</label>
       <view @tap="goCleaningList">
         更多<icon class="iconfont iconxiayibu"></icon>
       </view>
     </view>
-    <scroll-view scroll-x="true" class="recommendCleaning">
+    <scroll-view scroll-x="true" class="recommendCleaning" wx:if="{{cleaningList.length > 0}}">
       <repeat for="{{cleaningList}}" item="item">
         <view class="item" data-id="{{item.id}}" @tap="goCleaningInfo">
-          <image src="{{requestImgUrl + item.img}}" />
+          <image src="{{item.image_url}}" />
           <view class="name">{{item.name}}</view>
-          <view class="info">已完成{{item.num}}单</view>
+          <view class="info">已完成{{item.order_one_count}}单</view>
         </view>
       </repeat>
     </scroll-view>
@@ -76,59 +77,9 @@
       userInfoButtonShow: true,
       requestImgUrl: '',
       token: '',
-      swiperList: [
-        {img: '/img/daw.jpg'},
-        {img: '/img/daw.jpg'},
-        {img: '/img/daw.jpg'},
-      ],
-      cleaningList: [
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-        {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
-      ],
-      hotelList: [
-        {
-          id: '1', 
-          name: '酒店名称酒店名称酒店名称酒店名称', 
-          img: '/img/daw.jpg', 
-          type: '经济型', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          monad: 100
-        },
-        {
-          id: '1', 
-          name: '酒店名称酒店名称酒店名称酒店名称', 
-          img: '/img/daw.jpg', 
-          type: '经济型', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          monad: 100
-        },
-        {
-          id: '1', 
-          name: '酒店名称酒店名称酒店名称酒店名称', 
-          img: '/img/daw.jpg', 
-          type: '经济型', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          monad: 100
-        },
-        {
-          id: '1', 
-          name: '酒店名称酒店名称酒店名称酒店名称', 
-          img: '/img/daw.jpg', 
-          type: '经济型', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          monad: 100
-        }
-      ]
+      swiperList: [],
+      cleaningList: [],
+      hotelList: []
     }
 
     // computed = {}
@@ -172,40 +123,22 @@
     }
 
     async onLoad(options) {
-      // 轮播图加载
-      // this.getSwiperList()
+      
       // this.code = await this.$parent.getCode()
       // console.log(this.code)
       // 加载token
       // this.token = await this.$parent.getToken()
       // console.log(this.token)
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
       // 获取用户信息
       await this.onGetUserInfo()
     }
     
-    // 获取轮播图
-    getSwiperList() {
-      this.swiperList = this.$parent.globalData.swiperList
-      if (this.swiperList.length > 0) {
-        return false
-      }
-      wx.request({
-        url: `${this.$parent.globalData.requestUrl}/index`,
-        method: 'POST',
-        success: data => {
-          if (data.data.code == 1) {
-            this.swiperList = this.$parent.null2str(data.data.data)
-            this.$parent.globalData.swiperList = this.swiperList
-            this.$apply()
-          } else {
-            wx.showModal({
-              title: '',
-              content: data.data.msg
-            })
-          }
-        }
-      })
-    }
+    
     // 用户信息获取
     onGetUserInfo() {
       // 查看是否授权
@@ -250,11 +183,18 @@
                 code: res.code
               },
               success: data => {
+                wx.hideToast()
                 data = this.$parent.null2str(data)
                 console.log(data)
                 let token = `${data.data.token_type} ${data.data.token}`
                 this.$parent.globalData.token = token
                 this.setUserInfo()
+                // 轮播图加载
+                this.getSwiperList()
+                // 酒店列表
+                this.getWineList()
+                // 保洁列表
+                this.getCleanList()
               }
             })
             
@@ -295,6 +235,78 @@
               title: '',
               content: data.data.errmsg
             })
+          }
+        }
+      })
+    }
+    // 获取保洁
+    getCleanList() {
+      this.cleaningList = this.$parent.globalData.cleaningListIndex
+      if (this.cleaningList.length > 0) {
+        this.$apply()
+        return false
+      }
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/index/get_clean_list`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        method: 'GET',
+        success: data => {
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            this.cleaningList = data.data.data
+            this.$parent.globalData.cleaningListIndex = this.cleaningList
+            this.$apply()
+          }
+        }
+      })
+    }
+    // 获取楼盘列表
+    getWineList() {
+      this.hotelList = this.$parent.globalData.hotelListIndex
+      if (this.hotelList.length > 0) {
+        this.$apply()
+        return false
+      }
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/index/get_wine_list`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        method: 'GET',
+        success: data => {
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            this.hotelList = data.data.data
+            this.$parent.globalData.hotelListIndex = this.hotelList
+            this.$apply()
+          }
+        }
+      })
+    }
+    // 获取轮播图
+    getSwiperList() {
+      this.swiperList = this.$parent.globalData.swiperList
+      if (this.swiperList.length > 0) {
+        this.$apply()
+        return false
+      }
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/index/get_baner_list`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        method: 'GET',
+        success: data => {
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            this.swiperList = data.data.data
+            this.$parent.globalData.swiperList = this.swiperList
+            this.$apply()
           }
         }
       })
@@ -364,6 +376,7 @@
         }
       })
     }
+    
   }
 </script>
 <style lang="less">
