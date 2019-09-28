@@ -33,20 +33,8 @@
     mixins = []
 
     data = {
-      cleaningList: [
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-        {id: '1', name: '许蛋蛋', phone: '18888888888'},
-      ]
+      cleanId: '',
+      cleaningList: []
     }
 
     // computed = {}
@@ -56,21 +44,15 @@
       //   // 销毁当前页{跳转}
       //   this.$redirect(url)
       // },
+      // 获取选中保洁的ID
       selCleaning(e) {
-        let i = 0
         let cartIndex = e.detail.value
-        let cleaningList = this.cleaningList
-        let selCleaning = []
-        // 需要加入去重操作
-        for(i in cartIndex) {
-          selCleaning.push(cleaningList[parseInt(cartIndex[i])])
-        }
-        console.log(selCleaning)
-        // 选中的用户存入全局
-        // this.$parent.globalData.reportLocalList = selList
-        
+        this.cleanId = this.cleaningList[parseInt(cartIndex[0])].id
       },
       sub() {
+        if (this.cleanId == '') {
+          return false
+        }
         wx.showToast({
           title: "拼命加载中...",
           icon: 'loading',
@@ -83,9 +65,10 @@
             apikey: this.$parent.globalData.apikey
           },
           data: {
-            id: this.options.id
+            id: this.cleanId,
+            order_id: parseInt(this.options.id)
           },
-          method: 'GET',
+          method: 'PUT',
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
@@ -107,7 +90,8 @@
         })
       },
       searchClean(e) {
-        this.cleanSearch(e.dataset.value)
+        console.log(e)
+        this.cleanSearch(e.detail.value)
       }
     }
 
@@ -119,14 +103,18 @@
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
     }
+    // 搜索
     cleanSearch(name) {
+      if (name == '') {
+        return false
+      }
       wx.showToast({
         title: "拼命加载中...",
         icon: 'loading',
         duration: 1000000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/index/set_clean_order_transfer_search`,
+        url: `${this.$parent.globalData.requestUrl}/order/set_clean_order_transfer_search`,
         header: {
           authorization: this.$parent.globalData.token,
           apikey: this.$parent.globalData.apikey

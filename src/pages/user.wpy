@@ -6,7 +6,7 @@
       <image src="/img/daw.jpg" />
       <view class="info">
         <view class="name">
-          二狗子
+          {{userInfo.name}}
           <view class="lv">
             <icon class="iconfont iconwuxing2 active"></icon>
             <icon class="iconfont iconwuxing2 active"></icon>
@@ -15,16 +15,17 @@
             <icon class="iconfont iconwuxing2"></icon>
           </view>
         </view>
-        <view class="phone" data-phone="18888888888" @tap="runCall">电话：18888888888</view>
+        <view class="phone" data-phone="{{userInfo.principal_phone}}" @tap="runCall">电话：{{userInfo.principal_phone}}</view>
       </view>
-      <view class="certification" @tap="goCertification">
+      <!-- status: 2    户状态：0=未认证，1=已认证，2=用户未注册，3=审核中 -->
+      <view class="certification" @tap="goCertification" wx:if="{{userInfo.status == 0}}">
         <icon class="iconfont iconrenzheng"></icon>
         未认证
       </view>
-      <!-- <view class="certification isCertification">
+      <view class="certification isCertification" wx:if="{{userInfo.status == 1}}">
         <icon class="iconfont iconrenzheng"></icon>
         已认证
-      </view> -->
+      </view>
       
     </view>
     <view class="userInfo">
@@ -114,6 +115,7 @@
     mixins = []
 
     data = {
+      userInfo: {},
       formNode: {},
       hotelFunctionList: [
         {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'},
@@ -216,6 +218,9 @@
     }
 
     onLoad() {
+      this.userInfo = this.$parent.globalData.userInfo
+      console.log(this.userInfo)
+      this.$apply()
     }
   }
 </script>

@@ -3,24 +3,24 @@
     <view class="form">
       <view class="item">
         <label>酒店名</label>
-        <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入酒店名" />
+        <input type="text" data-name="hotel_name" @input="getSetData" placeholder="请输入酒店名" />
       </view>
       <view class="item">
         <label>统一信用代码</label>
-        <input type="text" data-name="name" @input="getSetData" placeholder="请输入统一信用代码" />
+        <input type="text" data-name="legal" @input="getSetData" placeholder="请输入统一信用代码" />
       </view>
       <view class="item">
         <label>法人/负责人</label>
-        <input type="text" data-name="name" @input="getSetData" placeholder="请输入法人/负责人" />
+        <input type="text" data-name="phone" @input="getSetData" placeholder="请输入法人/负责人" />
       </view>
       <view class="item">
         <label>法人/负责人联系电话</label>
-        <input type="text" data-name="name" @input="getSetData" placeholder="请输入法人/负责人联系电话" />
+        <input type="text" data-name="credit_code" @input="getSetData" placeholder="请输入法人/负责人联系电话" />
       </view>
     </view>
     <view class="title">请上传酒店营业执照</view>
     <view class="img">
-      <image src="/img/card2.png" />
+      <image src="/img/card2.png" @tap="runUpImg"/>
     </view>
     <view class="sub">
       <view @tap="sub">认证</view>
@@ -30,20 +30,37 @@
 
 <script>
   import wepy from 'wepy'
+  import check from '../mixins/check'
   export default class UserhotelgCertification extends wepy.page {
     config = {
       navigationBarTitleText: '认证'
     }
     components = {}
 
-    mixins = []
+    mixins = [check]
 
     data = {
+      formNode: {
+        hotel_name: '',         // 酒店名称
+        legal: '',             // 法人/负责人
+        phone: '',              // 法人/负责人联系电话
+        credit_code: '',       // 统一信用代码
+        trading_certificate: '',// 酒店营业执照（单图）
+      },
     }
 
     computed = {}
 
     methods = {
+      // 表单数据获取
+      getSetData(e) {
+        let formNode = this.formNode
+        let name = e.currentTarget.dataset.name
+        let value = e.detail.value
+        formNode[name] = value
+        this.formNode = formNode
+        this.$apply()
+      },
     }
 
     events = {
@@ -51,6 +68,102 @@
     }
 
     onLoad() {
+      this.userInfo = this.$parent.globalData.userInfo
+      console.log(this.userInfo)
+      this.$apply()
+    }
+
+sub() {
+      console.log(this.formNode)
+      let formNode = this.formNode
+      let rooms = formNode.rooms
+      for (var i = 0; i < rooms.length; i++) {
+        delete rooms[i]["roomType"]
+      }
+      formNode['rooms'] = rooms
+      console.log(formNode)
+      
+      // if (this.check.isNull(formNode.hotel_name)) {
+      //   wx.showToast({
+      //     title: '请输入酒店名称',
+      //     icon: 'none'
+      //   });
+      //   return
+      // }
+      this.upformData(formNode)
+    }
+    upformData(formNode) {
+      wx.showToast({
+        title: "注册中...",
+        icon: 'loading',
+        duration: 10000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/auth/wine_register`,
+        method: 'POST',
+        header: {
+          'content-type':'application/json',
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: formNode,
+        success: data => {
+          console.log(data)
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            wx.showToast({
+              title: "注册成功",
+              icon: 'success',
+              duration: 2000
+            });
+            setTimeout(() => {
+              this.$redirect('/pages/index')
+            }, 2000)
+          } else {
+            wx.showModal({
+              title: '',
+              content: data.data.msg
+            })
+          }
+        }
+      })
+    }
+    runUpImg() {
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: res => {
+          wx.showToast({
+            title: '图片上传中',
+            icon: 'loading'
+          });
+          Promise.all(res.tempFiles.map(item => {
+            return new Promise((resolve, reject) => {
+              wx.uploadFile({
+                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                filePath: item.path,
+                name: 'file',
+                header: {
+                  authorization: this.$parent.globalData.token,
+                  apikey: this.$parent.globalData.apikey
+                },
+                success: res => {
+                  resolve({
+                    path: JSON.parse(res.data).data
+                  })
+                }
+              })
+            })
+          })).then(e => {
+            wx.hideToast()
+            this.hotelLogo = this.hotelLogo.concat(e)
+            this.formNode['trading_certificate'] = this.hotelLogo[0].path.image_id
+            this.$apply()
+          }).catch(err => console.log(err))
+        }
+      })
     }
   }
 </script>

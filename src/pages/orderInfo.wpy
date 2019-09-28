@@ -1,6 +1,6 @@
 <template>
   <view>
-    <!-- 酒店订单 -->
+    <!-- 酒店显示信息 -->
     <view wx:if="{{userInfo.type == 1}}">
       <view class="hotelName">
         <image src="{{requestImgUrl + orderInfo.img}}" />
@@ -57,11 +57,13 @@
           <view>{{item}}</view>
         </repeat>
       </view>
-      <view class="sub">
+      <!-- <view class="sub">
         <view @tap="sub">确定打扫</view>
-      </view>
+      </view> -->
     </view>
-    <!-- 保洁订单 -->
+   
+    
+    <!-- 保洁显示信息 -->
     <view wx:if="{{userInfo.type == 2}}">
       <view class="hotelName">
         <image src="{{orderInfo.image_url}}" />
@@ -125,7 +127,7 @@
           <view>{{item}}</view>
         </repeat>
       </view>
-      <view class="sub">
+      <view class="sub" >
         <view @tap="sub">确定打扫</view>
       </view>
     </view>
@@ -145,6 +147,8 @@
     mixins = []
 
     data = {
+      options: {},
+      userInfo: {},
       requestImgUrl: '',
       orderInfo: {
           id: '1', 
@@ -189,6 +193,8 @@
     onLoad(options) {
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
+      console.log(this.options)
+      console.log(this.userInfo)
       // 执行列表加载
       this.getOrderList()
     }
@@ -243,7 +249,7 @@
         data: {
           id: this.options.id
         },
-        method: 'GET',
+        method: 'PUT',
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
