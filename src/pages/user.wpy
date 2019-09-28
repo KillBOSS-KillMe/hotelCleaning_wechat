@@ -75,10 +75,9 @@
       </view>
     </view>
     
-    <!-- {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'}, -->
     <view class="list">
       <!-- 酒店方 -->
-      <repeat for="{{hotelFunctionList}}" item="item" wx:if="{{userInfo.type == 2}}">
+      <repeat for="{{hotelFunctionList}}" item="item" wx:if="{{userInfo.type == 1}}">
         <view class="item" data-id="{{item.id}}" @tap="hotelFunction">
           <view>
             <image src="/img/{{item.img}}.png" />
@@ -91,7 +90,7 @@
         </view>
       </repeat>
       <!-- 保洁方 -->
-      <repeat for="{{cleaningFunctionList}}" item="item" wx:if="{{userInfo.type == 1}}">
+      <repeat for="{{cleaningFunctionList}}" item="item" wx:if="{{userInfo.type == 2}}">
         <view class="item" data-id="{{item.id}}" @tap="cleaningFunction">
           <view>
             <image src="/img/{{item.img}}.png" />
@@ -171,7 +170,7 @@
             break;
           case '2':
             // 酒店信息
-            url += '/pages/userRelease'
+            url += '/pages/userReleaseList'
             break;
           case '3':
             // 设置
@@ -200,11 +199,11 @@
             break;
           case '2':
             // 我的分享
-            url += '/pages/userMyShare'
+            url += '/pages/userMyShare?type=1'
             break;
           case '3':
             // 我的分享码
-            url += '/pages/userMyShare'
+            url += '/pages/userMyShare?type=2'
             break;
           case '4':
             // 设置

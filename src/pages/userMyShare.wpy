@@ -1,11 +1,11 @@
 <template>
   <view>
     <view class="pageTitle">
-      <view class="item active">
+      <view class="itemNav {{selShow == 1?'active':''}}" data-type="1" @tap="selNav">
         <text>邀请好友</text>
         <view></view>
       </view>
-      <view class="item">
+      <view class="itemNav {{selShow == 2?'active':''}}" data-type="2" @tap="selNav">
         <text>邀请好友</text>
         <view></view>
       </view>
@@ -29,7 +29,7 @@
     <view class="pageSel" wx:if="{{selShow == 2}}">
       <image class="bg" src="/img/shareBg.png" />
       <view class="description">
-        <view>好友累计进攻</view>
+        <view>好友累计进贡</view>
         <view>
           <icon class="iconfont iconweixin"></icon>
           什么是进贡？
@@ -37,7 +37,7 @@
       </view>
       <view class="money">
         <view class="num">12.56</view>
-        <view class="button">立即提现</view>
+        <view class="button" @tap="recharge">立即提现</view>
       </view>
       <view class="info">
         <view class="item">
@@ -95,19 +95,31 @@
     mixins = []
 
     data = {
-      selShow: 2
+      selShow: ''
     }
 
     computed = {}
 
     methods = {
+      selNav(e) {
+        this.selShow = e.currentTarget.dataset.type
+        this.$apply()
+      },
+      recharge(e) {
+        // 进入充值页
+        let url = `/pages/userRecharge`
+        this.$navigate(url)
+      }
     }
 
     events = {
       
     }
 
-    onLoad() {
+    onLoad(options) {
+      this.selShow = options.type
+      this.userInfo = this.$parent.globalData.userInfo
+      this.$apply()
     }
   }
 </script>
@@ -116,7 +128,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  .item{
+  .itemNav{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -259,51 +271,54 @@
   font-weight: 600;
   color: #222;
 }
-.item{
-  width: 650rpx;
-  height: 115rpx;
-  padding: 30rpx 20rpx;
-  background-color: #fff;
-  box-shadow: #ebebeb 1rpx 1rpx 10rpx 5rpx;
-  border-radius: 10rpx;
-  display: flex;
-  // align-items: center;
-  justify-content: space-around;
-  margin: auto;
-  margin-bottom: 30rpx;
-  image{
-    width: 116rpx;
-    height: 116rpx;
-    border-radius: 115rpx;
-  }
-  .userInfo{
-    width: 252rpx;
+.userList{
+  .item{
+    width: 650rpx;
+    height: 115rpx;
+    padding: 30rpx 20rpx;
+    background-color: #fff;
+    box-shadow: #ebebeb 1rpx 1rpx 10rpx 5rpx;
+    border-radius: 10rpx;
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-direction: column;
-    font-size: 26rpx;
-    color: #222;
-    text{
+    // align-items: center;
+    justify-content: space-around;
+    margin: auto;
+    margin-bottom: 30rpx;
+    image{
+      width: 116rpx;
+      height: 116rpx;
+      border-radius: 115rpx;
+    }
+    .userInfo{
+      width: 252rpx;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-direction: column;
+      font-size: 26rpx;
+      color: #222;
+      text{
+        font-weight: 600;
+        color: #FE892F;
+      }
+    }
+    .name{
+      width: 100%;
+      font-size: 32rpx;
       font-weight: 600;
+      color: #222;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+    }
+    .time{
+      font-size: 24rpx;
+      color: #898989;
+    }
+    .active{
       color: #FE892F;
     }
   }
-  .name{
-    width: 100%;
-    font-size: 32rpx;
-    font-weight: 600;
-    color: #222;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-  }
-  .time{
-    font-size: 24rpx;
-    color: #898989;
-  }
-  .active{
-    color: #FE892F;
-  }
 }
+
 </style>
