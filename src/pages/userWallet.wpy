@@ -3,8 +3,8 @@
     <view class="allMoney">
       <view class="money">￥120000</view>
       <view>总金额</view>
-      <view class="button" @tap="recharge">立即充值</view>
-      <!-- <view class="button">立即提现</view> -->
+      <view class="button" @tap="recharge" wx:if="{{userInfo.type == 2}}">立即充值</view>
+      <view class="button" @tap="recharge" wx:if="{{userInfo.type == 1}}">立即提现</view>
     </view>
     <view class="title">资金明细</view>
     <view class="list">

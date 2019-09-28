@@ -75,7 +75,7 @@ export default class extends wepy.app {
       'pages/userMyShare',  // 个人中心--我的分享
       'pages/userRelease',  // 个人中心--发布列表
       'pages/userReleaseList',  // 个人中心--发布列表
-      'pages/userRecharge', // 个人中心--充值
+      'pages/userRecharge', // 个人中心--充值&提现
       'pages/userWallet', // 个人中心--钱包
       'pages/userInfoSetting',  // 个人中心--信息设置
       'pages/userCleaningCertification',  // 个人中心--保洁认证

@@ -5,11 +5,14 @@
     </view>
     <view class="list">
       <repeat for="{{selRechargeList}}" item="item">
-        <view data-index="{{index}}" class="{{index == serNode?'active':''}}">{{item}}元</view>
+        <view @tap="selMoney" data-index="{{index}}" class="{{index == serNode?'active':''}}">{{item.money}}元</view>
       </repeat>
     </view>
-    <view class="sub">
-      <view @tap="sub">充值</view>
+    <view class="sub" wx:if="{{userInfo.type == 2}}">
+      <view @tap="recharge">充值</view>
+    </view>
+    <view class="sub" wx:if="{{userInfo.type == 1}}">
+      <view @tap="withdraw">提现</view>
     </view>
   </view>
 </template>
@@ -25,13 +28,22 @@
     mixins = []
 
     data = {
+      id: '',
+      userInfo: {},
       serNode: 0,
-      selRechargeList: [50, 100, 150, 200, 500, 1000, 1500, 2000, 3000]
+      selRechargeList: []
     }
 
     computed = {}
 
     methods = {
+      selMoney(e) {
+        let index = e.currentTarget.dataset.index
+        this.serNode = index
+        this.id = this.selRechargeList[index].id
+        this.$apply()
+      }
+
     }
 
     events = {
@@ -39,6 +51,101 @@
     }
 
     onLoad() {
+      this.userInfo = this.$parent.globalData.userInfo
+      console.log(this.userInfo)
+      this.$apply()
+      this.getList()
+    }
+    // 提现
+    withdraw() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/withdraw/set_withdraw`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          id: this.id
+        },
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          console.log(data)
+          if (data.data.code === 8888) {
+
+            this.$apply()
+          }
+        }
+      })
+    }
+    // 充值
+    recharge() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/recharge/wx_pay`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          id: this.id
+        },
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          console.log(data)
+          if (data.data.code === 8888) {
+            this.selRechargeList = data.data.data
+            this.$apply()
+          }
+        }
+      })
+    }
+    getList() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      let url = ''
+      let data = {}
+      if (this.userInfo.type == 2) {
+        // 执行酒店加载
+        url = 'recharge/get_recharge_tpl_list'
+      } else if (this.userInfo.type == 1) {
+        // 执行保洁加载
+        url = 'withdraw/get_withdraw_tpl_list'
+      }
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/${url}`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: data,
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          console.log(data)
+          if (data.data.code === 8888) {
+            this.selRechargeList = data.data.data
+            this.id = this.selRechargeList[0].id
+            this.$apply()
+          }
+        }
+      })
     }
   }
 </script>
