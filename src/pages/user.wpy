@@ -70,7 +70,7 @@
     <!-- {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'}, -->
     <view class="list">
       <!-- 酒店方 -->
-      <repeat for="{{hotelFunctionList}}" item="item">
+      <repeat for="{{hotelFunctionList}}" item="item" wx:if="{{userInfo.type == 2}}">
         <view class="item" data-id="{{item.id}}" @tap="hotelFunction">
           <view>
             <image src="/img/{{item.img}}.png" />
@@ -83,7 +83,7 @@
         </view>
       </repeat>
       <!-- 保洁方 -->
-      <repeat for="{{cleaningFunctionList}}" item="item">
+      <repeat for="{{cleaningFunctionList}}" item="item" wx:if="{{userInfo.type == 1}}">
         <view class="item" data-id="{{item.id}}" @tap="cleaningFunction">
           <view>
             <image src="/img/{{item.img}}.png" />

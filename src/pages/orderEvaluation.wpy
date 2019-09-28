@@ -70,8 +70,16 @@
       this.userInfo = this.$parent.globalData.userInfo
     }
     sub() {
+      if (this.level == 0) {
+        wx.showToast({
+          title: "请选择评分",
+          icon: 'none',
+          duration: 2000
+        });
+        return false
+      }
       wx.showToast({
-        title: "拼命加载中...",
+        title: "评价提交中...",
         icon: 'loading',
         duration: 1000000
       });
@@ -85,7 +93,7 @@
           id: this.options.id,
           level: this.level
         },
-        method: 'GET',
+        method: 'PUT',
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
