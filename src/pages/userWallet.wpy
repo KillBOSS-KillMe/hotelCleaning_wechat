@@ -8,32 +8,26 @@
     </view>
     <view class="title">资金明细</view>
     <view class="list">
-      <view class="item">
-        <view>
-          <view class="name">发工资</view>
-          <view class="money">
-            <text>+￥60</text>
-            ￥1200
+      <!-- list -->
+      <repeat for="{{list}}" item="item">
+        <view class="item" data-id="{{item.id}}">
+          <view>
+            <view class="name" wx:if="{{item.status == 2}}">充值成功</view>
+            <view class="name" wx:if="{{item.status == 3}}">提现申请</view>
+            <view class="name" wx:if="{{item.status == 4}}">提现成功</view>
+            <view class="name" wx:if="{{item.status == 5}}">保洁工钱</view>
+            <view class="name" wx:if="{{item.status == 6}}">酒店发工资</view>
+            <view class="money">
+              <text>+￥{{item.amount}}</text>
+              ￥{{item.money}}
+            </view>
+          </view>
+          <view>
+            <view>二狗子</view>
+            <view>{{item.created_at}}</view>
           </view>
         </view>
-        <view>
-          <view>二狗子</view>
-          <view>2019.12.21 12:23</view>
-        </view>
-      </view>
-      <view class="item">
-        <view>
-          <view class="name">发工资</view>
-          <view class="money">
-            <text>+￥60</text>
-            ￥1200
-          </view>
-        </view>
-        <view>
-          <view>二狗子</view>
-          <view>2019.12.21 12:23</view>
-        </view>
-      </view>
+      </repeat>
     </view>
   </view>
 </template>
@@ -49,6 +43,8 @@
     mixins = []
 
     data = {
+      userInfo: {},
+      list: []
     }
 
     computed = {}
@@ -101,7 +97,7 @@
           data = this.$parent.null2str(data)
           console.log(data)
           if (data.data.code === 8888) {
-            this.orderInfo = data.data.data
+            this.list = data.data.data.data
             this.$apply()
           }
         }

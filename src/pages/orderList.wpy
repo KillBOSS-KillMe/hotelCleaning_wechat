@@ -2,19 +2,24 @@
 <template>
   <view>
     <view class="orderNav">
-      <view class="item orderActive">
+      <view class="item {{listStatus == '0'?'orderActive':''}}" data-status="0" @tap="selListStatus">
         <view>全部</view>
         <view class="border"></view>
       </view>
-      <view class="item">
+      <view class="item {{listStatus == '1'?'orderActive':''}}" data-status="1" @tap="selListStatus">
         <view>待处理</view>
         <view class="border"></view>
       </view>
-      <view class="item">
+      <view class="item {{listStatus == '2'?'orderActive':''}}" data-status="2" @tap="selListStatus">
         <view>待确认</view>
         <view class="border"></view>
       </view>
-      <view class="item">
+      <view class="item {{listStatus == '3'?'orderActive':''}}" data-status="3" @tap="selListStatus">
+        <view wx:if="{{userInfo.type == 2}}">待评价</view>
+        <view wx:if="{{userInfo.type == 1}}">已完成</view>
+        <view class="border"></view>
+      </view>
+      <view wx:if="{{userInfo.type == 2}}" class="item {{listStatus == '4'?'orderActive':''}}" data-status="4" @tap="selListStatus">
         <view>已完成</view>
         <view class="border"></view>
       </view>
@@ -64,7 +69,7 @@
           <image src="{{item.image_url}}" />
           <view class="info">
             <view class="hotelTitle">
-              <view class="name">{{item.hotel_name}}</view>
+              <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
               <view class="label active" wx:if="{{item.clean_status == '1'}}">待处理</view>
               <view class="label active" wx:if="{{item.clean_status == '2'}}">待确认</view>
               <view class="label active" wx:if="{{item.clean_status == '3'}}">待评论</view>
@@ -116,52 +121,8 @@
     data = {
       userInfo: {},
       requestImgUrl: '',
-      orderList: [
-        {
-          id: '1', 
-          name: '酒店名称酒店', 
-          num: 2,
-          time: '2019-9-21 14:07',
-          str: '1',  // 1-待处理，2-待确认，3-已完成, 4-待评价
-          img: '/img/daw.jpg', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          room: "12层、12层、12层、12层所有房间"
-        },
-        {
-          id: '1', 
-          name: '酒店名店名称', 
-          num: 2,
-          time: '2019-9-21 14:07',
-          str: '2', 
-          img: '/img/daw.jpg', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          room: "12层、12层、12层、12层所有房间"
-        },
-        {
-          id: '1', 
-          name: '酒店名称酒店名称酒店名称酒店名称', 
-          num: 2,
-          time: '2019-9-21 14:07',
-          str: '3', 
-          img: '/img/daw.jpg', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          room: "12层、12层、12层、12层所有房间"
-        },
-        {
-          id: '1', 
-          name: '酒店名称酒店名称酒店名称酒店名称', 
-          num: 2,
-          time: '2019-9-21 14:07',
-          str: '4', 
-          img: '/img/daw.jpg', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          distance: 12.55,
-          room: "12层、12层、12层、12层所有房间"
-        },
-      ],
+      orderList: [],
+      listStatus: 0,
       clean_status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
       wine_status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
     }
@@ -173,6 +134,13 @@
       goPage (url, evt) {
         // 销毁当前页{跳转}
         this.$redirect(url)
+      },
+      // 列表状态切换--顶部导航
+      selListStatus(e) {
+        this.orderList = []
+        this.listStatus = e.currentTarget.dataset.status
+        this.$apply()
+        this.getOrderList()
       },
       // 进入订单详情
       goOrderInfo(e) {
@@ -230,11 +198,11 @@
       if (this.userInfo.type == 2) {
         // 执行酒店加载
         url = 'get_clean_order_list'
-        data['clean_status'] = this.wine_status
+        data['clean_status'] = this.listStatus
       } else if (this.userInfo.type == 1) {
         // 执行保洁加载
         url = 'get_wine_order_list'
-        data['wine_status'] = this.clean_status
+        data['wine_status'] = this.listStatus
       }
       wx.request({
         url: `${this.$parent.globalData.requestUrl}/order/${url}`,
