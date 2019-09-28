@@ -22,9 +22,17 @@
         <icon class="iconfont iconrenzheng"></icon>
         未认证
       </view>
-      <view class="certification isCertification" wx:if="{{userInfo.status == 1}}">
+      <view class="certification isCertification" @tap="goCertification" wx:if="{{userInfo.status == 1}}">
         <icon class="iconfont iconrenzheng"></icon>
         已认证
+      </view>
+      <view class="certification isCertification" wx:if="{{userInfo.status == 2}}">
+        <icon class="iconfont iconrenzheng"></icon>
+        用户未注册
+      </view>
+      <view class="certification isCertification" wx:if="{{userInfo.status == 3}}">
+        <icon class="iconfont iconrenzheng"></icon>
+        审核中
       </view>
       
     </view>
@@ -142,8 +150,14 @@
       },
       // 进入认证页
       goCertification() {
-        // let url = '/pages/userCleaningCertification'  // 个人中心--保洁认证
-        let url = '/pages/userhotelgCertification'  // 个人中心--酒店认证
+        let url = ''
+        if (this.userInfo.type == 2) {
+          // 执行酒店
+          url = '/pages/userhotelgCertification'
+        } else if (this.userInfo.type == 1) {
+          // 执行保洁
+          url = '/pages/userCleaningCertification'
+        }
         this.$navigate(url)
       },
       // 进入酒店功能
