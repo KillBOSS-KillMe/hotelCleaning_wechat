@@ -156,8 +156,7 @@
           url = '/pages/userhotelgCertification'
         } else if (this.userInfo.type == 1) {
           // 执行保洁
-          url = '/pages/userhotelgCertification'
-          // url = '/pages/userCleaningCertification'
+          url = '/pages/userCleaningCertification'
         }
         this.$navigate(url)
       },
