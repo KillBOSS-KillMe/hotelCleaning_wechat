@@ -13,14 +13,14 @@
     <view class="pageSel" wx:if="{{selShow == 1}}">
       <view class="QRCode">
         <view class="title">邀请好友得奖励</view>
-        <image src="/img/daw.jpg" />
+        <image src="/img/daw.jpg" @tap="shareImgShow" data-imgurl="/img/daw.jpg" />
       </view>
       <view class="prompt">
         <view>备注</view>
         <view>推荐用户注册后，在职一个月以后可得分享奖励</view>
       </view>
       <view class="sub">
-        <view @tap="sub">
+        <view  @tap="shareImgShow" data-imgurl="/img/daw.jpg">
           <icon class="iconfont iconweixin"></icon>
           分享给好友
         </view>
@@ -78,6 +78,7 @@
           </view>
           <view class="time">绑定时间：2019.12.21</view>
         </view>
+        <view class="listNull" wx:if="{{friendList.length == 0}}">暂无数据</view>
       </view>
     </view>
       
@@ -95,7 +96,8 @@
     mixins = []
 
     data = {
-      selShow: ''
+      selShow: '',
+      friendList: []
     }
 
     computed = {}
@@ -104,12 +106,22 @@
       selNav(e) {
         this.selShow = e.currentTarget.dataset.type
         this.$apply()
+        if (this.selShow == '2') {
+          this.getFriendList()
+        }
       },
       recharge(e) {
         // 进入充值页
         let url = `/pages/userRecharge`
         this.$navigate(url)
-      }
+      },
+      shareImgShow(e) {
+        let url =  e.currentTarget.dataset.imgurl
+        wx.previewImage({
+          current: [url], // 当前显示图片的http链接   
+          urls: [url] // 需要预览的图片http链接列表   
+        })
+      },
     }
 
     events = {
@@ -120,6 +132,38 @@
       this.selShow = options.type
       this.userInfo = this.$parent.globalData.userInfo
       this.$apply()
+    }
+    // 好友列表获取
+    getFriendList() {
+      if (this.friendList.length > 0) {
+        return false
+      }
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/auth/clean_user_friend_list`,
+        header: {
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          page: 1
+        },
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          console.log(data)
+          if (data.data.code === 8888) {
+            this.friendList = data.data.data
+
+
+            // "last_page": 1,     表示总页数
+            // "per_page": 10,      表示每页条数
+            // "current_page": 1,   表示当前页
+            // "total": 1           表示总条数
+            this.$apply()
+          }
+        }
+      })
     }
   }
 </script>

@@ -61,6 +61,7 @@
           </view>
         </view>
       </repeat>
+      <view class="listNull" wx:if="{{orderList.length == 0}}">暂无数据</view>
     </view>
     <!-- 酒店订单列表 -->
     <view class="orderList" wx:if="{{userInfo.type == 2}}">
@@ -99,6 +100,7 @@
           </view>
         </view>
       </repeat>
+      <view class="listNull" wx:if="{{orderList.length == 0}}">暂无数据</view>
     </view>
 
     <nav @childFn.user="goPage" @childFnOrReturn.user="goModifyUserInfo" />

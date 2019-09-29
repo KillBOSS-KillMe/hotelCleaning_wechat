@@ -38,6 +38,7 @@
           </view>
         </view>
       </repeat>
+      <view class="listNull" wx:if="{{hotelList.length == 0}}">暂无数据</view>
     </view>
     <!-- <view class="title" wx:if="{{cleaningList.length > 0}}"> -->
     <view class="title">
@@ -54,6 +55,7 @@
           <view class="info">已完成{{item.order_one_count}}单</view>
         </view>
       </repeat>
+      <view class="listNull" wx:if="{{cleaningList.length == 0}}">暂无数据</view>
     </scroll-view>
     <nav @childFn.user="goPage" @childFnOrReturn.user="goModifyUserInfo" />
     <button open-type="getUserInfo" id='getUserInfo' wx:if="{{userInfoButtonShow}}" lang="zh_CN" @getuserinfo="onGetUserInfo"></button>

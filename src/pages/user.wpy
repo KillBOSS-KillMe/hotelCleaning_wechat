@@ -6,7 +6,8 @@
       <image src="/img/daw.jpg" />
       <view class="info">
         <view class="name">
-          {{userInfo.name}}
+          <text wx:if="{{userInfo.type == 1}}">{{userInfo.name}}</text>
+          <text wx:if="{{userInfo.type == 2}}">{{userInfo.hotel_name}}</text>
           <view class="lv">
             <icon class="iconfont iconwuxing2 active"></icon>
             <icon class="iconfont iconwuxing2 active"></icon>
@@ -15,7 +16,8 @@
             <icon class="iconfont iconwuxing2"></icon>
           </view>
         </view>
-        <view class="phone" data-phone="{{userInfo.principal_phone}}" @tap="runCall">电话：{{userInfo.principal_phone}}</view>
+        <view class="phone" wx:if="{{userInfo.type == 1}}" data-phone="{{userInfo.phone}}" @tap="runCall">电话：{{userInfo.phone}}</view>
+        <view class="phone" wx:if="{{userInfo.type == 2}}" data-phone="{{userInfo.principal_phone}}" @tap="runCall">电话：{{userInfo.principal_phone}}</view>
       </view>
       <!-- status: 2    户状态：0=未认证，1=已认证，2=用户未注册，3=审核中 -->
       <view class="certification" @tap="goCertification" wx:if="{{userInfo.status == 0}}">
@@ -226,7 +228,8 @@
       },
       // 拨打电话
       runCall(e){
-        this.$parent.runCall(e)
+        let phone = e.currentTarget.dataset.phone
+        this.$parent.runCall(phone)
       },
     }
 
