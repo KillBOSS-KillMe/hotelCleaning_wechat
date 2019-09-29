@@ -17,11 +17,11 @@
             <image src="/img/address.png" />
             {{hotelInfo.detailed_address}}
           </view>
-          <text>距离您约2km</text>
+          <text wx:if="{{hotelInfo.distance != ''}}">距离您约{{hotelInfo.distance}}</text>
         </view>
         <view class="item">
           <image src="/img/phone.png" />
-          <text data-phone="{{hotelInfo.desk_tel}}">{{hotelInfo.desk_tel}}</text>
+          <text data-phone="{{hotelInfo.desk_tel}}" @tap="runCall">{{hotelInfo.desk_tel}}</text>
         </view>
       </view>
     </view>
@@ -35,7 +35,7 @@
       </view>
       <view class="item">
         <text>客服电话</text>
-        <label data-phone="{{hotelInfo.desk_tel}}">{{hotelInfo.desk_tel}}</label>
+        <label data-phone="{{hotelInfo.desk_tel}}" @tap="runCall">{{hotelInfo.desk_tel}}</label>
       </view>
       <view class="item">
         <text>酒店资质</text>
@@ -65,7 +65,11 @@
     // computed = {}
 
     methods = {
-
+      // 拨打电话
+      runCall(e){
+        let phone = e.currentTarget.dataset.phone
+        this.$parent.runCall(phone)
+      },
     }
 
     events = {

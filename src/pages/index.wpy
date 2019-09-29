@@ -32,7 +32,8 @@
               {{item.detailed_address}}
             </view>
             <view class="hotelInfo">
-              <text>距您约{{item.wine_order_one_count}}km</text>
+              <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
+              <text wx:if="{{item.distance == ''}}">      </text>
               <text>完成{{item.wine_order_one_count}}单</text>
             </view>
           </view>
@@ -40,8 +41,8 @@
       </repeat>
       <view class="listNull" wx:if="{{hotelList.length == 0}}">暂无数据</view>
     </view>
-    <!-- <view class="title" wx:if="{{cleaningList.length > 0}}"> -->
-    <view class="title">
+    <view class="title" wx:if="{{cleaningList.length > 0}}">
+    <!-- <view class="title"> -->
       <label>保洁推荐</label>
       <view @tap="goCleaningList">
         更多<icon class="iconfont iconxiayibu"></icon>
