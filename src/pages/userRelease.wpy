@@ -7,22 +7,23 @@
       </view>
       <view class="item">
         <label>房间号</label>
-        <view class="roomList">
-          <checkbox-group bindchange="selCleaning" data-index="{{index}}" data-checks="{{item.checks}}">
+        <checkbox-group bindchange="selCleaning" data-index="{{index}}" data-checks="{{item.checks}}">
+          <view class="roomList">
             <repeat for="{{roomList}}" item="item">
               <view class="itemRoom">
                 <checkbox data-index="{{index}}" id="{{item.id}}" value="{{index}}" checked="{{item.checks}}"/>
                 <text>{{item.room_number}}</text>
               </view>
             </repeat>
-          </checkbox-group>
-        </view>
-        
+          </view>
+        </checkbox-group>
       </view>
       <view class="item code">
         <label>预约时间</label>
-        <input type="text" data-name="code" @input="getSetData" placeholder="请输选择日期" />
-        <view class="getCode" @tap="getCode">发送验证码</view>
+        <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{formNode.make_time}}" range="{{multiArray}}">
+          <input type="text" data-name="code" placeholder="请选择日期" />
+        </picker>
+        <!-- <view class="getCode" @tap="getCode">发送验证码</view> -->
       </view>
       <view class="sub">
         <view @tap="sub">提交</view>
@@ -32,6 +33,45 @@
 </template>
 
 <script>
+
+const date = new Date()
+const years = []
+const months = []
+const days = []
+const hours = []
+const minutes = []
+// 获取年
+for (let i = date.getFullYear(); i <= date.getFullYear() + 1; i++) {
+  years.push('' + i)
+}
+// 获取月份
+for (let i = 1; i <= 12; i++) {
+  if (i < 10) {
+    i = '0' + i
+  }
+  months.push('' + i)
+}
+// 获取日期
+for (let i = 1; i <= 31; i++) {
+  if (i < 10) {
+    i = '0' + i
+  }
+  days.push('' + i)
+}
+// 获取小时
+for (let i = 0; i < 24; i++) {
+  if (i < 10) {
+    i = '0' + i
+  }
+  hours.push('' + i)
+}
+// 获取分钟
+for (let i = 0; i < 60; i++) {
+  if (i < 10) {
+    i = '0' + i
+  }
+  minutes.push('' + i)
+}
   import wepy from 'wepy'
   export default class UserRelease extends wepy.page {
     config = {
@@ -42,19 +82,53 @@
     mixins = []
 
     data = {
+      multiIndex: [0, 9, 16, 10, 17],
+      multiArray: [years, months, days, hours, minutes],
       requestImgUrl: '',
       // 房间列表
       roomList: [
-        {id: '1', name: '1201'},
-        {id: '1', name: '1201'},
-        {id: '1', name: '1201'},
-        {id: '1', name: '1201'}
-      ]
+        {id: '1', room_number: '1201'},
+        {id: '1', room_number: '1201'},
+        {id: '1', room_number: '1201'},
+        {id: '1', room_number: '1201'},
+        {id: '1', room_number: '1201'},
+        {id: '1', room_number: '1201'},
+        {id: '1', room_number: '1201'}
+      ],
+      formNode: {
+        content: '',         // 房间列表
+        make_time: ''        // 预约时间
+      }
     }
 
     computed = {}
 
     methods = {
+      selCleaning(e) {
+        console.log(e)
+        let indexArr = e.detail.value
+        let roomList = this.roomList
+        let content = ''
+        for (let i = 0; i < indexArr.length; i++) {
+          content += '|'
+          content += roomList[parseInt(indexArr[i])].id
+        }
+        this.formNode['content'] = content.substr(1)
+        console.log(this.formNode)
+      },
+      // 获取预约时间
+      bindMultiPickerChange(e) {
+        this.multiIndex = e.detail.value
+        const index = this.multiIndex
+        const year = this.multiArray[0][index[0]]
+        const month = this.multiArray[1][index[1]]
+        const day = this.multiArray[2][index[2]]
+        const hour = this.multiArray[3][index[3]]
+        const minute = this.multiArray[4][index[4]]
+        
+        this.formNode['make_time'] = `${year}-${month}-${day} ${hour}:${minute}`
+        console.log(this.formNode)
+      },
     }
 
     events = {
@@ -65,7 +139,7 @@
       this.userInfo = this.$parent.globalData.userInfo
       console.log(this.userInfo)
       this.$apply()
-      this.getRoomList()
+      // this.getRoomList()
     }
     // 获取订单列表
     getRoomList() {
@@ -89,6 +163,61 @@
             //         "per_page": 10,      表示每页条数
             //         "current_page": 1,   表示当前页
             //         "total": 1           表示总条数
+          }
+        }
+      })
+    }
+    sub() {
+      console.log(this.formNode)
+      let formNode = this.formNode
+      if (formNode.content = '') {
+          wx.showToast({
+            title: '请选择房间',
+            icon: 'none'
+          });
+          return
+      }
+      if (formNode.make_time = '') {
+          wx.showToast({
+            title: '请选择时间',
+            icon: 'none'
+          });
+          return
+      }
+      wx.showToast({
+        title: "发布中...",
+        icon: 'loading',
+        duration: 10000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/order/create_order`,
+        method: 'POST',
+        header: {
+          'content-type':'application/json',
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: formNode,
+        success: data => {
+          console.log(data)
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            wx.showToast({
+              title: "发布成功",
+              icon: 'success',
+              duration: 2000
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                data: -1
+              })
+            }, 2000)
+          } else {
+            wx.showModal({
+              title: '',
+              content: data.data.msg
+            })
           }
         }
       })
@@ -142,8 +271,11 @@
   width: 538rpx;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-direction: row;
   flex-wrap: wrap;
+  .itemRoom{
+    padding: 20rpx 10rpx;
+  }
 }
 </style>
