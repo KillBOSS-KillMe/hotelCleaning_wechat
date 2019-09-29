@@ -168,7 +168,6 @@ for (let i = 0; i < 60; i++) {
       })
     }
     sub() {
-      console.log(this.formNode)
       let formNode = this.formNode
       if (formNode.content = '') {
           wx.showToast({
