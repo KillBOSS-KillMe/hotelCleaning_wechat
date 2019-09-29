@@ -47,7 +47,11 @@
   <view>
     <view class="item">
       <label>原电话</label>
-      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入原电话" />
+      <input type="text" placeholder="请输入原电话" />
+    </view>
+    <view class="item">
+      <label>身份证</label>
+      <input type="text" data-name="number" @input="getSetData" placeholder="请输入新电话" />
     </view>
     <view class="item">
       <label>新电话</label>
@@ -76,7 +80,8 @@
 
     data = {
       formNode: {
-        principal_phone: '',
+        number: '',
+        phone: '',
         code: ''
       },
       disabled: false,
@@ -98,11 +103,25 @@
       },
       sub() {
         let formNode = this.formNode
-        if (formNode.principal_phone == '') {
+        if (formNode.number == '') {
           wx.showToast({
-          title: "请输入新电话",
-          icon: 'none'
-        });
+            title: "请输入身份证号码",
+            icon: 'none'
+          });
+          return
+        }
+        if (formNode.phone == '') {
+          wx.showToast({
+            title: "请输入新电话",
+            icon: 'none'
+          });
+          return
+        }
+        if (formNode.code == '') {
+          wx.showToast({
+            title: "请输验证码",
+            icon: 'none'
+          });
           return
         }
         wx.showToast({
@@ -111,7 +130,7 @@
           duration: 10000
         });
         wx.request({
-          url: `${this.$parent.globalData.requestUrl}/auth/wine_user_sys`,
+          url: `${this.$parent.globalData.requestUrl}/auth/clean_user_sys`,
           method: 'PUT',
           header: {
             'content-type':'application/json',
@@ -147,7 +166,7 @@
         if (this.disabled) {
           return false
         }
-        if (this.check.isPhone(this.formNode.phone)) {
+        if (this.formNode.phone.length != 11) {
           wepy.showModal({
             title: '',
             content: '请输入新电话',

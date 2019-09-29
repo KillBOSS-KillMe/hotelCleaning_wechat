@@ -47,11 +47,11 @@
   <view>
     <view class="item">
       <label>原电话</label>
-      <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入原电话" />
+      <input type="text" placeholder="请输入原电话" />
     </view>
     <view class="item">
       <label>新电话</label>
-      <input type="text" data-name="phone" @input="getSetData" placeholder="请输入新电话" />
+      <input type="text" data-name="principal_phone" @input="getSetData" placeholder="请输入新电话" />
     </view>
     <view class="item code">
       <label>验证码</label>
@@ -93,7 +93,6 @@
         let value = e.detail.value
         formNode[name] = value
         this.formNode = formNode
-        console.log(formNode)
         this.$apply()
       },
       sub() {
@@ -147,7 +146,7 @@
         if (this.disabled) {
           return false
         }
-        if (this.check.isPhone(this.formNode.phone)) {
+        if (this.formNode.phone.length != 11) {
           wepy.showModal({
             title: '',
             content: '请输入新电话',
