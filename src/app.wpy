@@ -155,9 +155,17 @@ export default class extends wepy.app {
     
   }
   // 拨打电话
-  runCall(e) {
+  // runCall(e) {
+  //   wx.makePhoneCall({
+  //     phoneNumber: e.currentTarget.dataset.phone
+  //   })
+  // }
+  // wx.makePhoneCall({
+  //   phoneNumber: e.currentTarget.dataset.phone
+  // })
+  runCall(phone) {
     wx.makePhoneCall({
-      phoneNumber: e.currentTarget.dataset.phone
+      phoneNumber: phone
     })
   }
   // 点击图片放大，长按后可操作

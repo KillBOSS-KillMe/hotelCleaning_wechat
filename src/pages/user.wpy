@@ -34,50 +34,51 @@
         <icon class="iconfont iconrenzheng"></icon>
         审核中
       </view>
-      
     </view>
     <view class="userInfo">
       <view class="month">
         <view class="item">
-          <view class="name">本月发单</view>
-          <view class="num">122</view>
+          <view class="name" wx:if="{{userInfo.type == 1}}">本月接单</view>
+          <view class="name" wx:if="{{userInfo.type == 2}}">本月发单</view>
+          <view class="num">{{userInfo.clean_data.order_receiving}}</view>
         </view>
         <view class="item">
           <view class="name">本月完成</view>
-          <view class="num">122</view>
+          <view class="num">{{userInfo.clean_data.to_complete_order}}</view>
         </view>
         <view class="item">
-          <view class="name">本月支出</view>
-          <view class="num">122</view>
+          <view class="name" wx:if="{{userInfo.type == 1}}">本月收入</view>
+          <view class="name" wx:if="{{userInfo.type == 2}}">本月支出</view>
+          <view class="num">{{userInfo.clean_data.to_complete_money}}</view>
         </view>
       </view>
       <view class="order">
         <view class="item">
           <view class="name">全部</view>
-          <view class="num">122</view>
+          <view class="num">{{userInfo.clean_data.all_status}}</view>
         </view>
         <view class="item">
           <view class="name">待确认</view>
-          <view class="num">122</view>
+          <view class="num">{{userInfo.clean_data.dispose_status}}</view>
         </view>
         <view class="item">
           <view class="name">待处理</view>
-          <view class="num">122</view>
+          <view class="num">{{userInfo.clean_data.confirmed_status}}</view>
         </view>
-        <view class="item">
+        <view class="item" wx:if="{{userInfo.type == 2}}">
           <view class="name">待评价</view>
-          <view class="num">122</view>
+          <view class="num">{{userInfo.clean_data.evaluate_status}}</view>
         </view>
         <view class="item">
           <view class="name">已完成</view>
-          <view class="num">122</view>
+          <view class="num">{{userInfo.clean_data.accomplish_status}}</view>
         </view>
       </view>
     </view>
     
     <view class="list">
       <!-- 酒店方 -->
-      <repeat for="{{hotelFunctionList}}" item="item" wx:if="{{userInfo.type == 1}}">
+      <repeat for="{{hotelFunctionList}}" item="item" wx:if="{{userInfo.type == 2}}">
         <view class="item" data-id="{{item.id}}" @tap="hotelFunction">
           <view>
             <image src="/img/{{item.img}}.png" />
@@ -90,7 +91,7 @@
         </view>
       </repeat>
       <!-- 保洁方 -->
-      <repeat for="{{cleaningFunctionList}}" item="item" wx:if="{{userInfo.type == 2}}">
+      <repeat for="{{cleaningFunctionList}}" item="item" wx:if="{{userInfo.type == 1}}">
         <view class="item" data-id="{{item.id}}" @tap="cleaningFunction">
           <view>
             <image src="/img/{{item.img}}.png" />
@@ -178,7 +179,8 @@
             break;
           case '4':
             // 建议与反馈
-            url += ''
+            let tal = this.userInfo.service_tal
+            this.$parent.runCall(tal)
             break;
           default:
             url += ''
@@ -211,7 +213,9 @@
             break;
           case '5':
             // 建议与反馈
-            url += ''
+            console.log(this.userInfo)
+            let tal = this.userInfo.service_tal
+            this.$parent.runCall(tal)
             break;
           default:
             url += ''
@@ -235,7 +239,84 @@
       console.log(this.userInfo)
       this.$apply()
     }
+    onShow() {
+      // 提交用户信息
+      this.setUserInfo() 
+    }
+    // 提交用户信息
+    setUserInfo() {
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/auth/my`,
+        method: 'GET',
+        header: {
+          'content-type':'application/json',
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          status: 1
+        },
+        success: data => {
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            this.userInfo = Object.assign(this.userInfo, data.data.data);
+            this.$parent.globalData.userInfo = this.userInfo
+            console.log(this.userInfo)
+            // 电话
+            this.cleaningFunctionList[4]['val'] = this.userInfo.service_tal
+            this.hotelFunctionList[3]['val'] = this.userInfo.service_tal
+
+            // 钱包
+            this.cleaningFunctionList[0]['val'] = this.userInfo.amount
+            this.hotelFunctionList[0]['val'] = this.userInfo.amount
+            this.$apply()
+            // status: 2    户状态：0=未认证，1=已认证，2=用户未注册，3=审核中
+            // type: null   用户类型1-保洁   2-酒店
+            // admin_id: 0        上级用户ID
+            // amount: "0.00"     余额
+          } else {
+            wx.showModal({
+              title: '',
+              content: data.data.errmsg
+            })
+          }
+        }
+      })
+    }
   }
+
+// {
+//     "data": {
+//         "name": "",             保洁名称
+//         "phone": "",            手机号
+//         "hotel_name": "测试酒店1",          酒店名称
+//         "principal_phone": "18092444782",    手机号
+//         "status": 0,            	用户状态：0=未认证，1=已认证，2=用户未注册，3=审核中	
+//         "type": 1,              用户类型：1=保洁，2=酒店
+//         "amount": "198.03",         	钱包金额
+//         "service_tal": "878888",    客服电话
+//         "head_portrait": "",       头像为空字符串时显示默认图片
+//         "clean_data": {             保洁数据-----保洁数据-----保洁数据-----保洁数据
+//             "all_status": 1,            全部
+//             "confirmed_status": 0,      待处理
+//             "dispose_status": 0,        待确认 
+//             "accomplish_status": 1,     已完成
+//             "order_receiving": 0,       本月接单
+//             "to_complete_order": 1,     本月完成
+//             "to_complete_money": "100.00",  本月收入
+//             "level": 0          保洁星级
+//         },
+        // "clean_data": {              酒店数据-----酒店数据-----酒店数据-----酒店数据
+        //     "all_status": 10,        全部
+        //     "confirmed_status": 8,   待处理
+        //     "dispose_status": 1,     待确认
+        //     "evaluate_status": 0,    待评价    
+        //     "accomplish_status": 0,  已完成
+        //     "order_receiving": 10,   本月发单
+        //     "to_complete_order": 1,  本月完成
+        //     "to_complete_money": "100.00"    本月支出
+        // }
+//     },
 </script>
 <style lang="less">
 .pageName{
