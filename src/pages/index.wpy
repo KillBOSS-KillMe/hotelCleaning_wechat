@@ -1,10 +1,10 @@
 
 <template>
   <view>
-    <view class="address" @tap="goCitySel">
+    <!-- <view class="address" @tap="goCitySel">
       <image src="/img/address.png" />
       <view>当前位置当前位当前位置当前位当前位置当前位当前位置当前位</view>
-    </view>
+    </view> -->
     <swiper wx:if="{{swiperList.length > 0}}" class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
       <repeat for="{{swiperList}}" item="item">
         <swiper-item data-id="{{ item.id }}">

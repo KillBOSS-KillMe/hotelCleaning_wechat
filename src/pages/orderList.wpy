@@ -226,6 +226,7 @@
             this.orderList = this.orderList.concat(data.data.data.data)
             // 当前页码
             this.current_page = data.data.data.current_page
+            // 总页码
             this.last_page = data.data.data.last_page
             // "last_page": 1,     表示总页数
             // "per_page": 10,      表示每页条数
