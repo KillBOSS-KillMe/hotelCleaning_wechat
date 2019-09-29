@@ -25,7 +25,7 @@
           <view class="info">
             <view class="hotelTitle">
               <view class="name">{{item.hotel_name}}</view>
-              <view class="label">{{item.type}}</view>
+              <!-- <view class="label">{{item.type}}</view> -->
             </view>
             <view class="hotelAddress">
               <icon class="iconfont icondingwei"></icon>

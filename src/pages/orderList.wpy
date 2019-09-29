@@ -31,45 +31,6 @@
           <image src="{{item.image_url}}" />
           <view class="info">
             <view class="hotelTitle">
-              <view class="name">{{item.hotel_name}}({{item.sum}}间)</view>
-              <view class="label active" wx:if="{{item.wine_status == '1'}}">待处理</view>
-              <view class="label active" wx:if="{{item.wine_status == '2'}}">待确认</view>
-              <view class="label active" wx:if="{{item.wine_status == '3'}}">待评论</view>
-              <view class="label" wx:if="{{item.wine_status == '4'}}">已完成</view>
-            </view>
-            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}">
-              <icon class="iconfont iconfangjian"></icon>
-              {{item.content}}
-            </view>
-            <view class="hotelAddress">
-              <icon class="iconfont icondingwei"></icon>
-              {{item.detailed_address}}
-            </view>
-            <view class="hotelInfo" data-id="{{item.id}}" @tap="goOrderInfo" wx:if="{{userInfo.type == 1}}">
-              <text>距您约{{item.distance}}km</text>
-            </view>
-            <view class="hotelInfo">
-              <text>{{item.make_time}}</text>
-              <view>
-                <button class="transfer" wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button>
-                <button wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button>
-                <button wx:if="{{item.wine_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button>
-                <button wx:if="{{item.wine_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
-                <button class="carryOut" wx:if="{{item.wine_status == '4'}}">已完成</button>
-              </view>
-            </view>
-          </view>
-        </view>
-      </repeat>
-      <view class="listNull" wx:if="{{orderList.length == 0}}">暂无数据</view>
-    </view>
-    <!-- 酒店订单列表 -->
-    <view class="orderList" wx:if="{{userInfo.type == 2}}">
-      <repeat for="{{orderList}}" item="item">
-        <view class="item" data-id="{{item.id}}">
-          <image src="{{item.image_url}}" />
-          <view class="info">
-            <view class="hotelTitle">
               <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
               <view class="label active" wx:if="{{item.clean_status == '1'}}">待处理</view>
               <view class="label active" wx:if="{{item.clean_status == '2'}}">待确认</view>
@@ -85,16 +46,55 @@
               {{item.detailed_address}}
             </view>
             <view class="hotelInfo" data-id="{{item.id}}" @tap="goOrderInfo" wx:if="{{userInfo.type == 1}}">
-              <text>距您约{{item.distance}}km</text>
+              <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
             </view>
             <view class="hotelInfo">
               <text>{{item.make_time}}</text>
               <view>
                 <button class="transfer" wx:if="{{item.clean_status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button>
                 <button wx:if="{{item.clean_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button>
-                <button wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button>
-                <button wx:if="{{item.clean_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
-                <button class="carryOut" wx:if="{{item.clean_status == '4'}}">已完成</button>
+                <!-- <button wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button> -->
+                <!-- <button wx:if="{{item.clean_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button> -->
+                <!-- <button class="carryOut" wx:if="{{item.clean_status == '4'}}">已完成</button> -->
+              </view>
+            </view>
+          </view>
+        </view>
+      </repeat>
+      <view class="listNull" wx:if="{{orderList.length == 0}}">暂无数据</view>
+    </view>
+    <!-- 酒店订单列表 -->
+    <view class="orderList" wx:if="{{userInfo.type == 2}}">
+      <repeat for="{{orderList}}" item="item">
+        <view class="item" data-id="{{item.id}}">
+          <image src="{{item.image_url}}" />
+          <view class="info">
+            <view class="hotelTitle">
+              <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
+              <view class="label active" wx:if="{{item.wine_status == '1'}}">待处理</view>
+              <view class="label active" wx:if="{{item.wine_status == '2'}}">待确认</view>
+              <view class="label active" wx:if="{{item.wine_status == '3'}}">待评论</view>
+              <view class="label" wx:if="{{item.wine_status == '4'}}">已完成</view>
+            </view>
+            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}">
+              <icon class="iconfont iconfangjian"></icon>
+              {{item.content}}
+            </view>
+            <view class="hotelAddress">
+              <icon class="iconfont icondingwei"></icon>
+              {{item.detailed_address}}
+            </view>
+            <view class="hotelInfo" data-id="{{item.id}}" @tap="goOrderInfo" wx:if="{{userInfo.type == 1}}">
+              <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
+            </view>
+            <view class="hotelInfo">
+              <text>{{item.make_time}}</text>
+              <view>
+                <!-- <button class="transfer" wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button> -->
+                <!-- <button wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button> -->
+                <button wx:if="{{item.wine_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button>
+                <button wx:if="{{item.wine_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
+                <button class="carryOut" wx:if="{{item.wine_status == '4'}}">已完成</button>
               </view>
             </view>
           </view>

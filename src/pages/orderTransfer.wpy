@@ -14,6 +14,7 @@
           </view>
         </repeat>
       </checkbox-group>
+      <view class="listNull" wx:if="{{cleaningList.length == 0}}">未搜索到数据</view>
     </view>
     <view class="sub">
       <view @tap="sub">提交</view>

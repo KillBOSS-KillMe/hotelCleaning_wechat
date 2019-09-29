@@ -1,17 +1,17 @@
 <template>
   <view>
-    <!-- 酒店显示信息 -->
+    <!-- 保洁显示信息 -->
     <view wx:if="{{userInfo.type == 1}}">
       <view class="hotelName">
-        <image src="{{requestImgUrl + orderInfo.img}}" />
-        <view class="name">{{orderInfo.name}}</view>
+        <image src="{{requestImgUrl + orderInfo.image_url}}" />
+        <view class="name">{{orderInfo.hotel_name}}</view>
         <icon class="iconfont iconxiayibu"></icon>
       </view>
       <view class="hotelInfo">
         <view class="title">打扫地点</view>
         <view class="item">
           <image src="/img/address.png" />
-          <view>{{orderInfo.address}}</view>
+          <view>{{orderInfo.detailed_address}}</view>
           <icon class="iconfont iconxiayibu"></icon>
         </view>
         <view class="item">
@@ -39,6 +39,10 @@
             <image src="/img/shape.png" />
             房间类型
           </view>
+          <view>
+            <image src="/img/shape.png" />
+            价格
+          </view>
         </view>
       </view>
       <scroll-view scroll-y="true" class="roomList roomListCon">
@@ -57,13 +61,12 @@
           <view>{{item}}</view>
         </repeat>
       </view>
-      <!-- <view class="sub">
+      <view class="sub">
         <view @tap="sub">确定打扫</view>
-      </view> -->
+      </view>
     </view>
    
-    
-    <!-- 保洁显示信息 -->
+    <!-- 酒店显示信息 -->
     <view wx:if="{{userInfo.type == 2}}">
       <view class="hotelName">
         <image src="{{orderInfo.image_url}}" />
@@ -127,9 +130,9 @@
           <view>{{item}}</view>
         </repeat>
       </view>
-      <view class="sub" >
+      <!-- <view class="sub" >
         <view @tap="sub">确定打扫</view>
-      </view>
+      </view> -->
     </view>
       
   </view>
