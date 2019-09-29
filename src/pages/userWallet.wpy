@@ -1,7 +1,7 @@
 <template>
   <view>
     <view class="allMoney">
-      <view class="money">￥120000</view>
+      <view class="money">￥{{userInfo.amount}}</view>
       <view>总金额</view>
       <view class="button" @tap="recharge" wx:if="{{userInfo.type == 2}}">立即充值</view>
       <view class="button" @tap="recharge" wx:if="{{userInfo.type == 1}}">立即提现</view>

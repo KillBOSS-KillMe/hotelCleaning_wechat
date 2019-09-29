@@ -1,7 +1,7 @@
 <template>
   <view>
     <view class="title">
-      账户余额：<text>￥200</text>
+      账户余额：<text>￥{{userInfo.amount}}</text>
     </view>
     <view class="list">
       <repeat for="{{selRechargeList}}" item="item">
@@ -29,6 +29,7 @@
 
     data = {
       id: '',
+      money: '',
       userInfo: {},
       serNode: 0,
       selRechargeList: []
@@ -40,6 +41,7 @@
       selMoney(e) {
         let index = e.currentTarget.dataset.index
         this.serNode = index
+        this.id = this.selRechargeList[index].id
         this.id = this.selRechargeList[index].id
         this.$apply()
       }
@@ -58,6 +60,13 @@
     }
     // 提现
     withdraw() {
+      if (parseFloat(this.userInfo.amount) < parseFloat(this.money)) {
+        wx.showToast({
+          title: "余额不足",
+          icon: 'none'
+        });
+        return false
+      }
       wx.showToast({
         title: "拼命加载中...",
         icon: 'loading',
@@ -72,14 +81,27 @@
         data: {
           id: this.id
         },
-        method: 'GET',
+        method: 'POST',
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
-
+            wx.showToast({
+              title: "提现成功",
+              icon: 'success',
+              duration: 2000
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                data: -1
+              })
+            }, 2000)
             this.$apply()
+          } else {
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none'
+            });
           }
         }
       })
@@ -142,6 +164,7 @@
           if (data.data.code === 8888) {
             this.selRechargeList = data.data.data
             this.id = this.selRechargeList[0].id
+            this.money = this.selRechargeList[0].money
             this.$apply()
           }
         }
