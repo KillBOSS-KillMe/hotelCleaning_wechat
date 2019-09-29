@@ -54,8 +54,16 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.userInfo)
       this.$apply()
+      let name = ''
+      if (this.userInfo.type == 2) {
+        name = '充值'
+      } else {
+        name = '提现'
+      }
+      wx.setNavigationBarTitle({
+        title: name
+      })
       this.getList()
     }
     // 提现
