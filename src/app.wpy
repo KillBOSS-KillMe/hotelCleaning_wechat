@@ -284,6 +284,17 @@ export default class extends wepy.app {
 
 
 <style lang="less">
+.listMore{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  height: 70rpx;
+  padding: 20rpx 0;
+  font-size: 25rpx;
+  color: #898989;
+}
 .listNull{
   width: 100%;
   display: flex;

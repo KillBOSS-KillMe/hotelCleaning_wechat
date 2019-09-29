@@ -102,7 +102,10 @@
       </repeat>
       <view class="listNull" wx:if="{{orderList.length == 0}}">暂无数据</view>
     </view>
-
+    <view class="listMore" @tap="getOrderList" wx:if="{{current_page < last_page}}">
+      <text>加载更多</text>
+      <icon class="iconfont iconxiala"></icon>
+    </view>
     <nav @childFn.user="goPage" @childFnOrReturn.user="goModifyUserInfo" />
   </view>
 </template>
@@ -127,6 +130,8 @@
       listStatus: 0,
       clean_status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
       wine_status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
+      current_page: 0,
+      last_page: 1,
     }
 
     // computed = {}
@@ -141,6 +146,7 @@
       selListStatus(e) {
         this.orderList = []
         this.listStatus = e.currentTarget.dataset.status
+        this.current_page = 0
         this.$apply()
         this.getOrderList()
       },
@@ -184,7 +190,6 @@
       this.$apply()
     }
     onShow() {
-      
       // userInfo.type: null   用户类型1-保洁   2-酒店
       this.getOrderList()
     }
@@ -196,7 +201,7 @@
         duration: 1000000
       });
       let url = ''
-      let data = {page: 1}
+      let data = {page: this.current_page + 1}
       if (this.userInfo.type == 2) {
         // 执行酒店加载
         url = 'get_wine_order_list'
@@ -217,12 +222,11 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
-            this.orderList = data.data.data.data
+            this.orderList = this.orderList.concat(data.data.data.data)
+            // 当前页码
             this.current_page = data.data.data.current_page
-
-
+            this.last_page = data.data.data.last_page
             // "last_page": 1,     表示总页数
             // "per_page": 10,      表示每页条数
             // "current_page": 1,   表示当前页
@@ -235,7 +239,13 @@
   }
 </script>
 <style lang="less">
+.listMore{
+  margin-bottom: 150rpx;
+}
 .orderNav{
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 690rpx;
   height: auto;
   padding: 30rpx;
@@ -244,6 +254,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background-color: #fff;
+  z-index: 999;
   .item{
     display: flex;
     align-items: center;
@@ -266,9 +278,9 @@
   }
 }
 .orderList{
+  margin-top: 100rpx;
   width: 750rpx;
   height: auto;
-  padding-bottom: 150rpx;
   .item{
     width: 690rpx;
     height: 230rpx;
