@@ -290,6 +290,88 @@ view .item:last-child{
       formNode['rooms'] = rooms
       console.log(formNode)
       
+      if (formNode.hotel_name == '') {
+        wx.showToast({
+          title: '请输入酒店名称',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.province_name == '') {
+        wx.showToast({
+          title: '请选择详情地址',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.detailed_address == '') {
+        wx.showToast({
+          title: '请输入详细地址',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.rooms.length <= 0) {
+        wx.showToast({
+          title: '请输入录入房间信息',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.car_number == '') {
+        wx.showToast({
+          title: '请输入布草车数量',
+          icon: 'none'
+        });
+        return
+      }
+      
+      if (formNode.principal == '') {
+        wx.showToast({
+          title: '请输入酒店负责人',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.principal_phone.length != 11) {
+        wx.showToast({
+          title: '请输入酒店负责人电话',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.code == '') {
+        wx.showToast({
+          title: '请输入手机验证码',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.desk_tel == '') {
+        wx.showToast({
+          title: '请输入前台固定电话',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.logo == '') {
+        wx.showToast({
+          title: '请上传酒店logo',
+          icon: 'none'
+        });
+        return
+      }
+      if (formNode.hotel_image == '') {
+        wx.showToast({
+          title: '请上传酒店图片',
+          icon: 'none'
+        });
+        return
+      }
+
+
+
+      
       // if (this.check.isNull(formNode.hotel_name)) {
       //   wx.showToast({
       //     title: '请输入酒店名称',

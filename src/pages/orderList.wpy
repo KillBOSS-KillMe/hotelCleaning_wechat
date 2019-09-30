@@ -53,7 +53,7 @@
               <view>
                 <button class="transfer" wx:if="{{item.clean_status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button>
                 <button wx:if="{{item.clean_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button>
-                <!-- <button wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button> -->
+                <button wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button>
                 <!-- <button wx:if="{{item.clean_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button> -->
                 <!-- <button class="carryOut" wx:if="{{item.clean_status == '4'}}">已完成</button> -->
               </view>
