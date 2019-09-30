@@ -51,7 +51,8 @@
     <scroll-view scroll-x="true" class="recommendCleaning" wx:if="{{cleaningList.length > 0}}">
       <repeat for="{{cleaningList}}" item="item">
         <view class="item" data-id="{{item.id}}" @tap="goCleaningInfo">
-          <image src="{{item.image_url}}" />
+          <image wx:if="{{item.image_url == ''}}" src="/img/daw.jpg" />
+          <image wx:if="{{item.image_url != ''}}" src="{{item.image_url}}" />
           <view class="name">{{item.name}}</view>
           <view class="info">已完成{{item.order_one_count}}单</view>
         </view>

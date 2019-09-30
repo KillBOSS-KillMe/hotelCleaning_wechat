@@ -10,7 +10,7 @@
           <text wx:if="{{userInfo.type == 2}}">{{userInfo.hotel_name}}</text>
           <view class="lv" wx:if="{{userInfo.type == 1}}">
             <repeat for="{{lv}}" item="item">
-              <icon class="iconfont iconwuxing2 {{userInfo.clean_data.level >= index+1?'active':''}}" data-level="{{index + 1}}" @tap="getLv"></icon>
+              <icon class="iconfont iconwuxing2 {{userInfo.clean_data.level >= index+1?'active':''}}"></icon>
             </repeat>
           </view>
         </view>

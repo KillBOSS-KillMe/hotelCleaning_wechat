@@ -70,7 +70,7 @@
           <image src="{{item.image_url}}" />
           <view class="info">
             <view class="hotelTitle">
-              <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
+              <view class="name">{{item.hotel_name}}({{item.sum}}间)</view>
               <view class="label active" wx:if="{{item.wine_status == '1'}}">待处理</view>
               <view class="label active" wx:if="{{item.wine_status == '2'}}">待确认</view>
               <view class="label active" wx:if="{{item.wine_status == '3'}}">待评论</view>
