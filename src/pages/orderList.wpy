@@ -45,7 +45,8 @@
               <icon class="iconfont icondingwei"></icon>
               {{item.detailed_address}}
             </view>
-            <view class="hotelInfo" data-id="{{item.id}}" @tap="goOrderInfo" wx:if="{{userInfo.type == 1}}">
+            <view class="hotelInfo" data-id="{{item.id}}" wx:if="{{userInfo.type == 1}}">
+              <!-- <text>距您约{{item.distance}}</text> -->
               <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
             </view>
             <view class="hotelInfo">
@@ -84,7 +85,7 @@
               <icon class="iconfont icondingwei"></icon>
               {{item.detailed_address}}
             </view>
-            <view class="hotelInfo" data-id="{{item.id}}" @tap="goOrderInfo" wx:if="{{userInfo.type == 1}}">
+            <view class="hotelInfo" data-id="{{item.id}}" wx:if="{{userInfo.type == 1}}">
               <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
             </view>
             <view class="hotelInfo">
@@ -132,6 +133,9 @@
       wine_status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
       current_page: 0,
       last_page: 1,
+      longitude: 0,
+      latitude: 0
+
     }
 
     // computed = {}
@@ -190,8 +194,23 @@
       this.$apply()
     }
     onShow() {
+      wx.getLocation({
+        type: 'wgs84',   //默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标 
+        desc: '你的位置信息将用于小程序位置接口的效果展示',
+        success: res => { 
+          this.longitude = res.longitude
+          this.latitude = res.latitude
+          this.$apply()
+          // 执行列表加载
+          this.getOrderList()
+        },
+        fail: res => {
+          // 执行列表加载
+          this.getOrderList()
+        }
+      })
       // userInfo.type: null   用户类型1-保洁   2-酒店
-      this.getOrderList()
+      // this.getOrderList()
     }
     // 执行列表加载
     getOrderList() {
@@ -201,7 +220,11 @@
         duration: 1000000
       });
       let url = ''
-      let data = {page: this.current_page + 1}
+      let data = {
+        page: this.current_page + 1,
+        lat: this.longitude,
+        lng: this.latitude
+      }
       if (this.userInfo.type == 2) {
         // 执行酒店加载
         url = 'get_wine_order_list'
