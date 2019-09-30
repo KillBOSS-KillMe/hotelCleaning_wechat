@@ -3,7 +3,8 @@
     <image class="userBg" src="/img/userBg.png" />
     <view class="pageName">我的</view>
     <view class="user">
-      <image src="/img/daw.jpg" />
+      <image src="/img/daw.jpg" wx:if="{{userInfo.head_portrait == ''}}" @tap="modifyAvatar"/>
+      <image src="{{userInfo.head_portrait}}" wx:if="{{userInfo.head_portrait != ''}}" @tap="modifyAvatar"/>
       <view class="info">
         <view class="name">
           <text wx:if="{{userInfo.type == 1}}">{{userInfo.name}}</text>
@@ -225,6 +226,22 @@
           this.$navigate(url)
         }
       },
+      // 修改酒店信息
+      modifyAvatar(e) {
+        wx.showModal({
+         title: '',
+         content: '是否更改头像',
+         success: res => {
+            if (res.cancel) {
+               //点击取消,默认隐藏弹框
+            } else {
+               //点击确定
+               // 修改酒店信息
+               this.runModifyAvatar()
+            }
+         }
+      })
+      },
       // 拨打电话
       runCall(e){
         let phone = e.currentTarget.dataset.phone
@@ -238,12 +255,84 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.userInfo)
       this.$apply()
     }
     onShow() {
       // 提交用户信息
       this.setUserInfo() 
+    }
+    // 修改酒店信息
+    runModifyAvatar() {
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: res => {
+          wx.showToast({
+            title: '图片上传中',
+            icon: 'loading'
+          });
+          Promise.all(res.tempFiles.map(item => {
+            return new Promise((resolve, reject) => {
+              wx.uploadFile({
+                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                filePath: item.path,
+                name: 'file',
+                header: {
+                  authorization: this.$parent.globalData.token,
+                  apikey: this.$parent.globalData.apikey
+                },
+                success: res => {
+                  resolve({
+                    path: JSON.parse(res.data).data
+                  })
+                }
+              })
+            })
+          })).then(e => {
+            wx.hideToast()
+            this.upDataModifyAvatar(e[0].path.image_id)
+          }).catch(err => console.log(err))
+        }
+      })
+    }
+    // 图像保存
+    upDataModifyAvatar(id) {
+      wx.showToast({
+        title: "头像保存中...",
+        icon: 'loading',
+        duration: 10000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/auth/set_head_portrait`,
+        method: 'PUT',
+        header: {
+          'content-type':'application/json',
+          authorization: this.$parent.globalData.token,
+          apikey: this.$parent.globalData.apikey
+        },
+        data: {
+          head_portrait: id
+        },
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          if (data.data.code === 8888) {
+            // 更新页面信息
+            this.onShow()
+            wx.showToast({
+              title: "保存成功",
+              icon: 'success',
+              duration: 2000
+            });
+          } else {
+            wx.showModal({
+              title: '',
+              content: data.data.msg
+            })
+          }
+        }
+      })
     }
     // 提交用户信息
     setUserInfo() {
@@ -286,39 +375,6 @@
       })
     }
   }
-
-// {
-//     "data": {
-//         "name": "",             保洁名称
-//         "phone": "",            手机号
-//         "hotel_name": "测试酒店1",          酒店名称
-//         "principal_phone": "18092444782",    手机号
-//         "status": 0,            	用户状态：0=未认证，1=已认证，2=用户未注册，3=审核中	
-//         "type": 1,              用户类型：1=保洁，2=酒店
-//         "amount": "198.03",         	钱包金额
-//         "service_tal": "878888",    客服电话
-//         "head_portrait": "",       头像为空字符串时显示默认图片
-//         "clean_data": {             保洁数据-----保洁数据-----保洁数据-----保洁数据
-//             "all_status": 1,            全部
-//             "confirmed_status": 0,      待处理
-//             "dispose_status": 0,        待确认 
-//             "accomplish_status": 1,     已完成
-//             "order_receiving": 0,       本月接单
-//             "to_complete_order": 1,     本月完成
-//             "to_complete_money": "100.00",  本月收入
-//             "level": 0          保洁星级
-//         },
-        // "clean_data": {              酒店数据-----酒店数据-----酒店数据-----酒店数据
-        //     "all_status": 10,        全部
-        //     "confirmed_status": 8,   待处理
-        //     "dispose_status": 1,     待确认
-        //     "evaluate_status": 0,    待评价    
-        //     "accomplish_status": 0,  已完成
-        //     "order_receiving": 10,   本月发单
-        //     "to_complete_order": 1,  本月完成
-        //     "to_complete_money": "100.00"    本月支出
-        // }
-//     },
 </script>
 <style lang="less">
 .pageName{

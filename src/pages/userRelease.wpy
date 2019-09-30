@@ -21,7 +21,7 @@
       <view class="item code">
         <label>预约时间</label>
         <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{formNode.make_time}}" range="{{multiArray}}">
-          <input type="text" data-name="code" placeholder="请选择日期" />
+          <input type="text" disabled data-name="code" placeholder="请选择日期" />
         </picker>
         <!-- <view class="getCode" @tap="getCode">发送验证码</view> -->
       </view>
@@ -86,15 +86,7 @@ for (let i = 0; i < 60; i++) {
       multiArray: [years, months, days, hours, minutes],
       requestImgUrl: '',
       // 房间列表
-      roomList: [
-        {id: '1', room_number: '1201'},
-        {id: '1', room_number: '1201'},
-        {id: '1', room_number: '1201'},
-        {id: '1', room_number: '1201'},
-        {id: '1', room_number: '1201'},
-        {id: '1', room_number: '1201'},
-        {id: '1', room_number: '1201'}
-      ],
+      roomList: [],
       formNode: {
         content: '',         // 房间列表
         make_time: ''        // 预约时间
@@ -127,7 +119,6 @@ for (let i = 0; i < 60; i++) {
         const minute = this.multiArray[4][index[4]]
         
         this.formNode['make_time'] = `${year}-${month}-${day} ${hour}:${minute}`
-        console.log(this.formNode)
       },
     }
 
@@ -137,9 +128,8 @@ for (let i = 0; i < 60; i++) {
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.userInfo)
       this.$apply()
-      // this.getRoomList()
+      this.getRoomList()
     }
     // 获取订单列表
     getRoomList() {
