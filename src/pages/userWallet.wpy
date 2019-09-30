@@ -69,8 +69,9 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.userInfo)
       this.$apply()
+    }
+    onShow() {
       this.getList()
     }
     // 执行列表加载
