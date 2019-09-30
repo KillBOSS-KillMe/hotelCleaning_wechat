@@ -1,10 +1,11 @@
 
 <template>
   <view>
-    <!-- <view class="address" @tap="goCitySel">
+    <!-- <view class="address" @tap="goCitySel"> -->
+    <view class="address">
       <image src="/img/address.png" />
       <view>当前位置当前位当前位置当前位当前位置当前位当前位置当前位</view>
-    </view> -->
+    </view>
     <swiper wx:if="{{swiperList.length > 0}}" class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
       <repeat for="{{swiperList}}" item="item">
         <swiper-item data-id="{{ item.id }}">
@@ -138,6 +139,8 @@
         icon: 'loading',
         duration: 1000000
       });
+      // 提交用户信息
+      this.getToken()
       // 获取用户信息
       await this.onGetUserInfo()
     }
@@ -154,14 +157,9 @@
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称
             wx.getUserInfo({
               success: res => {
-                this.userInfo = res.userInfo
+                this.userInfo = Object.assign(this.userInfo, res.userInfo)
                 console.log(this.userInfo)
-                this.$parent.globalData.userInfo = res.userInfo
-                this.$apply()
-                if (this.userInfo) {
-                  // 提交用户信息
-                  this.getToken()
-                }
+                this.$parent.globalData.userInfo = this.userInfo
                 this.$apply()
               }
             })
@@ -192,14 +190,15 @@
                 console.log(data)
                 let token = `${data.data.token_type} ${data.data.token}`
                 this.$parent.globalData.token = token
-                // 用户信息获取
-                this.setUserInfo()
+                
                 // 轮播图加载
                 this.getSwiperList()
                 // 酒店列表
                 this.getWineList()
                 // 保洁列表
                 this.getCleanList()
+                // 用户信息获取
+                this.setUserInfo()
               }
             })
             
@@ -294,6 +293,7 @@
     }
     // 获取轮播图
     getSwiperList() {
+      console.log(11111)
       this.swiperList = this.$parent.globalData.swiperList
       if (this.swiperList.length > 0) {
         this.$apply()

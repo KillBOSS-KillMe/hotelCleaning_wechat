@@ -395,7 +395,7 @@
     color: #898989;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     label{
       font-size: 32rpx;
       font-weight: 600;
@@ -417,14 +417,18 @@
     align-items: center;
     justify-content: space-between;
     view{
-      width: 30%;
+      width: 25%;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
+      // justify-content: flex-start;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
-    view:nth-child(1){
-      width: 40%;
-    }
+    // view:nth-child(1), view:nth-child(3){
+    //   width: 35%;
+    // }
   }
 }
 image {
