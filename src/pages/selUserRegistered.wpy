@@ -203,11 +203,11 @@
                 this.$redirect('/pages/index')
               }, 2000)
             } else {
-              wx.showModal({
-                title: '',
-                content: data.data.errmsg
-              })
-            }
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none'
+            });
+          }
           }
         })
       },
@@ -254,10 +254,10 @@
               this.$apply()
               this.countdown()
             } else {
-              wx.showModal({
-                title: '',
-                content: data.data.errmsg
-              })
+              wx.showToast({
+                title: data.data.msg,
+                icon: 'none'
+              });
             }
           }
         })

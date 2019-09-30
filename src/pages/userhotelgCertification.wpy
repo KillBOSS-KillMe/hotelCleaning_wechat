@@ -145,10 +145,10 @@
               })
             }, 2000)
           } else {
-            wx.showModal({
-              title: '',
-              content: data.data.msg
-            })
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none'
+            });
           }
         }
       })

@@ -169,10 +169,10 @@
             this.showType = showType
             this.$apply()
           } else {
-            wx.showModal({
-              title: '',
-              content: data.data.errmsg
-            })
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none'
+            });
           }
         }
       })

@@ -109,7 +109,11 @@
                 data: -1
               })
             }, 2000)
-            
+          } else {
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none'
+            });
           }
         }
       })

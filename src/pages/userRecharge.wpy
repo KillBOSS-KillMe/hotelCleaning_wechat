@@ -136,6 +136,11 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 8888) {
             this.runRecharge(data.data.data)
+          } else {
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none'
+            });
           }
         }
       })

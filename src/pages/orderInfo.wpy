@@ -153,27 +153,7 @@
       options: {},
       userInfo: {},
       requestImgUrl: '',
-      orderInfo: {
-          id: '1', 
-          name: '酒店名称酒店', 
-          time: '2019-9-21 14:07',
-          img: '/img/daw.jpg', 
-          address: '地址地址地址地址地址地址地址地址地址地址', 
-          phone: '029-88888888',
-          content: [
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-            {roomCode: '1201', floor: '12', type: '1', typeName: '商务型'},
-          ]
-        },
+      orderInfo: {},
         prompt: [
           '1.推服务车到客人房间外，不要正对着门口，也不要放在走廊正中央',
           '2.充分的回应时间．如无回应，用钥匙打开门，进入房间'
