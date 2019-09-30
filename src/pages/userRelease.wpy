@@ -21,7 +21,7 @@
       <view class="item code">
         <label>预约时间</label>
         <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{formNode.make_time}}" range="{{multiArray}}">
-          <input type="text" disabled data-name="code" placeholder="请选择日期" />
+          <input type="text" disabled data-name="code" value="{{formNode.make_time}}" placeholder="请选择日期" />
         </picker>
         <!-- <view class="getCode" @tap="getCode">发送验证码</view> -->
       </view>
@@ -97,7 +97,6 @@ for (let i = 0; i < 60; i++) {
 
     methods = {
       selCleaning(e) {
-        console.log(e)
         let indexArr = e.detail.value
         let roomList = this.roomList
         let content = ''
@@ -106,7 +105,7 @@ for (let i = 0; i < 60; i++) {
           content += roomList[parseInt(indexArr[i])].id
         }
         this.formNode['content'] = content.substr(1)
-        console.log(this.formNode)
+        this.$apply()
       },
       // 获取预约时间
       bindMultiPickerChange(e) {
@@ -119,6 +118,7 @@ for (let i = 0; i < 60; i++) {
         const minute = this.multiArray[4][index[4]]
         
         this.formNode['make_time'] = `${year}-${month}-${day} ${hour}:${minute}`
+        this.$apply()
       },
     }
 
@@ -145,28 +145,23 @@ for (let i = 0; i < 60; i++) {
         method: 'GET',
         success: data => {
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
             this.roomList = data.data.data
             this.$apply()
-            //        "last_page": 1,     表示总页数
-            //         "per_page": 10,      表示每页条数
-            //         "current_page": 1,   表示当前页
-            //         "total": 1           表示总条数
           }
         }
       })
     }
     sub() {
       let formNode = this.formNode
-      if (formNode.content = '') {
+      if (formNode.content == '') {
           wx.showToast({
             title: '请选择房间',
             icon: 'none'
           });
           return
       }
-      if (formNode.make_time = '') {
+      if (formNode.make_time == '') {
           wx.showToast({
             title: '请选择时间',
             icon: 'none'
@@ -188,7 +183,6 @@ for (let i = 0; i < 60; i++) {
         },
         data: formNode,
         success: data => {
-          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 8888) {
