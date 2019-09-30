@@ -151,7 +151,6 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
             this.friendList = data.data.data
 

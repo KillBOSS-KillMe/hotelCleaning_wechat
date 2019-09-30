@@ -234,17 +234,13 @@ view .item:last-child{
       delRoom(e) {
         let index = e.currentTarget.dataset.index
         let roomList = this.roomList
-        console.log(index)
-        console.log(roomList)
         roomList = roomList.splice(index, 1)
-        console.log(roomList)
         this.roomList = roomList
         this.$apply()
       },
       // 选择省市区函数
       changeRegin(e) {
         let region = e.detail.value
-        console.log(region)
         this.formNode['province_name'] = region[0]
         this.formNode['city_name'] = region[1]
         this.formNode['county_name'] = region[2]
@@ -273,14 +269,12 @@ view .item:last-child{
       this.$apply()
     }
     sub() {
-      console.log(this.formNode)
       let formNode = this.formNode
       let rooms = formNode.rooms
       for (var i = 0; i < rooms.length; i++) {
         delete rooms[i]["roomType"]
       }
       formNode['rooms'] = rooms
-      console.log(formNode)
       
       if (formNode.hotel_name == '') {
         wx.showToast({
@@ -460,7 +454,6 @@ view .item:last-child{
         },
         data: formNode,
         success: data => {
-          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 8888) {
@@ -511,10 +504,8 @@ view .item:last-child{
           })).then(e => {
             wx.hideToast()
             this.hotelLogo = this.hotelLogo.concat(e)
-            console.log(this.hotelLogo)
             this.formNode['logo'] = this.hotelLogo[0].path.image_id
             this.$apply()
-            console.log(this.formNode)
           }).catch(err => console.log(err))
         }
       })
@@ -558,7 +549,6 @@ view .item:last-child{
             }
             hotel_image = hotel_image.substr(1)
             this.formNode['hotel_image'] = hotel_image
-            console.log(this.formNode)
             this.$apply()
           }).catch(err => console.log(err))
         }

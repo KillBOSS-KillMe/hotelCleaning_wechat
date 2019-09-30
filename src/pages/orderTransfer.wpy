@@ -73,7 +73,6 @@
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
-            console.log(data)
             if (data.data.code === 8888) {
               wx.showToast({
                 title: "转单成功",
@@ -95,7 +94,6 @@
         })
       },
       searchClean(e) {
-        console.log(e)
         this.cleanSearch(e.detail.value)
       }
     }

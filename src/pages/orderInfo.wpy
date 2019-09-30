@@ -176,8 +176,6 @@
     onLoad(options) {
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.options)
-      console.log(this.userInfo)
       // 执行列表加载
       this.getOrderList()
     }
@@ -209,7 +207,6 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
             this.orderInfo = data.data.data
             this.$apply()
@@ -236,7 +233,6 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
             wx.showToast({
               title: "接单成功",

@@ -190,7 +190,6 @@
           default:
             url += ''
         }
-        console.log(url)
         if (url) {
           this.$navigate(url)
         }
@@ -221,7 +220,6 @@
             break;
           case '5':
             // 建议与反馈
-            console.log(this.userInfo)
             let tal = this.userInfo.service_tal
             this.$parent.runCall(tal)
             break;
@@ -368,7 +366,6 @@
           if (data.data.code === 8888) {
             this.userInfo = Object.assign(this.userInfo, data.data.data);
             this.$parent.globalData.userInfo = this.userInfo
-            console.log(this.userInfo)
             // 电话
             this.cleaningFunctionList[4]['val'] = this.userInfo.service_tal
             this.hotelFunctionList[3]['val'] = this.userInfo.service_tal

@@ -149,10 +149,8 @@
     async onLoad(options) {
       this.mapKey = this.$parent.globalData.mapKey
       // this.code = await this.$parent.getCode()
-      // console.log(this.code)
       // 加载token
       // this.token = await this.$parent.getToken()
-      // console.log(this.token)
       wx.showToast({
         title: "拼命加载中...",
         icon: 'loading',
@@ -244,7 +242,6 @@
           if (data.data.code === 8888) {
             this.userInfo = Object.assign(this.userInfo, data.data.data);
             this.$parent.globalData.userInfo = this.userInfo
-            console.log(this.userInfo)
             this.$apply()
             // 判断是否进入注册页
             if (this.userInfo.status == 2) {
@@ -388,7 +385,6 @@
       })
     }
     loadCity(longitude, latitude) {
-      console.log(longitude, latitude)
       wx.request({
         url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${this.mapKey}`,
         data: {},

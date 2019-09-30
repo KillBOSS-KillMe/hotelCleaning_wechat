@@ -156,28 +156,24 @@
       },
       // 进入订单详情
       goOrderInfo(e) {
-        console.log(e)
         let id = e.currentTarget.dataset.id
         let url = `/pages/orderInfo?id=${id}`
         this.$navigate(url)
       },
       // 进入订单详情
       goOrderTransfer(e) {
-        console.log(e)
         let id = e.currentTarget.dataset.id
         let url = `/pages/orderTransfer?id=${id}`
         this.$navigate(url)
       },
       // 进入订单评价
       goOrderEvaluation(e) {
-        console.log(e)
         let id = e.currentTarget.dataset.id
         let url = `/pages/orderEvaluation?id=${id}`
         this.$navigate(url)
       },
       // 进入确认订单
       goOrderConfirm(e) {
-        console.log(e)
         let id = e.currentTarget.dataset.id
         let url = `/pages/orderConfirm?id=${id}`
         this.$navigate(url)

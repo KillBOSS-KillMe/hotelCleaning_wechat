@@ -139,7 +139,6 @@
     }
 
     onLoad(options) {
-      console.log(options)
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
       // 获取订单详情
@@ -171,7 +170,6 @@
         },
         method: 'GET',
         success: data => {
-          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 8888) {
@@ -208,7 +206,6 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
             wx.showToast({
               title: "订单确认成功",

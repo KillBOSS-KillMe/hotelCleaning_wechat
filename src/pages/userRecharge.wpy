@@ -173,7 +173,6 @@
         },
         'fail': data => {
           wx.hideToast()
-          console.log(data)
           wx.showToast({
             title: "充值失败",
             icon: 'none',

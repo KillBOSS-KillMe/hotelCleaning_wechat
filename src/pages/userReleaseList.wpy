@@ -61,7 +61,6 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.userInfo)
       this.$apply()
       
     }
@@ -82,7 +81,6 @@
         method: 'GET',
         success: data => {
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 8888) {
             let orderList = data.data.data.data
             for (let i = 0; i < orderList.length; i++) {

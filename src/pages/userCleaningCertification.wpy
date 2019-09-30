@@ -64,7 +64,6 @@
         let value = e.detail.value
         formNode[name] = value
         this.formNode = formNode
-        console.log(formNode)
         this.$apply()
       },
     }
@@ -75,7 +74,6 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.userInfo)
       this.$apply()
     }
     sub() {
