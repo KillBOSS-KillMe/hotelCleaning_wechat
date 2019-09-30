@@ -108,7 +108,7 @@ view .item:last-child{
     </view>
     <view class="item">
       <label>详细地址</label>
-      <input data-name="detailed_address" @input="getSetData" placeholder="请输入地址" />
+      <input data-name="detailed_address" @input="getSetData" placeholder="请输入地址(包含省市区)" />
     </view>
     <view class="item">
       <label>房间总数</label>
@@ -270,15 +270,7 @@ view .item:last-child{
       this.roomList = this.$parent.globalData.roomList
       this.formNode['rooms'] = this.roomList
       this.formNode['total_number'] = this.roomList.length
-      
-      // this.roomList = [
-      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "122"},
-      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "33"},
-      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "44"},
-      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "55"},
-      //   {floor: "1",roomType: "商务型",room_type_id: 2,room_number: "66"},
-      // ]
-      // console.log(this.roomList)
+      this.$apply()
     }
     sub() {
       console.log(this.formNode)

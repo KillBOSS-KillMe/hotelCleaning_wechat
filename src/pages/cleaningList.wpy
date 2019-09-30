@@ -40,7 +40,7 @@
     methods = {
       goCleanInfo(e) {
         let id = e.currentTarget.dataset.id
-        let url = `/pages/hotelInfo?id=${id}`
+        let url = `/pages/cleaningInfo?id=${id}`
         this.$navigate(url)
       }
     }
