@@ -113,6 +113,7 @@ export default class extends wepy.app {
     requestUrl: 'https://wine.lvacms.cn/api/v1/wine_shop_api',
     // 图片路径
     requestImgUrl: 'https://wine.lvacms.cn',
+    mapKey: 'JPZBZ-TD6K6-AWES2-EL4ZX-5OBLJ-HDFG5',
     apikey: '123456',
     token: '',
     roomList: [],

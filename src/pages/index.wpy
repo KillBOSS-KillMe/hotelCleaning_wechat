@@ -2,9 +2,9 @@
 <template>
   <view>
     <!-- <view class="address" @tap="goCitySel"> -->
-    <view class="address">
+    <view class="address" wx:if="{{address != ''}}">
       <image src="/img/address.png" />
-      <view>当前位置当前位当前位置当前位当前位置当前位当前位置当前位</view>
+      <view>{{address}}</view>
     </view>
     <swiper wx:if="{{swiperList.length > 0}}" class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
       <repeat for="{{swiperList}}" item="item">
@@ -79,12 +79,15 @@
     mixins = []
 
     data = {
+      userInfo: {},
       userInfoButtonShow: true,
       requestImgUrl: '',
       token: '',
       swiperList: [],
       cleaningList: [],
-      hotelList: []
+      hotelList: [],
+      mapKey: '',
+      address: ''
     }
 
     // computed = {}
@@ -92,32 +95,36 @@
     methods = {
       // 底部导航跳转
       goPage (url, evt) {
+        if (this.verificationUserInfo()) {return false}
         // 销毁当前页{跳转}
         this.$redirect(url)
       },
       goCitySel(e) {
+        if (this.verificationUserInfo()) {return false}
         let url = `/pages/citySel`
         this.$navigate(url)
       },
       gohotelList(e) {
+        if (this.verificationUserInfo()) {return false}
         let url = `/pages/hoteList`
         this.$navigate(url)
       },
       gohotelInfo(e) {
-        console.log(e)
+        if (this.verificationUserInfo()) {return false}
         let id = e.currentTarget.dataset.id
         let url = `/pages/hotelInfo?id=${id}`
         this.$navigate(url)
       },
       // 进入保洁员详情
       goCleaningInfo(e) {
-        console.log(e)
+        if (this.verificationUserInfo()) {return false}
         let id = e.currentTarget.dataset.id
         let url = `/pages/cleaningInfo?id=${id}`
         this.$navigate(url)
       },
       // 进入保洁员列表
       goCleaningList(e) {
+        if (this.verificationUserInfo()) {return false}
         let url = `/pages/cleaningList`
         this.$navigate(url)
       }
@@ -128,7 +135,7 @@
     }
 
     async onLoad(options) {
-      
+      this.mapKey = this.$parent.globalData.mapKey
       // this.code = await this.$parent.getCode()
       // console.log(this.code)
       // 加载token
@@ -143,6 +150,11 @@
       this.getToken()
       // 获取用户信息
       await this.onGetUserInfo()
+      
+    }
+    onShow() {
+      // 获取定位及地址
+      this.getLocation()
     }
     
     
@@ -229,6 +241,8 @@
             if (this.userInfo.status == 2) {
               // 提示注册
               this.goRegistered()
+            } else {
+
             }
             // status: 2    户状态：0=未认证，1=已认证，2=用户未注册，3=审核中
             // type: null   用户类型1-保洁   2-酒店
@@ -343,44 +357,27 @@
       })
     }
     loadCity(longitude, latitude) {
+      console.log(longitude, latitude)
       wx.request({
-        url: 'https://api.map.baidu.com/geocoder/v2/?ak=FMn3zXubg5BmfZZSsFVP28XjMqdPxmee&location=' + latitude + ',' + longitude + '&output=json',
+        url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${this.mapKey}`,
         data: {},
-        header: {
-          'Content-Type': 'application/json'
-        },
-        success: res=> {
-          var city = res.data.result.addressComponent.city;
-          this.getCityId(city)
+        success: (res) => {
+          this.address = res.data.result.address
         }
       })
     }
-    // 获取位置信息
-    getCityId(cityName) {
-      wx.request({
-        url: `${this.$parent.globalData.requestUrl}/city`,
-        method: 'GET',
-        success: data => {
-          if (data.data.code == 1) {
-            var cityList = this.$parent.null2str(data.data.data)
-            var i = 0
-            for (i in cityList) {
-              if (cityName == cityList[i].name) {
-                this.cityNode = {'name': cityList[i].name, 'id': cityList[i].id}
-                this.$parent.globalData.cityNode = this.cityNode
-                this.$parent.globalData.originalCityNode = this.cityNode
-                this.$apply()
-                this.$parent.setStorageCityNode(this.cityNode)
-                // 获取楼盘列表
-                this.getLocalList()
-                // return cityNode
-                break
-              }
-            }
-          }
-        }
-      })
+
+    // 用户信息校验
+    verificationUserInfo() {
+      if (!this.userInfo.hasOwnProperty('type')) {
+        wx.showToast({
+          title: "用户信息加载中...",
+          icon: 'none',
+        });
+        return true
+      }
     }
+
     
   }
 </script>
