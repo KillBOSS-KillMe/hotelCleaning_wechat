@@ -162,8 +162,7 @@
       this.getToken()
       // 获取用户信息
       await this.onGetUserInfo()
-      // 获取定位及地址
-      this.getLocation()
+      
     }
     onShow() {
       
@@ -214,8 +213,9 @@
                 this.$parent.globalData.token = token
                 // 轮播图加载
                 this.getSwiperList()
-                // 酒店列表
-                this.getWineList()
+                // 获取定位及地址
+                this.getLocation()
+                
                 // 保洁列表
                 this.getCleanList()
                 // 用户信息获取
@@ -374,7 +374,16 @@
           this.longitude = res.longitude
           this.latitude = res.latitude
           this.$apply()
+          // 酒店列表
+          this.getWineList()
           this.loadCity(this.longitude, this.latitude)
+        },
+        fail: res => {
+          this.longitude = ''
+          this.latitude = ''
+          this.$apply()
+          // 酒店列表
+          this.getWineList()
         }
       })
     }

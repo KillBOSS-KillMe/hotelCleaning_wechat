@@ -65,7 +65,7 @@
     onLoad() {
       // // 定位
       this.getLocation()
-      // 获取楼盘列表
+      // 酒店列表
       // this.getWineList()
     }
     // 定位
@@ -77,31 +77,25 @@
           this.longitude = res.longitude
           this.latitude = res.latitude
           this.$apply()
-          // 获取楼盘列表
+          // 酒店列表
           this.getWineList()
         },
         fail: res => {
-          // 获取楼盘列表
+          this.longitude = ''
+          this.latitude = ''
+          this.$apply()
+          // 酒店列表
           this.getWineList()
         }
       })
     }
-    // 获取楼盘列表
+    // 酒店列表
     getWineList() {
       wx.showToast({
         title: "拼命加载中...",
         icon: 'loading',
         duration: 1000000
       });
-      wx.getLocation({
-        type: 'wgs84',   //默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标 
-        desc: '你的位置信息将用于小程序位置接口的效果展示',
-        success: res => { 
-          this.longitude = res.longitude
-          this.latitude = res.latitude
-          this.$apply()
-        }
-      })
       wx.request({
         url: `${this.$parent.globalData.requestUrl}/index/get_wine_list_info`,
         header: {

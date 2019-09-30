@@ -202,6 +202,9 @@
           this.getOrderList()
         },
         fail: res => {
+          this.longitude = ''
+          this.latitude = ''
+          this.$apply()
           // 执行列表加载
           this.getOrderList()
         }
