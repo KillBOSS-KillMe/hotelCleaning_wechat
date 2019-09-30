@@ -95,36 +95,48 @@
     methods = {
       // 底部导航跳转
       goPage (url, evt) {
-        if (this.verificationUserInfo()) {return false}
+        if (this.verificationUserInfo()) {
+          return 
+        }
         // 销毁当前页{跳转}
         this.$redirect(url)
       },
       goCitySel(e) {
-        if (this.verificationUserInfo()) {return false}
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let url = `/pages/citySel`
         this.$navigate(url)
       },
       gohotelList(e) {
-        if (this.verificationUserInfo()) {return false}
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let url = `/pages/hoteList`
         this.$navigate(url)
       },
       gohotelInfo(e) {
-        if (this.verificationUserInfo()) {return false}
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let id = e.currentTarget.dataset.id
         let url = `/pages/hotelInfo?id=${id}`
         this.$navigate(url)
       },
       // 进入保洁员详情
       goCleaningInfo(e) {
-        if (this.verificationUserInfo()) {return false}
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let id = e.currentTarget.dataset.id
         let url = `/pages/cleaningInfo?id=${id}`
         this.$navigate(url)
       },
       // 进入保洁员列表
       goCleaningList(e) {
-        if (this.verificationUserInfo()) {return false}
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let url = `/pages/cleaningList`
         this.$navigate(url)
       }
@@ -198,10 +210,8 @@
               success: data => {
                 wx.hideToast()
                 data = this.$parent.null2str(data)
-                console.log(data)
                 let token = `${data.data.token_type} ${data.data.token}`
                 this.$parent.globalData.token = token
-                
                 // 轮播图加载
                 this.getSwiperList()
                 // 酒店列表
@@ -310,7 +320,6 @@
     }
     // 获取轮播图
     getSwiperList() {
-      console.log(11111)
       this.swiperList = this.$parent.globalData.swiperList
       if (this.swiperList.length > 0) {
         this.$apply()
@@ -335,17 +344,26 @@
     }
     // 提示注册
     goRegistered() {
-      wx.showModal({
-        title: '',
-        content: '尚未注册，是否注册',
-        success: sm => {
-          if (sm.confirm) {
-            this.$redirect('/pages/selRegisteredType')
-          } else if (sm.cancel) {
-            // 用户点击取消
-          }
-        }
-      })
+      wx.showToast({
+        title: "检测到用户未注册，进入注册页",
+        icon: 'none',
+        duration: 2000
+      });
+      setTimeout(() => {
+        this.$redirect('/pages/selRegisteredType')
+      }, 2000)
+      
+      // wx.showModal({
+      //   title: '',
+      //   content: '尚未注册，是否注册',
+      //   success: sm => {
+      //     if (sm.confirm) {
+      //       this.$redirect('/pages/selRegisteredType')
+      //     } else if (sm.cancel) {
+      //       // 用户点击取消
+      //     }
+      //   }
+      // })
     }
     // 定位
     getLocation() {

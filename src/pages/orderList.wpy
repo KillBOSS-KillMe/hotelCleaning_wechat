@@ -190,10 +190,7 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      console.log(this.userInfo)
       this.$apply()
-    }
-    onShow() {
       wx.getLocation({
         type: 'wgs84',   //默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标 
         desc: '你的位置信息将用于小程序位置接口的效果展示',
@@ -209,8 +206,9 @@
           this.getOrderList()
         }
       })
+    }
+    onShow() {
       // userInfo.type: null   用户类型1-保洁   2-酒店
-      // this.getOrderList()
     }
     // 执行列表加载
     getOrderList() {

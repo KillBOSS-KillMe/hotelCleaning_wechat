@@ -27,7 +27,7 @@
         <icon class="iconfont iconrenzheng"></icon>
         已认证
       </view>
-      <view class="certification" wx:if="{{userInfo.status == 2}}">
+      <view class="certification" @tap="goLogin" wx:if="{{userInfo.status == 2}}">
         <icon class="iconfont iconrenzheng"></icon>
         未注册
       </view>
@@ -127,13 +127,13 @@
       userInfo: {},
       formNode: {},
       hotelFunctionList: [
-        {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'},
+        {id: '1', name: '我的钱包', img: 'wallet', val: '0', showIcon: '1', active: '1'},
         {id: '2', name: '酒店信息', img: 'wallet', val: '', showIcon: '1', active: '0'},
         {id: '3', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
-        {id: '4', name: '建议与反馈', img: 'suggest', val: '029-88888888', showIcon: '0', active: '0'},
+        {id: '4', name: '建议与反馈', img: 'suggest', val: '', showIcon: '0', active: '0'},
       ],
       cleaningFunctionList: [
-        {id: '1', name: '我的钱包', img: 'wallet', val: '5600', showIcon: '1', active: '1'},
+        {id: '1', name: '我的钱包', img: 'wallet', val: '0', showIcon: '1', active: '1'},
         {id: '2', name: '我的分享', img: 'share', val: '', showIcon: '1', active: '0'},
         {id: '3', name: '我发分享码', img: 'QRCode', val: '', showIcon: '1', active: '0'},
         {id: '4', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
@@ -164,6 +164,9 @@
       },
       // 进入酒店功能
       hotelFunction(e) {
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let id = e.currentTarget.dataset.id
         let url = ``
         switch(id) {
@@ -194,6 +197,9 @@
       },
       // 进入保洁功能
       cleaningFunction(e) {
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let id = e.currentTarget.dataset.id
         let url = ``
         switch(id) {
@@ -228,6 +234,9 @@
       },
       // 修改酒店信息
       modifyAvatar(e) {
+        if (this.verificationUserInfo()) {
+          return 
+        }
         wx.showModal({
          title: '',
          content: '是否更改头像',
@@ -244,9 +253,16 @@
       },
       // 拨打电话
       runCall(e){
+        if (this.verificationUserInfo()) {
+          return 
+        }
         let phone = e.currentTarget.dataset.phone
         this.$parent.runCall(phone)
       },
+      goLogin() {
+        // 销毁当前页{跳转}
+        this.$redirect('/pages/selRegisteredType')
+      }
     }
 
     events = {
@@ -368,11 +384,42 @@
           } else {
             wx.showModal({
               title: '',
-              content: data.data.errmsg
+              content: data.data.msg
             })
           }
         }
       })
+    }
+
+    // 用户信息校验
+    verificationUserInfo() {
+      if (!this.userInfo.hasOwnProperty('type')) {
+        wx.showToast({
+          title: "用户信息加载中...",
+          icon: 'none',
+        });
+        return true
+      }
+      if (this.userInfo.status == 0) {
+        wx.showToast({
+          title: "用户信息未认证，请进行信息认证",
+          icon: 'none',
+          duration: 500
+        });
+        setTimeout(() => {
+          // this.methods.goCertification()
+          let url = ''
+          if (this.userInfo.type == 2) {
+            // 执行酒店
+            url = '/pages/userhotelgCertification'
+          } else if (this.userInfo.type == 1) {
+            // 执行保洁
+            url = '/pages/userCleaningCertification'
+          }
+          this.$navigate(url)
+        }, 500)
+        return true
+      }
     }
   }
 </script>
