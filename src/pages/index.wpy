@@ -147,6 +147,9 @@
     }
 
     async onLoad(options) {
+      if (options.hasOwnProperty("scene")) {
+        this.$parent.globalData.pid = options.scene.split('%')[1]
+      }
       this.mapKey = this.$parent.globalData.mapKey
       // this.code = await this.$parent.getCode()
       // 加载token
