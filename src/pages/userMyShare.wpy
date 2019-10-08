@@ -45,7 +45,7 @@
           <view class="name">今日进贡</view>
         </view>
         <view class="item">
-          <view class="num">{{friendList.length}}</view>
+          <view class="num">{{friendNode.total}}</view>
           <view class="name">我的好友</view>
         </view>
         <view class="item">
