@@ -64,35 +64,34 @@ import 'wepy-async-function';
 export default class extends wepy.app {
   config = {
     pages: [
-      'pages/index', // 首页
-      'pages/citySel', // 城市选择
-      'pages/hotelInfo', // 酒店详情
-      'pages/hoteList', // 酒店推荐
-      'pages/cleaningInfo', // 保洁信息
-      'pages/cleaningList', // 保洁推荐
+      'pages/index',                      // 首页
+      'pages/citySel',                    // 城市选择
+      'pages/hotelInfo',                  // 酒店详情
+      'pages/hoteList',                   // 酒店推荐
+      'pages/cleaningInfo',               // 保洁信息
+      'pages/cleaningList',               // 保洁推荐
 
-      'pages/user', // 个人中心
-      'pages/userMyShare',  // 个人中心--我的分享
-      'pages/userRelease',  // 个人中心--发布列表
-      'pages/userReleaseList',  // 个人中心--发布列表
-      'pages/userRecharge', // 个人中心--充值&提现
-      'pages/userWallet', // 个人中心--钱包
-      'pages/userInfoSetting',  // 个人中心--信息设置--保洁
-      'pages/userHotelSetting',  // 个人中心--信息设置--酒店
-      
+      'pages/user',                       // 个人中心
+      'pages/userMyShare',                // 个人中心--我的分享
+      'pages/userRelease',                // 个人中心--发布列表
+      'pages/userReleaseList',            // 个人中心--发布列表
+      'pages/userRecharge',               // 个人中心--充值&提现
+      'pages/userWallet',                 // 个人中心--钱包
+      'pages/userInfoSetting',            // 个人中心--信息设置--保洁
+      'pages/userHotelSetting',           // 个人中心--信息设置--酒店
       'pages/userCleaningCertification',  // 个人中心--保洁认证
-      'pages/userhotelgCertification',  // 个人中心--酒店认证
+      'pages/userhotelgCertification',    // 个人中心--酒店认证
       
-      'pages/orderList', // 订单-列表
-      'pages/orderInfo', // 订单-详情
-      'pages/orderTransfer', // 订单-转单
-      'pages/orderEvaluation', // 订单-评价
-      'pages/orderConfirm', // 订单-确认
+      'pages/orderList',                  // 订单-列表
+      'pages/orderInfo',                  // 订单-详情
+      'pages/orderTransfer',              // 订单-转单
+      'pages/orderEvaluation',            // 订单-评价
+      'pages/orderConfirm',               // 订单-确认
 
-      'pages/selRegisteredType',  // 注册类型选择
-      'pages/selHoteRegistered',  // 注册--酒店
-      'pages/roomEntry',  // 房间录入
-      'pages/selUserRegistered',  // 注册--保洁员
+      'pages/selRegisteredType',          // 注册类型选择
+      'pages/selHoteRegistered',          // 注册--酒店
+      'pages/roomEntry',                  // 房间录入
+      'pages/selUserRegistered',          // 注册--保洁员
     ],
     permission: {
       'scope.userLocation': {
