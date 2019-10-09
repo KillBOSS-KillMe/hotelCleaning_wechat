@@ -263,6 +263,7 @@ view .item:last-child{
 
     }
     onShow() {
+      this.formNode['admin_id'] = this.$parent.globalData.admin_id
       this.roomList = this.$parent.globalData.roomList
       this.formNode['rooms'] = this.roomList
       this.formNode['total_number'] = this.roomList.length

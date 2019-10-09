@@ -148,7 +148,12 @@
 
     async onLoad(options) {
       if (options.hasOwnProperty("scene")) {
-        this.$parent.globalData.pid = options.scene.split('%')[1]
+        let data = options.scene.split('%3D')
+        if (data[0] == 'pid') {
+          this.$parent.globalData.pid = data[1]
+        } else {
+          this.$parent.globalData.admin_id = data[1]
+        }
       }
       this.mapKey = this.$parent.globalData.mapKey
       // this.code = await this.$parent.getCode()
