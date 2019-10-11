@@ -128,7 +128,7 @@ for (let i = 0; i < 60; i++) {
     onLoad() {
       const now = new Date();
       const year = now.getFullYear(); //得到年份
-      const month = now.getMonth();//得到月份
+      const month = now.getMonth() + 1;//得到月份
       const day = now.getDate();//得到日期
       const hour = now.getHours();//得到小时
       const minute = now.getMinutes();//得到分
