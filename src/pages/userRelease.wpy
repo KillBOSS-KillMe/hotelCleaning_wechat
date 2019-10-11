@@ -3,7 +3,7 @@
     <view>
       <view class="item">
         <label>预约信息</label>
-        <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入原电话" />
+        <!-- <input type="text" data-name="IDCard" @input="getSetData" placeholder="请输入原电话" /> -->
       </view>
       <view class="item">
         <label>房间号</label>
@@ -116,7 +116,6 @@ for (let i = 0; i < 60; i++) {
         const day = this.multiArray[2][index[2]]
         const hour = this.multiArray[3][index[3]]
         const minute = this.multiArray[4][index[4]]
-        
         this.formNode['make_time'] = `${year}-${month}-${day} ${hour}:${minute}`
         this.$apply()
       },
@@ -127,6 +126,13 @@ for (let i = 0; i < 60; i++) {
     }
 
     onLoad() {
+      const now = new Date();
+      const year = now.getFullYear(); //得到年份
+      const month = now.getMonth();//得到月份
+      const day = now.getDate();//得到日期
+      const hour = now.getHours();//得到小时
+      const minute = now.getMinutes();//得到分
+      this.formNode['make_time'] = `${year}-${month}-${day} ${hour}:${minute}`
       this.userInfo = this.$parent.globalData.userInfo
       this.$apply()
       this.getRoomList()

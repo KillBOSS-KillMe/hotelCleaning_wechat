@@ -128,7 +128,7 @@
       formNode: {},
       hotelFunctionList: [
         {id: '1', name: '我的钱包', img: 'wallet', val: '0', showIcon: '1', active: '1'},
-        {id: '2', name: '酒店信息', img: 'wallet', val: '', showIcon: '1', active: '0'},
+        {id: '2', name: '发布订单', img: 'wallet', val: '', showIcon: '1', active: '0'},
         {id: '3', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
         {id: '4', name: '建议与反馈', img: 'suggest', val: '', showIcon: '0', active: '0'},
       ],
