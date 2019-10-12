@@ -266,10 +266,25 @@
     events = {
       
     }
-
     onLoad() {
       this.formNode['pid'] = this.$parent.globalData.pid
       this.$apply()
+      this.userInfo = this.$parent.globalData.userInfo
+      if (this.userInfo.status != 2) {
+        // 提示注册
+        this.goRegistered()
+      }
+    }
+    // 提示注册
+    goRegistered() {
+      wx.showToast({
+        title: "检测到用户已注册，进入首页",
+        icon: 'none',
+        duration: 2000
+      });
+      setTimeout(() => {
+        this.$redirect('/pages/index')
+      }, 2000)
     }
     // 倒计时
     countdown() {

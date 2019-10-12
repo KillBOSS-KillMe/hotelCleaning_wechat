@@ -18,8 +18,10 @@
             <view class="name" wx:if="{{item.status == 5}}">保洁工钱</view>
             <view class="name" wx:if="{{item.status == 6}}">酒店发工资</view>
             <view class="money">
-              <text>+￥{{item.amount}}</text>
-              ￥{{item.money}}
+              <text wx:if="{{item.status == 2 || item.status == 5}}">+</text>
+              <text wx:else>-</text>
+              <text>￥{{item.money}}</text>
+              ￥{{item.amount}}
             </view>
           </view>
           <view>

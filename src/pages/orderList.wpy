@@ -34,8 +34,9 @@
               <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
               <view class="label active" wx:if="{{item.clean_status == '1'}}">待处理</view>
               <view class="label active" wx:if="{{item.clean_status == '2'}}">待确认</view>
-              <view class="label active" wx:if="{{item.clean_status == '3'}}">待评论</view>
-              <view class="label" wx:if="{{item.clean_status == '4'}}">已完成</view>
+              <view class="label active" wx:if="{{item.clean_status == '3' && userInfo.type == 1}}">已完成</view>
+              <view class="label active" wx:if="{{item.clean_status == '3' && userInfo.type == 2}}">待评论</view>
+              <view class="label" wx:if="{{item.clean_status == '4' && userInfo.type == 2}}">已完成</view>
             </view>
             <view class="hotelAddress" wx:if="{{userInfo.type == 2}}">
               <icon class="iconfont iconfangjian"></icon>
@@ -198,6 +199,8 @@
       // userInfo.type: null   用户类型1-保洁   2-酒店
       // 清空列表
       this.orderList = []
+      this.listStatus = 0
+      this.current_page = 0
       this.$apply()
       wx.getLocation({
         type: 'wgs84',   //默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标 
