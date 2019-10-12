@@ -83,10 +83,11 @@ export default class extends wepy.app {
       'pages/userhotelgCertification',    // 个人中心--酒店认证
       
       'pages/orderList',                  // 订单-列表
-      'pages/orderInfo',                  // 订单-详情
+      'pages/orderInfo',                  // 订单-详情--
+      'pages/orderInfoHotel',            // 订单-详情--酒店确认订单
       'pages/orderTransfer',              // 订单-转单
       'pages/orderEvaluation',            // 订单-评价
-      'pages/orderConfirm',               // 订单-确认
+      'pages/orderConfirm',               // 订单-确认--保洁确认订单
 
       'pages/selRegisteredType',          // 注册类型选择
       'pages/selHoteRegistered',          // 注册--酒店

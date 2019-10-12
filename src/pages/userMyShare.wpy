@@ -36,7 +36,7 @@
         </view>
       </view>
       <view class="money">
-        <view class="num">12.56</view>
+        <view class="num">{{friendNode.total_money}}</view>
         <view class="button" @tap="recharge">立即提现</view>
       </view>
       <view class="info">

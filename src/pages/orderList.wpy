@@ -175,7 +175,13 @@
       // 进入确认订单
       goOrderConfirm(e) {
         let id = e.currentTarget.dataset.id
-        let url = `/pages/orderConfirm?id=${id}`
+        let url = ''
+        if (this.userInfo.type == 2) {
+          url = `/pages/orderInfoHotel?id=${id}`
+        } else {
+          url = `/pages/orderConfirm?id=${id}`
+        }
+        console.log(url)
         this.$navigate(url)
       },
     }
