@@ -108,7 +108,7 @@ view .item:last-child{
     </view>
     <view class="item">
       <label>详细地址</label>
-      <input data-name="detailed_address" @input="getSetData" placeholder="请输入地址(包含省市区)" />
+      <input data-name="detailed_address" @input="getSetData" value="{{formNode.detailed_address}}" placeholder="请输入地址(包含省市区)" />
     </view>
     <view class="item">
       <label>房间总数</label>
@@ -233,8 +233,14 @@ view .item:last-child{
       // 删除房间
       delRoom(e) {
         let index = e.currentTarget.dataset.index
-        let roomList = this.roomList
-        roomList = roomList.splice(index, 1)
+        let room = this.roomList
+        let roomList = []
+        for (let i = 0; i < room.length; i++) {
+          if (i != index) {
+            roomList.push(room[i])
+          }
+        }
+        this.$parent.globalData.roomList = roomList
         this.roomList = roomList
         this.$apply()
       },
@@ -244,6 +250,7 @@ view .item:last-child{
         this.formNode['province_name'] = region[0]
         this.formNode['city_name'] = region[1]
         this.formNode['county_name'] = region[2]
+        this.formNode['detailed_address'] = region[0] + region[1] + region[2]
         this.region = region
         this.$apply()
       },
@@ -309,6 +316,17 @@ view .item:last-child{
       if (formNode.detailed_address == '') {
         wx.showToast({
           title: '请输入详细地址',
+          icon: 'none'
+        });
+        return
+      }
+      // this.formNode['province_name'] = region[0]
+      //   this.formNode['city_name'] = region[1]
+      //   this.formNode['county_name'] = region[2]
+      let address = formNode.province_name + formNode.city_name + formNode.county_name
+      if (formNode.detailed_address.indexOf(address) == -1) {
+        wx.showToast({
+          title: '请在详细地址中输入省市区，格式与地址项相同',
           icon: 'none'
         });
         return

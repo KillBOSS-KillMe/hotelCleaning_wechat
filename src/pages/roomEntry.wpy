@@ -62,7 +62,8 @@
       formNode: {
         floor: '',
         room_number: '',
-        roomType: ''
+        roomType: '',
+        room_type_id: ''
       },
       showType: [],
       typeList: [
@@ -109,7 +110,7 @@
           })
           return
         }
-        if (formNode.roomTypeId == '') {
+        if (formNode.roomType == '') {
           wepy.showModal({
             title: '',
             content: '请选择房间类型',
