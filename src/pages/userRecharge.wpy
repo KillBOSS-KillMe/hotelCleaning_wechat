@@ -3,6 +3,11 @@
     <view class="title">
       账户余额：<text>￥{{userInfo.amount}}</text>
     </view>
+    <view class="title">
+      可提现金额：
+      <text wx:if="{{userInfo.amount > 500}}">￥{{userInfo.amount - 500}}</text>
+      <text wx:if="{{userInfo.amount <= 500}}">￥0</text>
+    </view>
     <view class="list">
       <repeat for="{{selRechargeList}}" item="item">
         <view @tap="selMoney" data-index="{{index}}" class="{{index == serNode?'active':''}}">{{item.money}}元</view>
@@ -68,7 +73,14 @@
     }
     // 提现
     withdraw() {
-      if (parseFloat(this.userInfo.amount) < parseFloat(this.money)) {
+      let moneyNode = this.selRechargeList[this.serNode]
+      if (this.userInfo.type == 1 && parseFloat(this.userInfo.amount - 500) < parseFloat(moneyNode.money)) {
+        wx.showToast({
+          title: "平台储蓄金需要大于500，如需提现请联系人工客服",
+          icon: 'none'
+        });
+        return false
+      } else if (parseFloat(this.userInfo.amount - 500) < parseFloat(moneyNode.money)) {
         wx.showToast({
           title: "余额不足",
           icon: 'none'
