@@ -9,7 +9,7 @@
       </view>
       <view class="name">{{orderInfo.name}}</view>
       <view class="info active" wx:if="{{orderInfo.clean_status == 1}}">待打扫</view>
-      <view class="info active" wx:if="{{orderInfo.clean_status == 2}}">打扫总</view>
+      <view class="info active" wx:if="{{orderInfo.clean_status == 2}}">打扫中</view>
       <view class="info active" wx:if="{{orderInfo.clean_status == 3}}">打扫结束</view>
       <view class="info">接单时间：{{orderInfo.take_time}}</view>
     </view>
@@ -43,7 +43,7 @@
       <view class="item">依照整洁</view>
       <view class="item">行为规范</view>
     </view> -->
-    <view class="sub">
+    <view class="sub" wx:if="{{options.type == '2' && options.stat == '2'}}">
       <view @tap="sub">确认订单</view>
     </view>
   </view>
@@ -64,7 +64,8 @@
       cleaningInfo: {img: '/img/daw.jpg', name: '二狗子', num: 10, id: '1'},
       orderInfo: {},
       lv: 5,
-      level: 0
+      level: 0,
+      options: null
     }
 
     // computed = {}
@@ -81,6 +82,7 @@
     }
 
     onLoad(options) {
+      console.log(options)
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
       this.$apply()

@@ -84,7 +84,7 @@ export default class extends wepy.app {
       
       'pages/orderList',                  // 订单-列表
       'pages/orderInfo',                  // 订单-详情--
-      'pages/orderInfoHotel',            // 订单-详情--酒店确认订单
+      'pages/orderInfoHotel',             // 订单-详情--酒店确认订单
       'pages/orderTransfer',              // 订单-转单
       'pages/orderEvaluation',            // 订单-评价
       'pages/orderConfirm',               // 订单-确认--保洁确认订单

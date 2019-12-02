@@ -101,9 +101,9 @@
       </view>
     </view> -->
     
-    <view class="sub">
+    <!-- <view class="sub">
       <view @tap="sub">确认订单</view>
-    </view>
+    </view> -->
   </view>
 </template>
 
@@ -111,7 +111,7 @@
   import wepy from 'wepy'
   export default class OrderConfirm extends wepy.page {
     config = {
-      navigationBarTitleText: '评价订单'
+      navigationBarTitleText: '订单详情'
     }
     // components = {}
 

@@ -28,21 +28,21 @@
     <view class="orderList" wx:if="{{userInfo.type == 1}}">
       <repeat for="{{orderList}}" item="item">
         <view class="item" data-id="{{item.id}}">
-          <image src="{{item.image_url}}" />
+          <image src="{{item.image_url}}" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm" />
           <view class="info">
-            <view class="hotelTitle">
+            <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
               <view class="label active" wx:if="{{item.clean_status == '1'}}">待处理</view>
-              <view class="label active" wx:if="{{item.clean_status == '2'}}">待确认</view>
+              <view class="label active" wx:if="{{item.clean_status == '2'}}">待酒店确认</view>
               <view class="label active" wx:if="{{item.clean_status == '3' && userInfo.type == 1}}">已完成</view>
               <view class="label active" wx:if="{{item.clean_status == '3' && userInfo.type == 2}}">待评论</view>
               <view class="label" wx:if="{{item.clean_status == '4' && userInfo.type == 2}}">已完成</view>
             </view>
-            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}">
+            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont iconfangjian"></icon>
               {{item.content}}
             </view>
-            <view class="hotelAddress">
+            <view class="hotelAddress" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont icondingwei"></icon>
               {{item.detailed_address}}
             </view>
@@ -55,7 +55,7 @@
               <view>
                 <button class="transfer" wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button>
                 <button wx:if="{{item.clean_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">抢单</button>
-                <button wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button>
+                <!-- <button wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button> -->
                 <!-- <button wx:if="{{item.clean_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button> -->
                 <!-- <button class="carryOut" wx:if="{{item.clean_status == '4'}}">已完成</button> -->
               </view>
@@ -69,20 +69,20 @@
     <view class="orderList" wx:if="{{userInfo.type == 2}}">
       <repeat for="{{orderList}}" item="item">
         <view class="item" data-id="{{item.id}}">
-          <image src="{{item.image_url}}" />
+          <image src="{{item.image_url}}" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm" />
           <view class="info">
-            <view class="hotelTitle">
+            <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <view class="name">{{item.hotel_name}}({{item.sum}}间)</view>
               <view class="label active" wx:if="{{item.wine_status == '1'}}">待处理</view>
               <view class="label active" wx:if="{{item.wine_status == '2'}}">待确认</view>
               <view class="label active" wx:if="{{item.wine_status == '3'}}">待评论</view>
               <view class="label" wx:if="{{item.wine_status == '4'}}">已完成</view>
             </view>
-            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}">
+            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont iconfangjian"></icon>
               {{item.content}}
             </view>
-            <view class="hotelAddress">
+            <view class="hotelAddress" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont icondingwei"></icon>
               {{item.detailed_address}}
             </view>
@@ -94,7 +94,7 @@
               <view>
                 <!-- <button class="transfer" wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button> -->
                 <!-- <button wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button> -->
-                <button wx:if="{{item.wine_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button>
+                <button wx:if="{{item.wine_status == '2'}}" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">确认订单</button>
                 <button wx:if="{{item.wine_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
                 <button class="carryOut" wx:if="{{item.wine_status == '4'}}">已完成</button>
               </view>
@@ -175,12 +175,15 @@
       },
       // 进入确认订单
       goOrderConfirm(e) {
+        //  data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm"
+        let type = e.currentTarget.dataset.type
         let id = e.currentTarget.dataset.id
+        let stat = e.currentTarget.dataset.stat
         let url = ''
         if (this.userInfo.type == 2) {
-          url = `/pages/orderInfoHotel?id=${id}`
+          url = `/pages/orderInfoHotel?id=${id}&type=${type}&stat=${stat}`
         } else {
-          url = `/pages/orderConfirm?id=${id}`
+          url = `/pages/orderConfirm?id=${id}&type=${type}&stat=${stat}`
         }
         console.log(url)
         this.$navigate(url)
@@ -314,6 +317,7 @@
   margin-top: 100rpx;
   width: 750rpx;
   height: auto;
+  margin-bottom: 130rpx;
   .item{
     width: 690rpx;
     height: 230rpx;
@@ -417,6 +421,9 @@
       align-items: center;
       justify-content: center;
       margin-left: 20rpx;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
     }
   }
 }
