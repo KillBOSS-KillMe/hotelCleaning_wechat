@@ -497,7 +497,9 @@ view .item:last-child{
               duration: 2000
             });
             setTimeout(() => {
-              this.$redirect('/pages/index')
+              wx.reLaunch({
+                url: `/pages/index`
+              })
             }, 2000)
           } else {
             wx.showToast({
