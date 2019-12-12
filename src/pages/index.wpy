@@ -83,7 +83,6 @@
       userInfo: {},
       userInfoButtonShow: true,
       requestImgUrl: '',
-      token: '',
       swiperList: [],
       cleaningList: [],
       hotelList: [],
@@ -157,32 +156,29 @@
         }
       }
       this.mapKey = this.$parent.globalData.mapKey
-      // this.code = await this.$parent.getCode()
-      // 加载token
-      // this.token = await this.$parent.getToken()
       wx.showToast({
         title: "拼命加载中...",
         icon: 'loading',
         duration: 1000000
       });
-      // 提交用户信息
-      this.getToken()
+      // 定位
+      this.getLocation()
       // 获取用户信息
       await this.onGetUserInfo()
-      
+      // 获取保洁
+      this.getCleanList()
+      // 获取酒店列表
+      this.getWineList()
+      // 获取轮播图
+      this.getSwiperList()
     }
     onPullDownRefresh() {
       this.mapKey = this.$parent.globalData.mapKey
-      // this.code = await this.$parent.getCode()
-      // 加载token
-      // this.token = await this.$parent.getToken()
       wx.showToast({
         title: "拼命加载中...",
         icon: 'loading',
         duration: 1000000
       });
-      // 提交用户信息
-      this.getToken()
       // 获取用户信息
       this.onGetUserInfo()
     }
@@ -205,43 +201,40 @@
                 this.userInfo = Object.assign(this.userInfo, res.userInfo)
                 this.$parent.globalData.userInfo = this.userInfo
                 this.$apply()
+                // 更新用户信息
+                this.setUserInfo()
               }
             })
           } else {
-            // this.clickWeekBangs()
+            // 更新用户信息
+            this.setUserInfo()
           }
         }
       })
     }
-    // 获取token
-    getToken() {
+    // 更新用户信息
+    setUserInfo() {
       wepy.login({
         success: res => {
           if (res.code) {
             this.code = res.code
             wx.request({
-              url: `${this.$parent.globalData.requestUrl}/auth/get_token`,
+              url: `${this.$parent.globalData.requestUrl}/basis/user`,
               method: 'POST',
-              header: {
-                apikey: this.$parent.globalData.apikey
-              },
               data: {
                 code: res.code
               },
               success: data => {
                 wx.hideToast()
+                console.log(data)
                 data = this.$parent.null2str(data)
-                let token = `${data.data.token_type} ${data.data.token}`
-                this.$parent.globalData.token = token
-                // 轮播图加载
-                this.getSwiperList()
-                // 获取定位及地址
-                this.getLocation()
-                
-                // 保洁列表
-                this.getCleanList()
-                // 用户信息获取
-                this.setUserInfo()
+                if (data.data.code == 1) {
+                  this.userInfo = data.data.data
+                  this.userInfo = Object.assign(this.userInfo, data.data.data)
+                  this.$parent.globalData.userInfo = this.userInfo
+                  console.log(this.userInfo)
+                  this.$apply()
+                }
               }
             })
             
@@ -251,59 +244,20 @@
         }
       })
     }
-    // 提交用户信息
-    setUserInfo() {
-      wx.request({
-        url: `${this.$parent.globalData.requestUrl}/auth/my`,
-        method: 'GET',
-        header: {
-          'content-type':'application/json',
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
-        success: data => {
-          data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
-            this.userInfo = Object.assign(this.userInfo, data.data.data);
-            this.$parent.globalData.userInfo = this.userInfo
-            this.$apply()
-            // 判断是否进入注册页
-            if (this.userInfo.status == 2) {
-              // 提示注册
-              this.goRegistered()
-            } else {
-
-            }
-            // status: 2    户状态：0=未认证，1=已认证，2=用户未注册，3=审核中
-            // type: null   用户类型1-保洁   2-酒店
-            // admin_id: 0        上级用户ID
-            // amount: "0.00"     余额
-          } else {
-            wx.showModal({
-              title: '',
-              content: data.data.errmsg
-            })
-          }
-        }
-      })
-    }
     // 获取保洁
     getCleanList() {
-      // this.cleaningList = this.$parent.globalData.cleaningListIndex
-      // if (this.cleaningList.length > 0) {
-      //   this.$apply()
-      //   return false
-      // }
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/index/get_clean_list`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/basis/health`,
         method: 'GET',
         success: data => {
+          wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             this.cleaningList = data.data.data
             this.$parent.globalData.cleaningListIndex = this.cleaningList
             this.$apply()
@@ -311,27 +265,29 @@
         }
       })
     }
-    // 获取楼盘列表
+    // 获取酒店列表
     getWineList() {
       // this.hotelList = this.$parent.globalData.hotelListIndex
       // if (this.hotelList.length > 0) {
       //   this.$apply()
       //   return false
       // }
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/index/get_wine_list`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/basis/hotel`,
         data: {
           lat: this.longitude,
           lng: this.latitude
         },
         method: 'GET',
         success: data => {
+          wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             this.hotelList = data.data.data
             this.$parent.globalData.hotelListIndex = this.hotelList
             this.$apply()
@@ -346,16 +302,18 @@
       //   this.$apply()
       //   return false
       // }
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/index/get_baner_list`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/basis/banner`,
         method: 'GET',
         success: data => {
+          wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             this.swiperList = data.data.data
             this.$parent.globalData.swiperList = this.swiperList
             this.$apply()
@@ -408,11 +366,18 @@
         }
       })
     }
+    // 根据经纬度获取用户位置信息
     loadCity(longitude, latitude) {
+      wx.showToast({
+        title: "定位信息加载中",
+        icon: 'loading',
+        duration: 1000000
+      });
       wx.request({
         url: `https://apis.map.qq.com/ws/geocoder/v1/?location=${latitude},${longitude}&key=${this.mapKey}`,
         data: {},
         success: (res) => {
+          wx.hideToast()
           this.address = res.data.result.address
         }
       })

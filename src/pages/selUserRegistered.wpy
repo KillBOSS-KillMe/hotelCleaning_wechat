@@ -201,6 +201,7 @@
                 icon: 'success',
                 duration: 2000
               });
+              this.$parent.globalData.token = data.data.token
               setTimeout(() => {
                 wx.reLaunch({
                   url: `/pages/index`
