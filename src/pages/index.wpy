@@ -150,8 +150,8 @@
     async onLoad(options) {
       if (options.hasOwnProperty("scene")) {
         let data = options.scene.split('%3D')
-        if (data[0] == 'pid') {
-          this.$parent.globalData.pid = data[1]
+        if (data[0] == 'fid') {
+          this.$parent.globalData.fid = data[1]
         } else {
           this.$parent.globalData.admin_id = data[1]
         }

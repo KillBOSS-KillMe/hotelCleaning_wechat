@@ -91,8 +91,8 @@ export default class extends wepy.app {
 
       'pages/selRegisteredType',          // 注册类型选择
       'pages/selHoteRegistered',          // 注册--酒店
-      'pages/roomEntry',                  // 房间录入
       'pages/selUserRegistered',          // 注册--保洁员
+      'pages/roomEntry',                  // 房间录入
     ],
     permission: {
       'scope.userLocation': {
@@ -110,7 +110,8 @@ export default class extends wepy.app {
   globalData = {
     userInfo: {},
     // 接口请求路径
-    requestUrl: 'https://hotel.beaconway.cn/api/v1/wine_shop_api',
+    // requestUrl: 'https://hotel.beaconway.cn/api/v1/wine_shop_api',
+    requestUrl: 'http://192.168.0.118/api',
     // 图片路径
     requestImgUrl: 'https://hotel.beaconway.cn',
     mapKey: 'JPZBZ-TD6K6-AWES2-EL4ZX-5OBLJ-HDFG5',
