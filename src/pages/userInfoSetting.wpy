@@ -47,11 +47,7 @@
   <view>
     <view class="item">
       <label>原电话</label>
-      <input type="text" placeholder="请输入原电话" />
-    </view>
-    <view class="item">
-      <label>身份证</label>
-      <input type="text" data-name="number" @input="getSetData" placeholder="请输入新电话" />
+      <input type="text" value="{{userInfo.mobile}}" placeholder="请输入原电话" />
     </view>
     <view class="item">
       <label>新电话</label>
@@ -79,8 +75,8 @@
     mixins = []
 
     data = {
+      userInfo: {},
       formNode: {
-        number: '',
         phone: '',
         code: ''
       },
@@ -123,24 +119,35 @@
           });
           return
         }
+        // 根据用户类别不同生成新的数据对象
+        let newUpData = {
+          code: formNode.code
+        }
+        let url = ''
+        if (this.userInfo.type == '1') {
+          // 保洁
+          url = 'health/mobile_update'
+          newUpData['uid'] = this.userInfo.id
+          newUpData['mobile'] = formNode.phone
+        } else {
+          // 酒店
+          url = 'hotel/mobile_update'
+          newUpData['hid'] = this.userInfo.id
+          newUpData['hotel_head_mobile'] = formNode.phone
+        }
         wx.showToast({
           title: "信息修改中...",
           icon: 'loading',
           duration: 10000
         });
         wx.request({
-          url: `${this.$parent.globalData.requestUrl}/auth/clean_user_sys`,
+          url: `${this.$parent.globalData.requestUrl}/${url}`,
           method: 'POST',
-          header: {
-            'content-type':'application/json',
-            authorization: this.$parent.globalData.token,
-            apikey: this.$parent.globalData.apikey
-          },
-          data: formNode,
+          data: newUpData,
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
-            if (data.data.code === 8888) {
+            if (data.data.code === 1) {
               wx.showToast({
                 title: "修改成功",
                 icon: 'success',
@@ -181,24 +188,20 @@
         this.disabled = true
         this.$apply()
         wx.request({
-          url: `${this.$parent.globalData.requestUrl}/auth/send_code`,
+          url: `${this.$parent.globalData.requestUrl}/health/sms_code`,
           method: 'POST',
-          header: {
-            'content-type':'application/json',
-            authorization: this.$parent.globalData.token,
-            apikey: this.$parent.globalData.apikey
-          },
           data: {
             phone: this.formNode.phone
           },
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
-            if (data.data.code === 8888) {
+            console.log(data)
+            if (data.data.code === 1) {
               wx.showToast({
                 title: data.data.msg,
                 icon: 'success',
-                duration: 1000
+                duration: 2000
               });
               this.$apply()
               this.countdown()
@@ -218,6 +221,8 @@
     }
 
     onLoad() {
+      this.userInfo = this.$parent.globalData.userInfo
+      this.$apply()
     }
 
     // 倒计时

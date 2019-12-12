@@ -53,32 +53,32 @@
         </view>
       </view>
       <view class="order">
-        <view class="item">
+        <view class="item" data-status="0" @tap="goOrderList">
           <view class="name">全部</view>
           <view class="num">{{userInfo.order_all}}</view>
         </view>
-        <view class="item" wx:if="{{userInfo.type == 2}}">
+        <view class="item" data-status="1" @tap="goOrderList" wx:if="{{userInfo.type == 2}}">
           <view class="name">待接单</view>
           <view class="num">{{userInfo.dispose_status}}</view>
         </view>
-        <view class="item" wx:if="{{userInfo.type == 2}}">
+        <view class="item" data-status="2" @tap="goOrderList" wx:if="{{userInfo.type == 2}}">
           <view class="name">待确认</view>
           <view class="num">{{userInfo.dispose_status}}</view>
         </view>
-        <view class="item" wx:if="{{userInfo.type == 2}}">
+        <view class="item" data-status="3" @tap="goOrderList" wx:if="{{userInfo.type == 2}}">
           <view class="name">待评价</view>
           <view class="num">{{userInfo.order_evaluation}}</view>
         </view>
 
-        <view class="item" wx:if="{{userInfo.type == 1}}">
+        <view class="item" data-status="2" @tap="goOrderList" wx:if="{{userInfo.type == 1}}">
           <view class="name">待处理</view>
           <view class="num">{{userInfo.order_await}}</view>
         </view>
-        <view class="item" wx:if="{{userInfo.type == 1}}">
+        <view class="item" data-status="3" @tap="goOrderList" wx:if="{{userInfo.type == 1}}">
           <view class="name">已完成</view>
           <view class="num">{{userInfo.order_complete}}</view>
         </view>
-        <view class="item" wx:if="{{userInfo.type == 1}}">
+        <view class="item" data-status="4" @tap="goOrderList" wx:if="{{userInfo.type == 1}}">
           <view class="name">已评价</view>
           <view class="num">{{userInfo.order_evaluation}}</view>
         </view>
@@ -169,6 +169,11 @@
           url = '/pages/userCleaningCertification'
         }
         this.$navigate(url)
+      },
+      // 进入订单列表e
+      goOrderList(e) {
+        let status = e.currentTarget.dataset.status
+        this.$redirect(`/pages/orderList?status=${status}`)
       },
       // 进入酒店功能
       hotelFunction(e) {

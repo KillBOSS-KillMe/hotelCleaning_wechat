@@ -9,7 +9,7 @@
     <swiper wx:if="{{swiperList.length > 0}}" class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
       <repeat for="{{swiperList}}" item="item">
         <swiper-item data-id="{{ item.id }}">
-          <image src="{{ item.image_url }}" bindtap='shareQRCodeImg' data-imgurl="{{requestImgUrl + item.img}}" />
+          <image src="{{ item.banner }}" bindtap='shareQRCodeImg' data-imgurl="{{item.banner}}" />
         </swiper-item>
       </repeat>
     </swiper>
