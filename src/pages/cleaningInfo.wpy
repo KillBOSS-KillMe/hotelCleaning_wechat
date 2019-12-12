@@ -3,28 +3,29 @@
   <view>
     <view class="cleaningInfo">
       <view class="imageBg">
-        <image wx:if="{{cleaningInfo.image_url == ''}}" src="/img/daw.jpg" />
-        <image wx:if="{{cleaningInfo.image_url != ''}}" src="{{cleaningInfo.image_url}}" />
+        <image wx:if="{{cleaningInfo.img == ''}}" src="/img/daw.jpg" />
+        <image wx:if="{{cleaningInfo.img != ''}}" src="{{cleaningInfo.img}}" />
       </view>
-      <view class="name">{{cleaningInfo.name}}</view>
-      <view class="info">已完成{{cleaningInfo.order_one_count}}单</view>
+      <view class="name" wx:if="{{cleaningInfo.name == ''}}">{{cleaningInfo.username}}</view>
+      <view class="name" wx:if="{{cleaningInfo.name != ''}}">{{cleaningInfo.name}}</view>
+      <view class="info">已完成{{cleaningInfo.hotel_num}}单</view>
       <view class="lv">
         <repeat for="{{lv}}" item="item">
-          <icon class="iconfont iconwuxing2 {{cleaningInfo.level >= index+1?'active':''}}"></icon>
+          <icon class="iconfont iconwuxing2 {{cleaningInfo.score >= index+1?'active':''}}"></icon>
         </repeat>
       </view>
     </view>
     <view class="list">
       <view class="item">
         <label>实名认证</label>
-        <text wx:if="{{cleaningInfo.status == 0}}">未认证</text>
-        <text wx:if="{{cleaningInfo.status == 1}}">已认证</text>
-        <text wx:if="{{cleaningInfo.status == 2}}">用户未注册</text>
-        <text wx:if="{{cleaningInfo.status == 3}}">审核中</text>
+        <text wx:if="{{cleaningInfo.is_real_name == 0}}">未认证</text>
+        <text wx:if="{{cleaningInfo.is_real_name == 1}}">已认证</text>
+        <!-- <text wx:if="{{cleaningInfo.is_real_name == 2}}">用户未注册</text>
+        <text wx:if="{{cleaningInfo.is_real_name == 3}}">审核中</text> -->
       </view>
       <view class="item">
         <label>联系电话</label>
-        <text data-phone="{{cleaningInfo.phone}}" @tap="runCall">{{cleaningInfo.phone}}</text>
+        <text data-phone="{{cleaningInfo.phone}}" @tap="runCall">{{cleaningInfo.mobile}}</text>
       </view>
     </view>
   </view>
@@ -67,19 +68,21 @@
     }
     // 获取保洁详情
     getWineInfo() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/index/get_clean_info`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/health/user_details`,
         data: {
-          id: this.options.id
+          uid: this.options.id
         },
-        method: 'GET',
+        method: 'POST',
         success: data => {
+          wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             this.cleaningInfo = data.data.data
             this.$apply()
           }
