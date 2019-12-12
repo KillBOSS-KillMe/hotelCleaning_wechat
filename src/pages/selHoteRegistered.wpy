@@ -268,7 +268,7 @@ view .item:last-child{
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      if (this.userInfo.status != 2) {
+      if (this.userInfo.type != '0') {
         // 提示注册
         this.goRegistered()
       }
