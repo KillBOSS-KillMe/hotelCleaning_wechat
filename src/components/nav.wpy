@@ -11,7 +11,7 @@
       <!-- <view class="iconfont icon-kehu"></view> -->
       <image wx:if="{{navAction[1] == 'action'}}" src="/img/order1.png" />
       <image wx:if="{{navAction[1] == 'noAction'}}" src="/img/order0.png" />
-      <text class="text">客户</text>
+      <text class="text">订单</text>
     </view>
     <view class="ft_item {{navAction[2]}}" @tap="goUser">
       <!-- <view class="iconfont icon-wode"></view> -->

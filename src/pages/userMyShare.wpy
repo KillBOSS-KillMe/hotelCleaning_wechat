@@ -27,33 +27,6 @@
       </view>
     </view>
     <view class="pageSel" wx:if="{{selShow == 2}}">
-      <image class="bg" src="/img/shareBg.png" />
-      <view class="description">
-        <view>好友累计进贡</view>
-        <view>
-          <icon class="iconfont iconweixin"></icon>
-          什么是进贡？
-        </view>
-      </view>
-      <view class="money">
-        <view class="num">{{friendNode.total_money}}</view>
-        <view class="button" @tap="recharge">立即提现</view>
-      </view>
-      <view class="info">
-        <view class="item">
-          <view class="num">{{friendNode.total_money_r}}</view>
-          <view class="name">今日进贡</view>
-        </view>
-        <view class="item">
-          <view class="num">{{friendNode.total}}</view>
-          <view class="name">我的好友</view>
-        </view>
-        <view class="item">
-          <view class="num">{{friendNode.total_money}}</view>
-          <view class="name">累计进贡</view>
-        </view>
-      </view>
-      <view class="title">我的好友</view>
       <view class="userList">
         <repeat for="{{friendList}}" item="item">
           <view class="item">
@@ -78,18 +51,6 @@
           <text>加载更多</text>
           <icon class="iconfont iconxiala"></icon>
         </view>
-        <!-- <view class="item">
-          <image src="/img/shareBg.png" />
-          <view class="userInfo">
-            <view class="name">二狗子</view>
-            <view class="active">待注册</view>
-            <view>
-              累计进贡：
-              <text>￥12.56</text>
-            </view>
-          </view>
-          <view class="time">绑定时间：2019.12.21</view>
-        </view> -->
         <view class="listNull" wx:if="{{friendList.length == 0}}">暂无数据</view>
       </view>
     </view>

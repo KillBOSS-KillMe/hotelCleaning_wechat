@@ -3,76 +3,84 @@
     <image class="userBg" src="/img/userBg.png" />
     <view class="pageName">我的</view>
     <view class="user">
-      <image src="/img/daw.jpg" wx:if="{{userInfo.head_portrait == ''}}" @tap="modifyAvatar"/>
-      <image src="{{userInfo.head_portrait}}" wx:if="{{userInfo.head_portrait != ''}}" @tap="modifyAvatar"/>
+      <image src="/img/daw.jpg" wx:if="{{userInfo.img == ''}}" @tap="modifyAvatar"/>
+      <image src="{{userInfo.img}}" wx:if="{{userInfo.img != ''}}" @tap="modifyAvatar"/>
       <view class="info">
         <view class="name">
           <text wx:if="{{userInfo.type == 1}}">{{userInfo.name}}</text>
           <text wx:if="{{userInfo.type == 2}}">{{userInfo.hotel_name}}</text>
           <view class="lv" wx:if="{{userInfo.type == 1}}">
             <repeat for="{{lv}}" item="item">
-              <icon class="iconfont iconwuxing2 {{userInfo.clean_data.level >= index+1?'active':''}}"></icon>
+              <icon class="iconfont iconwuxing2 {{userInfo.score >= index+1?'active':''}}"></icon>
             </repeat>
           </view>
         </view>
-        <view class="phone" wx:if="{{userInfo.type == 1}}" data-phone="{{userInfo.phone}}" @tap="runCall">电话：{{userInfo.phone}}</view>
-        <view class="phone" wx:if="{{userInfo.type == 2}}" data-phone="{{userInfo.principal_phone}}" @tap="runCall">电话：{{userInfo.principal_phone}}</view>
+        <view class="phone" data-phone="{{userInfo.mobile}}" @tap="runCall">电话：{{userInfo.mobile}}</view>
       </view>
       <!-- status: 2    户状态：0=未认证，1=已认证，2=用户未注册，3=审核中 -->
-      <view class="certification" @tap="goCertification" wx:if="{{userInfo.status == 0}}">
+      <view class="certification" @tap="goCertification" wx:if="{{userInfo.is_real_name == 0}}">
         <icon class="iconfont iconrenzheng"></icon>
         未认证
       </view>
-      <view class="certification isCertification" wx:if="{{userInfo.status == 1}}">
+      <view class="certification isCertification" wx:if="{{userInfo.is_real_name == 1}}">
         <icon class="iconfont iconrenzheng"></icon>
         已认证
       </view>
-      <view class="certification" @tap="goLogin" wx:if="{{userInfo.status == 2}}">
+      <!-- <view class="certification" @tap="goLogin" wx:if="{{userInfo.is_real_name == 2}}">
         <icon class="iconfont iconrenzheng"></icon>
         未注册
       </view>
-      <view class="certification" wx:if="{{userInfo.status == 3}}">
+      <view class="certification" wx:if="{{userInfo.is_real_name == 3}}">
         <icon class="iconfont iconrenzheng"></icon>
         审核中
-      </view>
+      </view> -->
     </view>
     <view class="userInfo">
       <view class="month">
         <view class="item">
           <view class="name" wx:if="{{userInfo.type == 1}}">本月接单</view>
           <view class="name" wx:if="{{userInfo.type == 2}}">本月发单</view>
-          <view class="num">{{userInfo.clean_data.order_receiving}}</view>
+          <view class="num">{{userInfo.have_order_month}}</view>
         </view>
         <view class="item">
           <view class="name">本月完成</view>
-          <view class="num">{{userInfo.clean_data.to_complete_order}}</view>
+          <view class="num">{{userInfo.have_complete_month}}</view>
         </view>
         <view class="item">
           <view class="name" wx:if="{{userInfo.type == 1}}">本月收入</view>
           <view class="name" wx:if="{{userInfo.type == 2}}">本月支出</view>
-          <view class="num">{{userInfo.clean_data.to_complete_money}}</view>
+          <view class="num">{{userInfo.income_month}}</view>
         </view>
       </view>
       <view class="order">
         <view class="item">
           <view class="name">全部</view>
-          <view class="num">{{userInfo.clean_data.all_status}}</view>
+          <view class="num">{{userInfo.order_all}}</view>
         </view>
-        <view class="item">
+        <view class="item" wx:if="{{userInfo.type == 2}}">
+          <view class="name">待接单</view>
+          <view class="num">{{userInfo.dispose_status}}</view>
+        </view>
+        <view class="item" wx:if="{{userInfo.type == 2}}">
           <view class="name">待确认</view>
-          <view class="num">{{userInfo.clean_data.dispose_status}}</view>
-        </view>
-        <view class="item">
-          <view class="name">待处理</view>
-          <view class="num">{{userInfo.clean_data.confirmed_status}}</view>
+          <view class="num">{{userInfo.dispose_status}}</view>
         </view>
         <view class="item" wx:if="{{userInfo.type == 2}}">
           <view class="name">待评价</view>
-          <view class="num">{{userInfo.clean_data.evaluate_status}}</view>
+          <view class="num">{{userInfo.order_evaluation}}</view>
         </view>
-        <view class="item">
+
+        <view class="item" wx:if="{{userInfo.type == 1}}">
+          <view class="name">待处理</view>
+          <view class="num">{{userInfo.order_await}}</view>
+        </view>
+        <view class="item" wx:if="{{userInfo.type == 1}}">
           <view class="name">已完成</view>
-          <view class="num">{{userInfo.clean_data.accomplish_status}}</view>
+          <view class="num">{{userInfo.order_complete}}</view>
+        </view>
+        <view class="item" wx:if="{{userInfo.type == 1}}">
+          <view class="name">已评价</view>
+          <view class="num">{{userInfo.order_evaluation}}</view>
         </view>
       </view>
     </view>
