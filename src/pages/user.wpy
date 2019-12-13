@@ -8,21 +8,30 @@
       <view class="info">
         <view class="name">
           <text wx:if="{{userInfo.type == 1}}">{{userInfo.name}}</text>
-          <text wx:if="{{userInfo.type == 2}}">{{userInfo.hotel_name}}</text>
+          <text wx:if="{{userInfo.type == 2}}">{{userInfo.name}}</text>
           <view class="lv" wx:if="{{userInfo.type == 1}}">
             <repeat for="{{lv}}" item="item">
               <icon class="iconfont iconwuxing2 {{userInfo.score >= index+1?'active':''}}"></icon>
             </repeat>
           </view>
         </view>
-        <view class="phone" data-phone="{{userInfo.mobile}}" @tap="runCall">电话：{{userInfo.mobile}}</view>
+        <view class="phone" data-phone="{{userInfo.mobile}}" wx:if="{{userInfo.type == 1}}" @tap="runCall">电话：{{userInfo.mobile}}</view>
+        <view class="phone" data-phone="{{userInfo.mobile}}" wx:if="{{userInfo.type == 2}}" @tap="runCall">电话：{{userInfo.hotel_head_mobile}}</view>
       </view>
       <!-- status: 2    户状态：0=未认证，1=已认证，2=用户未注册，3=审核中 -->
-      <view class="certification" @tap="goCertification" wx:if="{{userInfo.is_real_name == 0}}">
+      <view class="certification" @tap="goCertification" wx:if="{{userInfo.is_real_name == 0 && userInfo.type == 1}}">
         <icon class="iconfont iconrenzheng"></icon>
         未认证
       </view>
-      <view class="certification isCertification" wx:if="{{userInfo.is_real_name == 1}}">
+      <view class="certification isCertification" wx:if="{{userInfo.is_real_name == 1 && userInfo.type == 1}}">
+        <icon class="iconfont iconrenzheng"></icon>
+        已认证
+      </view>
+      <view class="certification" @tap="goCertification" wx:if="{{userInfo.is_certification == 0 && userInfo.type == 2}}">
+        <icon class="iconfont iconrenzheng"></icon>
+        未认证
+      </view>
+      <view class="certification isCertification" wx:if="{{userInfo.is_certification == 1 && userInfo.type == 2}}">
         <icon class="iconfont iconrenzheng"></icon>
         已认证
       </view>
@@ -287,7 +296,7 @@
     }
     onShow() {
       // 提交用户信息
-      this.setUserInfo() 
+      // this.setUserInfo() 
     }
     // 修改酒店信息
     runModifyAvatar() {

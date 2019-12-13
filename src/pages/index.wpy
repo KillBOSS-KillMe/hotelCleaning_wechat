@@ -22,15 +22,15 @@
     <view class="hotelList" wx:if="{{hotelList.length > 0}}">
       <repeat for="{{hotelList}}" item="item">
         <view class="item" data-id="{{item.id}}" @tap="gohotelInfo">
-          <image src="{{item.image_url}}" />
+          <image src="{{item.img}}" />
           <view class="info">
             <view class="hotelTitle">
-              <view class="name">{{item.hotel_name}}</view>
+              <view class="name">{{item.name}}</view>
               <!-- <view class="label">{{item.type}}</view> -->
             </view>
             <view class="hotelAddress">
               <icon class="iconfont icondingwei"></icon>
-              {{item.detailed_address}}
+              {{item.address}}
             </view>
             <view class="hotelInfo">
               <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
@@ -271,6 +271,34 @@
                 this.$redirect('/pages/selRegisteredType')
               }, 2000)
             }
+            // 加载酒店详细信息
+            if (this.userInfo.type == '2') {
+              this.hoteDetails()
+            }
+            this.$apply()
+          }
+        }
+      })
+    }
+    hoteDetails() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/hotel/hotel_details`,
+        method: 'POST',
+        data: {
+          hid: this.userInfo.id
+        },
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          if (data.data.code == 1) {
+            this.userInfo = Object.assign(this.userInfo, data.data.data)
+            this.$parent.globalData.userInfo = this.userInfo
+            console.log(this.userInfo)
             this.$apply()
           }
         }
@@ -310,7 +338,7 @@
         duration: 1000000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/basis/hotel`,
+        url: `${this.$parent.globalData.requestUrl}/hotel/hotel_list`,
         data: {
           lat: this.longitude,
           lng: this.latitude
@@ -425,8 +453,6 @@
         return true
       }
     }
-
-    
   }
 </script>
 <style lang="less">
