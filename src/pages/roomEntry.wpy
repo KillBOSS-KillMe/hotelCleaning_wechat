@@ -33,12 +33,12 @@
     </view>
     <view class="item">
       <label>房间号</label>
-      <input type="text" data-name="room_number" @input="getSetData" placeholder="请输入房间号" />
+      <input type="text" data-name="room_num" @input="getSetData" placeholder="请输入房间号" />
     </view>
     <view class="item">
       <label>房间类型</label>
       <picker bindchange="setType" value="{{index}}" range="{{showType}}">
-        <input type="text" data-name="roomType" value="{{showType[index]}}" disabled placeholder="请选择房间类型" />
+        <input type="text" data-name="room_type_id" value="{{showType[index]}}" disabled placeholder="请选择房间类型" />
       </picker>
     </view>
     <view class="sub">
@@ -60,8 +60,8 @@
 
     data = {
       formNode: {
-        floor: '',
-        room_number: '',
+        room_floor: '',
+        room_num: '',
         roomType: '',
         room_type_id: ''
       },
@@ -102,7 +102,7 @@
           })
           return
         }
-        if (formNode.room_number == '') {
+        if (formNode.room_num == '') {
           wepy.showModal({
             title: '',
             content: '请输入房间号',

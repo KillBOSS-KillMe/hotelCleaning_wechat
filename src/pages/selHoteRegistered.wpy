@@ -98,12 +98,12 @@ view .item:last-child{
   <view>
     <view class="item">
       <label>酒店名</label>
-      <input data-name="hotel_name" @input="getSetData" placeholder="请输入酒店名称" />
+      <input data-name="name" @input="getSetData" placeholder="请输入酒店名称" />
     </view>
     <view class="item">
       <label>地址</label>
       <picker bindchange="changeRegin" mode="region" value="{{region}}">
-        <input data-name="name" value="{{region[0]}} - {{region[1]}} - {{region[2]}}" disabled placeholder="请选择地址" />
+        <input data-name="address" value="{{region[0]}} - {{region[1]}} - {{region[2]}}" disabled placeholder="请选择地址" />
       </picker>
     </view>
     <view class="item">
@@ -112,7 +112,7 @@ view .item:last-child{
     </view>
     <view class="item">
       <label>房间总数</label>
-      <input value="{{roomList.length}}" data-name="total_number" disabled @input="getSetData" placeholder="请输入房间总数" />
+      <input value="{{roomList.length}}" data-name="hotel_num" disabled @input="getSetData" placeholder="请输入房间总数" />
     </view>
     <view class="item floor">
       <label>房间列表</label>
@@ -128,15 +128,15 @@ view .item:last-child{
     </view>
     <view class="item">
       <label>布草车数</label>
-      <input type="number" data-name="car_number" @input="getSetData" placeholder="请输入布草车数量" />
+      <input type="number" data-name="linen_truck" @input="getSetData" placeholder="请输入布草车数量" />
     </view>
     <view class="item">
       <label>酒店方负责人</label>
-      <input data-name="principal" @input="getSetData" placeholder="请输入负责人姓名" />
+      <input data-name="hotel_head" @input="getSetData" placeholder="请输入负责人姓名" />
     </view>
     <view class="item">
       <label>负责人电话</label>
-      <input type="number" data-name="principal_phone" @input="getSetData" placeholder="请输入负责人电话" />
+      <input type="number" data-name="hotel_head_mobile" @input="getSetData" placeholder="请输入负责人电话" />
     </view>
     <view class="item code">
       <label>验证码</label>
@@ -145,14 +145,14 @@ view .item:last-child{
     </view>
     <view class="item">
       <label>前台固话</label>
-      <input type="text" data-name="desk_tel" @input="getSetData" placeholder="请输入前台电话" />
+      <input type="text" data-name="mobile" @input="getSetData" placeholder="请输入前台电话" />
     </view>
     <view class="item">
       <label>酒店logo</label>
     </view>
     <view class="item imgList">
       <repeat for="{{hotelLogo}}" item="item">
-        <image src="{{item.path.image_url}}" />
+        <image src="{{item.path}}" />
       </repeat>
       <image src="/img/upImg.png" @tap="upHotelLogo" wx:if="{{hotelLogo.length == 0}}" />
     </view>
@@ -162,7 +162,7 @@ view .item:last-child{
     </view>
     <view class="item imgList" style="margin-bottom: 200rpx;">
       <repeat for="{{hotelImgList}}" item="item">
-        <image src="{{item.path.image_url}}" />
+        <image src="{{item.path}}" />
       </repeat>
       <image src="/img/upImg.png" @tap="upHotelImgList" wx:if="{{hotelImgList.length < 9}}" />
     </view>
@@ -190,25 +190,22 @@ view .item:last-child{
       hotelImgList: [],
       roomList: [],
       formNode: {
-        hotel_name: '',         // 酒店名称
-        province_id: '1',       // 地址省id
-        province_name: '',      // 地址省名称
-        city_id: '1',           // 地址市id
-        city_name: '',          // 地址市名称
-        county_id: '1',         // 地址县id
-        county_name: '',        // 地址县名称
+        name: '',               // 酒店名称
+        address: '',            // 地址
         detailed_address: '',   // 详细地址
-        total_number: '',       // 房间总数
-        car_number: '',         // 布草车数
-        principal: '',          // 酒店方负责人
-        principal_phone: '',    // 酒店负责人电话
-        admin_id: '0',          // 上级id  0表示没有上级
+        hotel_num: '',          // 房间总数
+        linen_truck: '',        // 布草车数
+        hotel_head: '',         // 酒店方负责人
+        hotel_head_mobile: '',  // 酒店负责人电话
+        fid: '0',          // 上级id  0表示没有上级
         code: '',               // 验证码六位数字
-        desk_tel: '',           // 酒店前台固话
-        logo: '',               // 酒店logo（单图）
-        hotel_image: '',        // 酒店图片（多图用|线隔开）
-        rooms: []               // 酒店房间信息
+        mobile: '',             // 酒店前台固话
+        img: '',               // 酒店logo（单图）
+        hotel_room: '1,2,3,4',  // 房间id
+        hotel_img: '',          // 酒店图片（多图用|线隔开）
+        openid: ''              // 用户openID
       },
+      // rooms: [],              // 酒店房间信息
       disabled: false,
       currentTime: 60,   // 倒计时初始值
       time: '发送验证码'
@@ -247,9 +244,7 @@ view .item:last-child{
       // 选择省市区函数
       changeRegin(e) {
         let region = e.detail.value
-        this.formNode['province_name'] = region[0]
-        this.formNode['city_name'] = region[1]
-        this.formNode['county_name'] = region[2]
+        this.formNode['address'] = region[0] + region[1] + region[2]
         this.formNode['detailed_address'] = region[0] + region[1] + region[2]
         this.region = region
         this.$apply()
@@ -268,6 +263,8 @@ view .item:last-child{
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
+      this.formNode.openid = this.userInfo.openid
+      
       if (this.userInfo.type != '0') {
         // 提示注册
         this.goRegistered()
@@ -285,28 +282,30 @@ view .item:last-child{
       }, 2000)
     }
     onShow() {
-      this.formNode['admin_id'] = this.$parent.globalData.admin_id
+      this.formNode['fid'] = this.$parent.globalData.fid
       this.roomList = this.$parent.globalData.roomList
-      this.formNode['rooms'] = this.roomList
-      this.formNode['total_number'] = this.roomList.length
+      // this.formNode['rooms'] = this.roomList
+      this.formNode['hotel_num'] = this.roomList.length
       this.$apply()
     }
     sub() {
       let formNode = this.formNode
-      let rooms = formNode.rooms
-      for (var i = 0; i < rooms.length; i++) {
-        delete rooms[i]["roomType"]
-      }
-      formNode['rooms'] = rooms
+      // let rooms = formNode.rooms
+      // console.log(formNode)
+      // return false
+      // for (var i = 0; i < rooms.length; i++) {
+      //   delete rooms[i]["roomType"]
+      // }
+      // formNode['rooms'] = rooms
       
-      if (formNode.hotel_name == '') {
+      if (formNode.name == '') {
         wx.showToast({
           title: '请输入酒店名称',
           icon: 'none'
         });
         return
       }
-      if (formNode.province_name == '') {
+      if (formNode.address == '') {
         wx.showToast({
           title: '请选择详情地址',
           icon: 'none'
@@ -320,10 +319,7 @@ view .item:last-child{
         });
         return
       }
-      // this.formNode['province_name'] = region[0]
-      //   this.formNode['city_name'] = region[1]
-      //   this.formNode['county_name'] = region[2]
-      let address = formNode.province_name + formNode.city_name + formNode.county_name
+      let address = formNode.address
       if (formNode.detailed_address.indexOf(address) == -1) {
         wx.showToast({
           title: '请在详细地址中输入省市区，格式与地址项相同',
@@ -331,14 +327,14 @@ view .item:last-child{
         });
         return
       }
-      if (formNode.rooms.length <= 0) {
+      if (formNode.hotel_room == '') {
         wx.showToast({
           title: '请输入录入房间信息',
           icon: 'none'
         });
         return
       }
-      if (formNode.car_number == '') {
+      if (formNode.linen_truck == '') {
         wx.showToast({
           title: '请输入布草车数量',
           icon: 'none'
@@ -346,14 +342,14 @@ view .item:last-child{
         return
       }
       
-      if (formNode.principal == '') {
+      if (formNode.hotel_head == '') {
         wx.showToast({
           title: '请输入酒店负责人',
           icon: 'none'
         });
         return
       }
-      if (formNode.principal_phone.length != 11) {
+      if (formNode.hotel_head_mobile.length != 11) {
         wx.showToast({
           title: '请输入酒店负责人电话',
           icon: 'none'
@@ -367,109 +363,27 @@ view .item:last-child{
         });
         return
       }
-      if (formNode.desk_tel == '') {
+      if (formNode.mobile == '') {
         wx.showToast({
           title: '请输入前台固定电话',
           icon: 'none'
         });
         return
       }
-      if (formNode.logo == '') {
+      if (formNode.img == '') {
         wx.showToast({
           title: '请上传酒店logo',
           icon: 'none'
         });
         return
       }
-      if (formNode.hotel_image == '') {
+      if (formNode.hotel_img == '') {
         wx.showToast({
           title: '请上传酒店图片',
           icon: 'none'
         });
         return
       }
-
-
-
-      
-      // if (this.check.isNull(formNode.hotel_name)) {
-      //   wx.showToast({
-      //     title: '请输入酒店名称',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isNull(formNode.province_name)) {
-      //   wx.showToast({
-      //     title: '请选择详情地址',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isNull(formNode.detailed_address)) {
-      //   wx.showToast({
-      //     title: '请输入详细地址',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (formNode.rooms.length <= 0) {
-      //   wx.showToast({
-      //     title: '请输入录入房间信息',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isNull(formNode.car_number)) {
-      //   wx.showToast({
-      //     title: '请输入布草车数量',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      
-      // if (this.check.isNull(formNode.principal)) {
-      //   wx.showToast({
-      //     title: '请输入酒店负责人',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isPhone(formNode.principal_phone)) {
-      //   wx.showToast({
-      //     title: '请输入酒店负责人电话',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isNull(formNode.code)) {
-      //   wx.showToast({
-      //     title: '请输入手机验证码',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isNull(formNode.desk_tel)) {
-      //   wx.showToast({
-      //     title: '请输入前台固定电话',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isNull(formNode.logo)) {
-      //   wx.showToast({
-      //     title: '请上传酒店logo',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
-      // if (this.check.isNull(formNode.hotel_image)) {
-      //   wx.showToast({
-      //     title: '请上传酒店图片',
-      //     icon: 'none'
-      //   });
-      //   return
-      // }
       this.upformData(formNode)
     }
     upformData(formNode) {
@@ -479,18 +393,13 @@ view .item:last-child{
         duration: 10000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/auth/wine_register`,
+        url: `${this.$parent.globalData.requestUrl}/hotel/login`,
         method: 'POST',
-        header: {
-          'content-type':'application/json',
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
         data: formNode,
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             wx.showToast({
               title: "注册成功",
               icon: 'success',
@@ -523,14 +432,11 @@ view .item:last-child{
           Promise.all(res.tempFiles.map(item => {
             return new Promise((resolve, reject) => {
               wx.uploadFile({
-                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                url: `${this.$parent.globalData.requestUrl}/basis/img_upload`,
                 filePath: item.path,
-                name: 'file',
-                header: {
-                  authorization: this.$parent.globalData.token,
-                  apikey: this.$parent.globalData.apikey
-                },
+                name: 'img',
                 success: res => {
+                  console.log(res)
                   resolve({
                     path: JSON.parse(res.data).data
                   })
@@ -538,9 +444,11 @@ view .item:last-child{
               })
             })
           })).then(e => {
+            console.log(e)
             wx.hideToast()
             this.hotelLogo = this.hotelLogo.concat(e)
-            this.formNode['logo'] = this.hotelLogo[0].path.image_id
+            this.formNode['img'] = this.hotelLogo[0].path
+            console.log(this.hotelLogo)
             this.$apply()
           }).catch(err => console.log(err))
         }
@@ -560,14 +468,11 @@ view .item:last-child{
           Promise.all(res.tempFiles.map(item => {
             return new Promise((resolve, reject) => {
               wx.uploadFile({
-                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                url: `${this.$parent.globalData.requestUrl}/basis/img_upload`,
                 filePath: item.path,
-                name: 'file',
-                header: {
-                  authorization: this.$parent.globalData.token,
-                  apikey: this.$parent.globalData.apikey
-                },
+                name: 'img',
                 success: res => {
+                  console.log(res)
                   resolve({
                     path: JSON.parse(res.data).data
                   })
@@ -575,16 +480,18 @@ view .item:last-child{
               })
             })
           })).then(e => {
+            console.log(e)
             wx.hideToast()
             this.hotelImgList = this.hotelImgList.concat(e)
             let hotelImgList = this.hotelImgList
-            let hotel_image = ''
+            let hotel_img = ''
             for (let i = 0; i < hotelImgList.length; i++) {
-              hotel_image += '|'
-              hotel_image += hotelImgList[i].path.image_id
+              hotel_img += ','
+              hotel_img += hotelImgList[i].path
             }
-            hotel_image = hotel_image.substr(1)
-            this.formNode['hotel_image'] = hotel_image
+            hotel_img = hotel_img.substr(1)
+            this.formNode['hotel_img'] = hotel_img
+            console.log(hotel_img)
             this.$apply()
           }).catch(err => console.log(err))
         }
@@ -595,7 +502,7 @@ view .item:last-child{
       if (this.disabled) {
         return false
       }
-      if (this.check.isPhone(this.formNode.principal_phone)) {
+      if (this.check.isPhone(this.formNode.hotel_head_mobile)) {
         wepy.showModal({
           title: '',
           content: '请输入电话',
@@ -611,20 +518,16 @@ view .item:last-child{
       this.disabled = true
       this.$apply()
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/auth/send_code`,
+        url: `${this.$parent.globalData.requestUrl}/hotel/sms_code`,
         method: 'POST',
-        header: {
-          'content-type':'application/json',
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
         data: {
-          phone: this.formNode.principal_phone
+          mobile: this.formNode.hotel_head_mobile
         },
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          console.log(data)
+          if (data.data.code === 1) {
             wx.showToast({
               title: data.data.msg,
               icon: 'success',
