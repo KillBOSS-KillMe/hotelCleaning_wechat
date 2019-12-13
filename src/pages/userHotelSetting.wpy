@@ -47,11 +47,11 @@
   <view>
     <view class="item">
       <label>原电话</label>
-      <input type="text" placeholder="请输入原电话" />
+      <input type="text" value="{{userInfo.hotel_head_mobile}}" placeholder="请输入原电话" />
     </view>
     <view class="item">
       <label>新电话</label>
-      <input type="text" data-name="principal_phone" @input="getSetData" placeholder="请输入新电话" />
+      <input type="text" data-name="hotel_head_mobile" @input="getSetData" placeholder="请输入新电话" />
     </view>
     <view class="item code">
       <label>验证码</label>
@@ -75,9 +75,11 @@
     mixins = []
 
     data = {
+      userInfo: {},
       formNode: {
-        principal_phone: '',
-        code: ''
+        hotel_head_mobile: '',
+        code: '',
+        hid: ''
       },
       disabled: false,
       currentTime: 60,   // 倒计时初始值
@@ -97,7 +99,7 @@
       },
       sub() {
         let formNode = this.formNode
-        if (formNode.principal_phone == '') {
+        if (formNode.hotel_head_mobile == '') {
           wx.showToast({
           title: "请输入新电话",
           icon: 'none'
@@ -110,18 +112,13 @@
           duration: 10000
         });
         wx.request({
-          url: `${this.$parent.globalData.requestUrl}/auth/wine_user_sys`,
+          url: `${this.$parent.globalData.requestUrl}/hotel/mobile_update`,
           method: 'POST',
-          header: {
-            'content-type':'application/json',
-            authorization: this.$parent.globalData.token,
-            apikey: this.$parent.globalData.apikey
-          },
           data: formNode,
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
-            if (data.data.code === 8888) {
+            if (data.data.code === 1) {
               wx.showToast({
                 title: "修改成功",
                 icon: 'success',
@@ -146,7 +143,7 @@
         if (this.disabled) {
           return false
         }
-        if (this.formNode.phone.length != 11) {
+        if (this.formNode.hotel_head_mobile.length != 11) {
           wepy.showModal({
             title: '',
             content: '请输入新电话',
@@ -157,29 +154,24 @@
         wx.showToast({
           title: "请求发送中...",
           icon: 'loading',
-          duration: 10000
+          duration: 1000000
         });
         this.disabled = true
         this.$apply()
         wx.request({
-          url: `${this.$parent.globalData.requestUrl}/auth/send_code`,
+          url: `${this.$parent.globalData.requestUrl}/hotel/sms_code`,
           method: 'POST',
-          header: {
-            'content-type':'application/json',
-            authorization: this.$parent.globalData.token,
-            apikey: this.$parent.globalData.apikey
-          },
           data: {
-            phone: this.formNode.phone
+            mobile: this.formNode.hotel_head_mobile
           },
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
-            if (data.data.code === 8888) {
+            if (data.data.code === 1) {
               wx.showToast({
                 title: data.data.msg,
                 icon: 'success',
-                duration: 1000
+                duration: 2000
               });
               this.$apply()
               this.countdown()
@@ -199,6 +191,9 @@
     }
 
     onLoad() {
+      this.userInfo = this.$parent.globalData.userInfo
+      this.formNode.hid = this.userInfo.id
+      console.log(this.userInfo)
     }
 
     // 倒计时

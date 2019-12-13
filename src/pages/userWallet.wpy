@@ -101,9 +101,7 @@
           authorization: this.$parent.globalData.token,
           apikey: this.$parent.globalData.apikey
         },
-        data: {
-          page: this.current_page + 1
-        },
+        data: data,
         method: 'POST',
         success: data => {
           wx.hideToast()
