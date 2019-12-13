@@ -2,16 +2,16 @@
 <template>
   <view>
     <swiper class='swiper' indicator-dots="true" autoplay='true' interval='5000' duration='2000'>
-      <repeat for="{{hotelInfo.hotel_image}}" item="item">
+      <repeat for="{{hotelInfo.hotel_img}}" item="item">
         <swiper-item>
-          <image src="{{ item.url }}" bindtap='shareQRCodeImg' data-imgurl="{{item.url}}" />
+          <image src="{{ item.img }}" bindtap='shareQRCodeImg' data-imgurl="{{item.img}}" />
         </swiper-item>
       </repeat>
     </swiper>
     <view class="hotelInfo">
-      <image class="logo" src="{{hotelInfo.image_url}}" />
+      <image class="logo" src="{{hotelInfo.img}}" />
       <view class="info">
-        <view class="name">{{hotelInfo.hotel_name}}</view>
+        <view class="name">{{hotelInfo.name}}</view>
         <view class="item addressitem">
           <view class="address">
             <image src="/img/address.png" />
@@ -21,7 +21,7 @@
         </view>
         <view class="item">
           <image src="/img/phone.png" />
-          <text data-phone="{{hotelInfo.desk_tel}}" @tap="runCall">{{hotelInfo.desk_tel}}</text>
+          <text data-phone="{{hotelInfo.hotel_head_mobile}}" @tap="runCall">{{hotelInfo.hotel_head_mobile}}</text>
         </view>
       </view>
     </view>
@@ -31,11 +31,11 @@
       </view>
       <view class="item">
         <text>酒店名称</text>
-        <label>{{hotelInfo.hotel_name}}</label>
+        <label>{{hotelInfo.name}}</label>
       </view>
       <view class="item">
         <text>客服电话</text>
-        <label data-phone="{{hotelInfo.desk_tel}}" @tap="runCall">{{hotelInfo.desk_tel}}</label>
+        <label data-phone="{{hotelInfo.hotel_head_mobile}}" @tap="runCall">{{hotelInfo.hotel_head_mobile}}</label>
       </view>
       <view class="item">
         <text>酒店资质</text>
@@ -83,21 +83,22 @@
     }
     // 获取楼盘详情
     getWineInfo() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/index/get_wine_info`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/hotel/hotel_details`,
         data: {
-          id: this.options.id
+          hid: this.options.id
         },
-        method: 'GET',
+        method: 'POST',
         success: data => {
+          wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             this.hotelInfo = data.data.data
-
             this.$apply()
           }
         }

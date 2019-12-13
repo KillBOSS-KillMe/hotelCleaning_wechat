@@ -146,8 +146,10 @@
       hotelFunctionList: [
         {id: '1', name: '我的钱包', img: 'wallet', val: '0', showIcon: '1', active: '1'},
         {id: '2', name: '我要发布', img: 'wallet', val: '', showIcon: '1', active: '0'},
+        {id: '5', name: '房间列表', img: 'wallet', val: '', showIcon: '1', active: '0'},
         {id: '3', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
         {id: '4', name: '建议与反馈', img: 'suggest', val: '', showIcon: '0', active: '0'},
+        
       ],
       cleaningFunctionList: [
         {id: '1', name: '我的钱包', img: 'wallet', val: '0', showIcon: '1', active: '1'},
@@ -208,6 +210,10 @@
             // 建议与反馈
             let tal = this.userInfo.service_tal
             this.$parent.runCall(tal)
+            break;
+          case '5':
+            // 设置
+            url += '/pages/userRoomList'
             break;
           default:
             url += ''

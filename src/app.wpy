@@ -81,6 +81,7 @@ export default class extends wepy.app {
       'pages/userHotelSetting',           // 个人中心--信息设置--酒店
       'pages/userCleaningCertification',  // 个人中心--保洁认证
       'pages/userhotelgCertification',    // 个人中心--酒店认证
+      'pages/userRoomList',               // 个人中心--酒店--房间列表
       
       'pages/orderList',                  // 订单-列表
       'pages/orderInfo',                  // 订单-详情--
