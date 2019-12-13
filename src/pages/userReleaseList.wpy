@@ -75,7 +75,7 @@
         data: {
           hid: this.userInfo.id
         },
-        method: 'GET',
+        method: 'POST',
         success: data => {
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
