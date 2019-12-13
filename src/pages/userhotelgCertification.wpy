@@ -3,7 +3,7 @@
     <view class="form">
       <view class="item">
         <label>酒店名</label>
-        <input type="text" data-name="hotel_name" @input="getSetData" placeholder="请输入酒店名" />
+        <input type="text" data-name="name" @input="getSetData" placeholder="请输入酒店名" />
       </view>
       <view class="item">
         <label>统一信用代码</label>
@@ -11,19 +11,17 @@
       </view>
       <view class="item">
         <label>法人/负责人</label>
-        <input type="text" data-name="legal" @input="getSetData" placeholder="请输入法人/负责人" />
+        <input type="text" data-name="legal_person" @input="getSetData" placeholder="请输入法人/负责人" />
       </view>
       <view class="item">
         <label>法人/负责人联系电话</label>
-        <input type="text" data-name="phone" @input="getSetData" placeholder="请输入法人/负责人联系电话" />
+        <input type="text" data-name="legal_person_mobile" @input="getSetData" placeholder="请输入法人/负责人联系电话" />
       </view>
     </view>
     <view class="title">请上传酒店营业执照</view>
     <view class="img" @tap="getCertificate">
-      <repeat for="{{certificate}}" item="item">
-        <image src="{{item.path.image_url}}" />
-      </repeat>
-      <image src="/img/card2.png" wx:if="{{certificate.length == 0}}" />
+      <image src="{{formNode.business_license_img}}" wx:if="{{formNode.business_license_img != ''}}" />
+      <image src="/img/card2.png" wx:if="{{formNode.business_license_img == ''}}" />
     </view>
     <view class="sub">
       <view @tap="sub">认证</view>
@@ -44,11 +42,12 @@
 
     data = {
       formNode: {
-        hotel_name: '',         // 酒店名称
-        legal: '',              // 法人/负责人
-        phone: '',              // 法人/负责人联系电话
+        name: '',         // 酒店名称
+        legal_person: '',              // 法人/负责人
+        legal_person_mobile: '',              // 法人/负责人联系电话
         credit_code: '',        // 统一信用代码
-        trading_certificate: '',// 酒店营业执照（单图）
+        business_license_img: '',// 酒店营业执照（单图）
+        hid: ''
       },
       certificate: []
     }
@@ -73,26 +72,29 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
+      this.formNode.hid = this.userInfo.id
       this.$apply()
     }
 
     sub() {
       let formNode = this.formNode
-      if (formNode.hotel_name == '') {
+      console.log(formNode)
+      // return false
+      if (formNode.name == '') {
         wx.showToast({
           title: '请输入酒店名称',
           icon: 'none'
         });
         return
       }
-      if (formNode.legal == '') {
+      if (formNode.legal_person == '') {
         wx.showToast({
           title: '请输入法人姓名',
           icon: 'none'
         });
         return
       }
-      if (formNode.phone == '') {
+      if (formNode.legal_person_mobile == '') {
         wx.showToast({
           title: '请输入电话',
           icon: 'none'
@@ -122,18 +124,13 @@
         duration: 10000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/auth/wine_user_attestation`,
+        url: `${this.$parent.globalData.requestUrl}/hotel/certification`,
         method: 'POST',
-        header: {
-          'content-type':'application/json',
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
         data: formNode,
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             wx.showToast({
               title: "提交成功",
               icon: 'success',
@@ -167,13 +164,9 @@
           Promise.all(res.tempFiles.map(item => {
             return new Promise((resolve, reject) => {
               wx.uploadFile({
-                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                url: `${this.$parent.globalData.requestUrl}/basis/img_upload`,
                 filePath: item.path,
-                name: 'file',
-                header: {
-                  authorization: this.$parent.globalData.token,
-                  apikey: this.$parent.globalData.apikey
-                },
+                name: 'img',
                 success: res => {
                   resolve({
                     path: JSON.parse(res.data).data
@@ -184,7 +177,7 @@
           })).then(e => {
             wx.hideToast()
             this.certificate = this.certificate.concat(e)
-            this.formNode['trading_certificate'] = this.certificate[0].path.image_id
+            this.formNode['business_license_img'] = this.certificate[0].path
             this.$apply()
           }).catch(err => console.log(err))
         }
