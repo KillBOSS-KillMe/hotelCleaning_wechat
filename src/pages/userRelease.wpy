@@ -12,7 +12,7 @@
             <repeat for="{{roomList}}" item="item">
               <view class="itemRoom">
                 <checkbox data-index="{{index}}" id="{{item.id}}" value="{{index}}" checked="{{item.checks}}"/>
-                <text>{{item.room_number}}</text>
+                <text>{{item.room_floor}}层{{item.room_num}}号（{{item.room_type}}）￥{{item.room_money}}</text>
               </view>
             </repeat>
           </view>
@@ -20,8 +20,8 @@
       </view>
       <view class="item code">
         <label>预约时间</label>
-        <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{formNode.make_time}}" range="{{multiArray}}">
-          <input type="text" disabled data-name="code" value="{{formNode.make_time}}" placeholder="请选择日期" />
+        <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{formNode.perform_time}}" range="{{multiArray}}">
+          <input type="text" disabled data-name="code" value="{{formNode.perform_time}}" placeholder="请选择日期" />
         </picker>
         <!-- <view class="getCode" @tap="getCode">发送验证码</view> -->
       </view>
@@ -88,8 +88,8 @@ for (let i = 0; i < 60; i++) {
       // 房间列表
       roomList: [],
       formNode: {
-        content: '',         // 房间列表
-        make_time: ''        // 预约时间
+        room: '',         // 房间列表
+        perform_time: ''        // 预约时间
       }
     }
 
@@ -97,14 +97,17 @@ for (let i = 0; i < 60; i++) {
 
     methods = {
       selCleaning(e) {
+        
         let indexArr = e.detail.value
+        console.log(e)
         let roomList = this.roomList
-        let content = ''
+        let room = ''
         for (let i = 0; i < indexArr.length; i++) {
-          content += '|'
-          content += roomList[parseInt(indexArr[i])].id
+          room += ','
+          room += roomList[parseInt(indexArr[i])].id
         }
-        this.formNode['content'] = content.substr(1)
+        this.formNode['room'] = room.substr(1)
+        console.log(this.formNode)
         this.$apply()
       },
       // 获取预约时间
@@ -116,7 +119,7 @@ for (let i = 0; i < 60; i++) {
         const day = this.multiArray[2][index[2]]
         const hour = this.multiArray[3][index[3]]
         const minute = this.multiArray[4][index[4]]
-        this.formNode['make_time'] = `${year}-${month}-${day} ${hour}:${minute}`
+        this.formNode['perform_time'] = `${year}-${month}-${day} ${hour}:${minute}`
         this.$apply()
       },
     }
@@ -132,8 +135,9 @@ for (let i = 0; i < 60; i++) {
       const day = now.getDate();//得到日期
       const hour = now.getHours();//得到小时
       const minute = now.getMinutes();//得到分
-      this.formNode['make_time'] = `${year}-${month}-${day} ${hour}:${minute}`
       this.userInfo = this.$parent.globalData.userInfo
+      this.formNode['perform_time'] = `${year}-${month}-${day} ${hour}:${minute}`
+      this.formNode['hid'] = this.userInfo.id
       this.$apply()
       this.getRoomList()
     }
@@ -144,7 +148,7 @@ for (let i = 0; i < 60; i++) {
         data: {
           hid: this.userInfo.id
         },
-        method: 'GET',
+        method: 'POST',
         success: data => {
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
@@ -156,14 +160,14 @@ for (let i = 0; i < 60; i++) {
     }
     sub() {
       let formNode = this.formNode
-      if (formNode.content == '') {
+      if (formNode.room == '') {
           wx.showToast({
             title: '请选择房间',
             icon: 'none'
           });
           return
       }
-      if (formNode.make_time == '') {
+      if (formNode.perform_time == '') {
           wx.showToast({
             title: '请选择时间',
             icon: 'none'
@@ -176,18 +180,13 @@ for (let i = 0; i < 60; i++) {
         duration: 10000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/order/create_order`,
+        url: `${this.$parent.globalData.requestUrl}/hotel/release_order`,
         method: 'POST',
-        header: {
-          'content-type':'application/json',
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
         data: formNode,
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             wx.showToast({
               title: "发布成功",
               icon: 'success',
