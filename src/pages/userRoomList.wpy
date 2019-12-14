@@ -210,7 +210,8 @@
     .roomDel{
       width: 60rpx;
       height: 100%;
-      background-color: red;
+      background: linear-gradient(to left, #30A2F4, #00E8BD);
+      border-radius: 10rpx;
       padding: 0 10rpx;
       display: flex;
       align-items: center;

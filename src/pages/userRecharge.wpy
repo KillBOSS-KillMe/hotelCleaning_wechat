@@ -140,19 +140,16 @@
         duration: 1000000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/recharge/wx_pay`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/basis/wx_pay`,
         data: {
-          id: this.id
+          // id: this.id
         },
         method: 'POST',
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          console.log(data)
+          if (data.data.code === 1) {
             this.runRecharge(data.data.data)
           } else {
             wx.showToast({

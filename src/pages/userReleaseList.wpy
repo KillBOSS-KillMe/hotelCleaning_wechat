@@ -6,22 +6,21 @@
     <view class="orderList">
       <repeat for="{{orderList}}" item="item">
         <view class="item">
-          <image src="{{item.image_url}}" />
-          <view class="info">
-            <view class="hotelTitle">
-              <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
-            </view>
-            <view class="hotelAddress">
-              <icon class="iconfont iconfangjian"></icon>
-              {{item.content}}
-            </view>
-            <view class="hotelAddress">
-              <icon class="iconfont icondingwei"></icon>
-              {{item.detailed_address}}
-            </view>
-            <view class="hotelInfo">
-              <text>{{item.created_at}}</text>
-            </view>
+          <!-- <image src="{{item.image_url}}" /> -->
+          <view class="roomInfo">
+            <text class="floor">{{item.room_floor}}层</text>
+            <text class="num">{{item.room_num}}号</text>
+            <text class="type_name">（{{item.type_name}}）</text>
+          </view>
+          <view class="cleaningInfo" wx:if="{{item.name}}">
+            <image src="{{item.img}}" />
+            <text class="num">{{item.name}}</text>
+            <!-- <text class="type_name">（{{item.type_name}}）</text> -->
+          </view>
+          <view class="time">
+            <text class="floor">{{item.room_floor}}层</text>
+            <text class="num">{{item.room_num}}号</text>
+            <text class="type_name">（{{item.type_name}}）</text>
           </view>
         </view>
       </repeat>
@@ -79,10 +78,10 @@
         success: data => {
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
-            let orderList = data.data.data.data
-            for (let i = 0; i < orderList.length; i++) {
-              orderList[i]['num'] = orderList[i].content.split('|').length
-            }
+            let orderList = data.data.data
+            // for (let i = 0; i < orderList.length; i++) {
+            //   orderList[i]['num'] = orderList[i].content.split('|').length
+            // }
             this.orderList = orderList
             this.$apply()
             //        "last_page": 1,     表示总页数
@@ -128,101 +127,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-  }
-  image{
-    width: 190rpx;
-    height: 190rpx;
-    border-radius: 10rpx;
-  }
-  .info{
-    width: 480rpx;
-    height: 190rpx;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
     flex-direction: column;
   }
-  .hotelTitle{
+  .roomInfo, .cleaningInfo {
     width: 100%;
-    height: auto;
-    // padding: 30rpx 0;
+  }
+  .time{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    // margin-bottom: 10rpx;
-    .name{
-      width: auto;
-      max-width: 300rpx;
-      font-size: 32rpx;
-      font-weight: 600;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .label{
-      // margin-left: 20rpx;
-      font-size: 28rpx;
-      color: #C1C1C1;
-      // padding: 10rpx;
-      // border-radius: 40rpx;
-      // background: linear-gradient(to left,#30A2F4,#00E8BD);
-    }
-    .active{
-      color: #FE892F;
-    }
-  }
-  .hotelAddress{
-    font-size: 25rpx;
-    color: #898989;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap;
-    // margin-top: 10rpx;
-    // padding: 20rpx 0;
-    icon{
-      font-size: 25rpx;
-      color: #898989;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-  .hotelInfo{
-    width: 100%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    font-size: 25rpx;
-    color: #898989;
-    view{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .transfer{
-      background: none;
-      background-color: #30A2F4;
-    }
-    .carryOut{
-      background: none;
-      background-color: #C1C1C1;
-    }
-    button{
-      padding: 15rpx 20rpx;
-      font-size: 25rpx;
-      color: #fff;
-      height: 55rpx;
-      border-radius: 55rpx;
-      background: linear-gradient(to left,#30A2F4,#00E8BD);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 20rpx;
-    }
   }
 }
 </style>
