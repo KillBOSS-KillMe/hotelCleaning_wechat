@@ -97,7 +97,7 @@
         duration: 1000000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/hotel/hotel_list`,,
+        url: `${this.$parent.globalData.requestUrl}/hotel/hotel_list`,
         method: 'GET',
         success: data => {
           wx.hideToast()
