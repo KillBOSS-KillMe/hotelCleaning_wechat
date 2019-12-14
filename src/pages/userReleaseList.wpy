@@ -9,18 +9,17 @@
           <!-- <image src="{{item.image_url}}" /> -->
           <view class="roomInfo">
             <text class="floor">{{item.room_floor}}层</text>
-            <text class="num">{{item.room_num}}号</text>
+            <text class="num">{{item.room_num}}号房间</text>
             <text class="type_name">（{{item.type_name}}）</text>
           </view>
-          <view class="cleaningInfo" wx:if="{{item.name}}">
+          <view class="cleaningInfo" wx:if="{{item.name != ''}}">
             <image src="{{item.img}}" />
-            <text class="num">{{item.name}}</text>
-            <!-- <text class="type_name">（{{item.type_name}}）</text> -->
+            <text class="num">{{item.name}}(保洁接单)</text>
           </view>
+          <view class="notCleaningInfo" wx:if="{{item.name == ''}}">无人接单</view>
           <view class="time">
-            <text class="floor">{{item.room_floor}}层</text>
-            <text class="num">{{item.room_num}}号</text>
-            <text class="type_name">（{{item.type_name}}）</text>
+            <text>预约时间：{{item.create_time}}</text>
+            <text>创建时间：{{item.perform_time}}</text>
           </view>
         </view>
       </repeat>
@@ -79,15 +78,12 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             let orderList = data.data.data
-            // for (let i = 0; i < orderList.length; i++) {
-            //   orderList[i]['num'] = orderList[i].content.split('|').length
-            // }
+            for (let i = 0; i < orderList.length; i++) {
+              orderList[i].create_time = this.$parent.transformTime(parseInt(orderList[i].create_time) * 1000)
+              orderList[i].perform_time = this.$parent.transformTime(parseInt(orderList[i].perform_time) * 1000)
+            }
             this.orderList = orderList
             this.$apply()
-            //        "last_page": 1,     表示总页数
-            //         "per_page": 10,      表示每页条数
-            //         "current_page": 1,   表示当前页
-            //         "total": 1           表示总条数
           }
         }
       })
@@ -120,22 +116,54 @@
   height: auto;
   .item{
     width: 690rpx;
-    height: 230rpx;
-    border-radius: 10rpx;
+    height: auto;
     padding: 20rpx 0;
     margin: 0 30rpx;
+    font-size: 28rpx;
+    border-bottom: 1rpx solid #898989;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
   }
+  image{
+    width: 60rpx;
+    height: 69rpx;
+    border-radius: 60rpx;
+    margin-right: 20rpx;
+  }
+  view{
+    width: 100%;
+    padding: 15rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  text{
+    padding-right: 15rpx;
+  }
   .roomInfo, .cleaningInfo {
     width: 100%;
   }
+  .floor, .num{
+    font-weight: 600;
+    color: #282828;
+  }
+  .type_name{
+    color: #30A2F4;
+  }
+  .notCleaningInfo{
+    color: #898989;
+  }
   .time{
+    font-size: 25rpx;
+    color: #898989;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    text{
+      padding: 0;
+    }
   }
 }
 </style>
