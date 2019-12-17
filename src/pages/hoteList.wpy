@@ -16,7 +16,7 @@
             <view class="hotelInfo">
               <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
               <text wx:if="{{item.distance == ''}}">      </text>
-              <text>完成{{item.wine_order_one_count}}单</text>
+              <text>完成{{item.release_num}}单</text>
             </view>
           </view>
         </view>

@@ -9,7 +9,7 @@
         <view class="name">
           <text wx:if="{{userInfo.name != ''}}">{{userInfo.name}}</text>
           <text wx:if="{{userInfo.name == ''}}">{{userInfo.username}}</text>
-          <!-- <text wx:if="{{userInfo.type == 2}}">{{userInfo.username}}</text> -->
+          <!-- <text wx:if="{{userInfo.type == 2}}">{{userInfo.username}}</text> -->  
           <view class="lv" wx:if="{{userInfo.type == 1}}">
             <repeat for="{{lv}}" item="item">
               <icon class="iconfont iconwuxing2 {{userInfo.score >= index+1?'active':''}}"></icon>
@@ -24,6 +24,10 @@
         <icon class="iconfont iconrenzheng"></icon>
         未认证
       </view>
+      <view class="certification" @tap="goCertification" wx:if="{{userInfo.is_real_name == 2 && userInfo.type == 1}}">
+        <icon class="iconfont iconrenzheng"></icon>
+        审核中
+      </view>
       <view class="certification isCertification" wx:if="{{userInfo.is_real_name == 1 && userInfo.type == 1}}">
         <icon class="iconfont iconrenzheng"></icon>
         已认证
@@ -31,6 +35,10 @@
       <view class="certification" @tap="goCertification" wx:if="{{userInfo.is_certification == 0 && userInfo.type == 2}}">
         <icon class="iconfont iconrenzheng"></icon>
         未认证
+      </view>
+      <view class="certification" @tap="goCertification" wx:if="{{userInfo.is_certification == 2 && userInfo.type == 2}}">
+        <icon class="iconfont iconrenzheng"></icon>
+        审核中
       </view>
       <view class="certification isCertification" wx:if="{{userInfo.is_certification == 1 && userInfo.type == 2}}">
         <icon class="iconfont iconrenzheng"></icon>
@@ -187,8 +195,8 @@
       ],
       cleaningFunctionList: [
         {id: '1', name: '我的钱包', img: 'wallet', val: '0', showIcon: '1', active: '1'},
-        {id: '2', name: '我的分享', img: 'share', val: '', showIcon: '1', active: '0'},
-        {id: '3', name: '我发分享码', img: 'QRCode', val: '', showIcon: '1', active: '0'},
+        {id: '2', name: '我的分享码', img: 'share', val: '', showIcon: '1', active: '0'},
+        {id: '3', name: '我的分享', img: 'QRCode', val: '', showIcon: '1', active: '0'},
         {id: '4', name: '设置', img: 'Setting', val: '', showIcon: '1', active: '0'},
         {id: '5', name: '建议与反馈', img: 'suggest', val: '029-88888888', showIcon: '0', active: '0'},
       ],
@@ -338,8 +346,34 @@
       this.$apply()
     }
     onShow() {
-      // 提交用户信息
-      // this.setUserInfo() 
+      // 刷新用户信息
+      this.getUserInfoRun() 
+    }
+    getUserInfoRun() {
+      wx.showToast({
+        title: "拼命加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/basis/user`,
+        method: 'POST',
+        data: {
+          openid: this.userInfo.openid
+        },
+        success: res => {
+          wx.hideToast()
+          
+          console.log(res)
+          console.log('===========================================')
+          res = this.$parent.null2str(res)
+          if (res.data.code == 1) {
+            this.userInfo = Object.assign(this.userInfo, res.data.data)
+            this.$parent.globalData.userInfo = this.userInfo
+            this.$apply()
+          }
+        }
+      })
     }
     // 修改酒店信息
     runModifyAvatar() {
@@ -355,9 +389,9 @@
           Promise.all(res.tempFiles.map(item => {
             return new Promise((resolve, reject) => {
               wx.uploadFile({
-                url: `${this.$parent.globalData.requestUrl}/upload/upload_file`,
+                url: `${this.$parent.globalData.requestUrl}/basis/img_upload`,
                 filePath: item.path,
-                name: 'file',
+                name: 'img',
                 header: {
                   authorization: this.$parent.globalData.token,
                   apikey: this.$parent.globalData.apikey
@@ -371,33 +405,30 @@
             })
           })).then(e => {
             wx.hideToast()
-            this.upDataModifyAvatar(e[0].path.image_id)
+            this.upDataModifyAvatar(e[0].path)
           }).catch(err => console.log(err))
         }
       })
     }
     // 图像保存
-    upDataModifyAvatar(id) {
+    upDataModifyAvatar(path) {
       wx.showToast({
         title: "头像保存中...",
         icon: 'loading',
         duration: 10000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/auth/set_head_portrait`,
-        method: 'PUT',
-        header: {
-          'content-type':'application/json',
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/basis/update_img`,
+        method: 'POST',
         data: {
-          head_portrait: id
+          openid: this.userInfo.openid,
+          img: path,
+          type: this.userInfo.type
         },
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             // 更新页面信息
             this.onShow()
             wx.showToast({
@@ -405,6 +436,7 @@
               icon: 'success',
               duration: 2000
             });
+            // this.getUserInfoRun() 
           } else {
             wx.showModal({
               title: '',

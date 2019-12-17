@@ -12,8 +12,8 @@
           <view class="roomInfo">
             <view>
               <view class="name">{{item.room_num}}号房</view>
-              <view class="money" wx:if="{{item.room_money != ''}}}">
-                <text>￥{{item.room_money}}</text>
+              <view class="money">
+                <text wx:if="{{item.room_money != ''}}">￥{{item.room_money}}</text>
               </view>
             </view>
             <view>

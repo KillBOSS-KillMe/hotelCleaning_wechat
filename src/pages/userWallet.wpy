@@ -12,22 +12,18 @@
       <repeat for="{{list.income_month}}" item="item" wx:if="{{userInfo.type == 1}}">
         <view class="item" data-id="{{item.id}}">
           <view>
-            <view class="name" wx:if="{{item.status == 2}}">充值成功</view>
-            <view class="name" wx:if="{{item.status == 3}}">提现申请</view>
-            <view class="name" wx:if="{{item.status == 4}}">提现成功</view>
-            <view class="name" wx:if="{{item.status == 5}}">保洁工钱</view>
-            <view class="name" wx:if="{{item.status == 6}}">酒店发工资</view>
+            <view class="name">{{item.remarks}}</view>
             <view class="money">
               <text wx:if="{{item.status == 2 || item.status == 5}}">+</text>
               <text wx:else>-</text>
-              <text>￥{{item.money}}</text>
-              ￥{{item.amount}}
+              <text>￥{{item.identity}}</text>
+              ￥{{item.money}}
             </view>
           </view>
           <view>
             <view wx:if="{{userInfo.type == 2}}">{{userInfo.hotel_name}}</view>
             <view wx:if="{{userInfo.type == 1}}">{{userInfo.name}}</view>
-            <view>{{item.created_at}}</view>
+            <view>{{item.create_time}}</view>
           </view>
         </view>
       </repeat>
@@ -126,6 +122,16 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.list = data.data.data
+            // if (this.list.hasOwnProperty('income_month')) {
+            //   let income_month = this.list.income_month
+            //   console.log(income_month)
+            //   for (let i = 0; i > income_month.length; i++) {
+            //     income_month[i].create_time = this.$parent.transformTime(parseInt(income_month[i].create_time) * 1000)
+            //   }
+            //   console.log(income_month)
+            //   this.list.income_month = income_month
+            //   console.log(this.list)
+            // }
             // 当前页码
             // this.current_page = data.data.data.current_page
             // // 总页码

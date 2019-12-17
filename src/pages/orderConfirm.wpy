@@ -20,7 +20,7 @@
               {{orderInfo.hotel.address}}
             </view>
             <view class="hotelInfo">
-              <text>{{orderInfo.perform_time}}</text>
+              <text>预约时间：{{orderInfo.perform_time}}</text>
             </view>
           </view>
         </view>
@@ -54,14 +54,12 @@
         </view>
       </view>
       <scroll-view scroll-y="true" class="roomList roomListCon">
-        <repeat for="{{orderInfo.content}}" item="item">
-          <view class="item">
-            <view>{{item.room_number}}</view>
-            <view>{{item.floor}}</view>
-            <view>{{item.type}}</view>
-            <view>{{item.money}}</view>
-          </view>
-        </repeat>
+        <view class="item">
+          <view>{{orderInfo.hotel_room.room_num}}</view>
+          <view>{{orderInfo.hotel_room.room_floor}}</view>
+          <view>{{orderInfo.hotel_room.room_type}}</view>
+          <view>{{orderInfo.hotel_room.room_money}}</view>
+        </view>
       </scroll-view>
     </view>
   </view>
@@ -112,7 +110,7 @@
         duration: 1000000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/order/basis/order_details`,
+        url: `${this.$parent.globalData.requestUrl}/basis/order_details`,
         data: {
           order_id: this.options.id
         },
@@ -123,6 +121,7 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.orderInfo = data.data.data
+            this.orderInfo.perform_time = this.$parent.transformTime(parseInt(this.orderInfo.perform_time) * 1000)
             this.$apply()
           }
         }
@@ -152,7 +151,7 @@
           console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             wx.showToast({
               title: "订单确认成功",
               icon: 'success',

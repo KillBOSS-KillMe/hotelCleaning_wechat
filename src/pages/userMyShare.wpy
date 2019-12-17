@@ -2,7 +2,7 @@
   <view>
     <view class="pageTitle">
       <view class="itemNav {{selShow == 1?'active':''}}" data-type="1" @tap="selNav">
-        <text>邀请好友</text>
+        <text>邀请码</text>
         <view></view>
       </view>
       <view class="itemNav {{selShow == 2?'active':''}}" data-type="2" @tap="selNav">
@@ -13,14 +13,14 @@
     <view class="pageSel" wx:if="{{selShow == 1}}">
       <view class="QRCode">
         <view class="title">邀请好友得奖励</view>
-        <image src="{{QRCode}}" @tap="shareImgShow" data-imgurl="{{QRCode}}" />
+        <image src="{{requestImgUrl + QRCode}}" @tap="shareImgShow" data-imgurl="{{requestImgUrl + QRCode}}" />
       </view>
       <view class="prompt">
         <view>备注</view>
         <view>推荐用户注册后，在职一个月以后可得分享奖励</view>
       </view>
       <view class="sub">
-        <view  @tap="shareImgShow" data-imgurl="{{QRCode}}">
+        <view  @tap="shareImgShow" data-imgurl="{{requestImgUrl + QRCode}}">
           <icon class="iconfont iconweixin"></icon>
           分享给好友
         </view>
@@ -75,6 +75,7 @@
       friendList: [],
       current_page: 0,
       last_page: 0,
+      requestImgUrl: ''
     }
 
     computed = {}
@@ -108,6 +109,7 @@
     onLoad(options) {
       this.selShow = options.type
       this.userInfo = this.$parent.globalData.userInfo
+      this.requestImgUrl = this.$parent.globalData.requestImgUrl
       this.$apply()
       this.getQRCode()
       if (options.type == 1) {
@@ -120,18 +122,25 @@
     }
     // 获取二维码
     getQRCode() {
+      wx.showToast({
+        title: "加载分享码...",
+        icon: 'loading',
+        duration: 1000000
+      });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/wx/get_small_program_code`,
-        method: 'GET',
-        header: {
-          'content-type':'application/json',
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
+        url: `${this.$parent.globalData.requestUrl}/health/qrcode`,
+        method: 'POST',
+        data: {
+          uid: this.userInfo.id,
+          openid: this.userInfo.openid
         },
         success: data => {
+          // console.clear()
+          // console.log(data)
+          wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
-            this.QRCode = data.data.url
+          if (data.data.code === 1) {
+            this.QRCode = data.data.data.tuiguangimg
             this.$apply()
           } else {
             wx.showModal({

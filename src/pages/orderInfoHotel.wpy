@@ -4,8 +4,8 @@
     <view class="title">接单保洁</view>
     <view class="cleaningInfo">
       <view class="imageBg">
-        <image src="{{orderInfo.hotel.img}}" wx:if="{{orderInfo.hotel.img != ''}}" />
-        <image src="/img/daw.jpg" wx:if="{{orderInfo.hotel.img == ''}}" />
+        <image src="{{orderInfo.health_user.img}}" wx:if="{{orderInfo.health_user.img != ''}}" />
+        <image src="/img/daw.jpg" wx:if="{{orderInfo.health_user.img == ''}}" />
       </view>
       <view class="name">{{orderInfo.hotel.name}}</view>
       <view class="info active" wx:if="{{orderInfo.status == 1}}">待打扫</view>
@@ -16,7 +16,7 @@
     </view>
     <view class="orderList">
       <view class="item" data-id="{{orderInfo.id}}">
-        <image src="{{orderInfo.image_url}}" />
+        <image src="{{orderInfo.hotel.img}}" />
         <view class="info">
           <view class="hotelTitle">
             <view class="name">{{orderInfo.hotel.name}}</view>
@@ -116,6 +116,7 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.orderInfo = data.data.data
+            this.orderInfo.perform_time = this.$parent.transformTime(parseInt(this.orderInfo.perform_time) * 1000)
             this.$apply()
           }
         }

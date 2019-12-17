@@ -35,6 +35,7 @@
               <view class="label active" wx:if="{{item.status == '1'}}">待处理</view>
               <view class="label active" wx:if="{{item.status == '2'}}">待酒店确认</view>
               <view class="label active" wx:if="{{item.status == '3'}}">已完成</view>
+              <view class="label active" wx:if="{{item.status == '4'}}">已评价</view>
             </view>
             <view class="hotelAddress" wx:if="{{userInfo.type == 2}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont iconfangjian"></icon>
@@ -51,7 +52,7 @@
               <text>{{item.make_time}}</text>
               <view>
                 <button class="transfer" wx:if="{{item.status == '2'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button>
-                <button wx:if="{{item.status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">抢单</button>
+                <button wx:if="{{item.status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo"> 抢单 </button>
               </view>
             </view>
           </view>
@@ -84,7 +85,7 @@
               <text>{{item.make_time}}</text>
               <view>
                 <!-- <button class="transfer" wx:if="{{item.status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button> -->
-                <button wx:if="{{item.status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">查看</button>
+                <button wx:if="{{item.status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo"> 查看 </button>
                 <button wx:if="{{item.status == '2'}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">确认订单</button>
                 <button wx:if="{{item.status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
                 <button class="carryOut" wx:if="{{item.status == '4'}}">已完成</button>
@@ -95,10 +96,10 @@
       </repeat>
       <view class="listNull" wx:if="{{orderList.length == 0}}">暂无数据</view>
     </view>
-    <view class="listMore" @tap="getOrderList" wx:if="{{current_page < last_page}}">
+    <!-- <view class="listMore" @tap="getOrderList" wx:if="{{current_page < last_page}}">
       <text>加载更多</text>
       <icon class="iconfont iconxiala"></icon>
-    </view>
+    </view> -->
     <nav @childFn.user="goPage" @childFnOrReturn.user="goModifyUserInfo" />
   </view>
 </template>
@@ -308,7 +309,6 @@
   }
 }
 .orderList{
-  margin-top: 100rpx;
   width: 750rpx;
   height: auto;
   margin-bottom: 130rpx;
@@ -405,6 +405,7 @@
       background-color: #C1C1C1;
     }
     button{
+      min-width: 100rpx;
       padding: 15rpx 15rpx;
       font-size: 25rpx;
       color: #fff;

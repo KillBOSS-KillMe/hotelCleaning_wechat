@@ -76,7 +76,7 @@ export default class Nav extends wepy.component {
       // }
       // 顶部导航状态初始化
       this.$parent.$parent.globalData.navAction = ['noAction', 'action', 'noAction']
-      this.$emit('childFn', '/pages/orderList?status=0')
+      this.$emit('childFn', '/pages/orderList?status=1')
     },
     // 我的
     goUser() {

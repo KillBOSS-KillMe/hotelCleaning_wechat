@@ -35,7 +35,7 @@
             <view class="hotelInfo">
               <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
               <text wx:if="{{item.distance == ''}}">      </text>
-              <text>完成{{item.wine_order_one_count}}单</text>
+              <text>完成{{item.release_num}}单</text>
             </view>
           </view>
         </view>
@@ -171,6 +171,43 @@
       this.getWineList()
       // 获取轮播图
       this.getSwiperList()
+      // wepy.login({
+      //   success: res => {
+      //     if (res.code) {
+      //       this.code = res.code
+      //       wx.request({
+      //         url: `${this.$parent.globalData.requestUrl}/basis/wx_login`,
+      //         method: 'POST',
+      //         data: {
+      //           code: res.code
+      //         },
+      //         success: data => {
+      //           console.clear()
+      //           console.log(data)
+      //           wx.request({
+      //             url: `${this.$parent.globalData.requestUrl}/basis/user`,
+      //             method: 'POST',
+      //             data: {
+      //               openid: data.data.data
+      //             },
+      //             success: res => {
+      //               console.log(res)
+      //               console.log('===========================================')
+      //             }
+      //           })
+      //         }
+      //       })
+            
+      //     } else {
+      //       console.log('登录失败！' + res.errMsg)
+      //     }
+      //   }
+      // })
+
+    }
+    
+    onShow() {
+      
     }
     onPullDownRefresh() {
       this.mapKey = this.$parent.globalData.mapKey
@@ -182,10 +219,6 @@
       // 获取用户信息
       this.onGetUserInfo()
     }
-    onShow() {
-      
-    }
-    
     
     // 用户信息获取
     onGetUserInfo() {

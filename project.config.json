@@ -50,6 +50,27 @@
 					"id": -1,
 					"name": "pages/selUserRegistered",
 					"pathName": "pages/selUserRegistered",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/orderEvaluation",
+					"pathName": "pages/orderEvaluation",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/orderInfoHotel",
+					"pathName": "pages/orderInfoHotel",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/userMyShare",
+					"pathName": "pages/index",
 					"scene": null
 				}
 			]
