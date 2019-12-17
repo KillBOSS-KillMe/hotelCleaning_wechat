@@ -44,20 +44,18 @@
         审核中
       </view> -->
     </view>
-    <view class="userInfo">
+    <view class="userInfo" wx:if="{{userInfo.type == 2}}">
       <view class="month">
         <view class="item">
-          <view class="name" wx:if="{{userInfo.type == 1}}">本月接单</view>
-          <view class="name" wx:if="{{userInfo.type == 2}}">本月发单</view>
+          <view class="name">本月发单</view>
           <view class="num">{{userInfo.have_order_month}}</view>
         </view>
         <view class="item">
           <view class="name">本月完成</view>
-          <view class="num">{{userInfo.have_complete_month}}</view>
+          <view class="num">{{userInfo.send_list_month}}</view>
         </view>
         <view class="item">
-          <view class="name" wx:if="{{userInfo.type == 1}}">本月收入</view>
-          <view class="name" wx:if="{{userInfo.type == 2}}">本月支出</view>
+          <view class="name">本月支出</view>
           <view class="num">{{userInfo.income_month}}</view>
         </view>
       </view>
@@ -66,28 +64,49 @@
           <view class="name">全部</view>
           <view class="num">{{userInfo.order_all}}</view>
         </view>
-        <view class="item" data-status="1" @tap="goOrderList" wx:if="{{userInfo.type == 2}}">
+        <view class="item" data-status="1" @tap="goOrderList">
           <view class="name">待接单</view>
-          <view class="num">{{userInfo.dispose_status}}</view>
+          <view class="num">{{userInfo.order_await}}</view>
         </view>
-        <view class="item" data-status="2" @tap="goOrderList" wx:if="{{userInfo.type == 2}}">
+        <view class="item" data-status="2" @tap="goOrderList">
           <view class="name">待确认</view>
-          <view class="num">{{userInfo.dispose_status}}</view>
+          <view class="num">{{userInfo.confirm}}</view>
         </view>
-        <view class="item" data-status="3" @tap="goOrderList" wx:if="{{userInfo.type == 2}}">
+        <view class="item" data-status="3" @tap="goOrderList">
           <view class="name">待评价</view>
           <view class="num">{{userInfo.order_evaluation}}</view>
         </view>
-
-        <view class="item" data-status="2" @tap="goOrderList" wx:if="{{userInfo.type == 1}}">
+      </view>
+    </view>
+    <view class="userInfo" wx:if="{{userInfo.type == 1}}">
+      <view class="month">
+        <view class="item">
+          <view class="name">本月接单</view>
+          <view class="num">{{userInfo.have_order_month}}</view>
+        </view>
+        <view class="item">
+          <view class="name">本月完成</view>
+          <view class="num">{{userInfo.have_complete_month}}</view>
+        </view>
+        <view class="item">
+          <view class="name">本月收入</view>
+          <view class="num">{{userInfo.income_month}}</view>
+        </view>
+      </view>
+      <view class="order">
+        <view class="item" data-status="0" @tap="goOrderList">
+          <view class="name">全部</view>
+          <view class="num">{{userInfo.order_all}}</view>
+        </view>
+        <view class="item" data-status="2" @tap="goOrderList">
           <view class="name">待处理</view>
           <view class="num">{{userInfo.order_await}}</view>
         </view>
-        <view class="item" data-status="3" @tap="goOrderList" wx:if="{{userInfo.type == 1}}">
+        <view class="item" data-status="3" @tap="goOrderList">
           <view class="name">已完成</view>
           <view class="num">{{userInfo.order_complete}}</view>
         </view>
-        <view class="item" data-status="4" @tap="goOrderList" wx:if="{{userInfo.type == 1}}">
+        <view class="item" data-status="4" @tap="goOrderList">
           <view class="name">已评价</view>
           <view class="num">{{userInfo.order_evaluation}}</view>
         </view>

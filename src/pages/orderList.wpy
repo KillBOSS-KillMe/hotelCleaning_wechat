@@ -28,26 +28,23 @@
     <view class="orderList" wx:if="{{userInfo.type == 1}}">
       <repeat for="{{orderList}}" item="item">
         <view class="item" data-id="{{item.id}}">
-          <image src="{{item.image_url}}" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm" />
+          <image src="{{item.img}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm" />
           <view class="info">
-            <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
+            <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
-              <view class="label active" wx:if="{{item.clean_status == '1'}}">待处理</view>
-              <view class="label active" wx:if="{{item.clean_status == '2'}}">待酒店确认</view>
-              <view class="label active" wx:if="{{item.clean_status == '3' && userInfo.type == 1}}">已完成</view>
-              <view class="label active" wx:if="{{item.clean_status == '3' && userInfo.type == 2}}">待评论</view>
-              <view class="label" wx:if="{{item.clean_status == '4' && userInfo.type == 2}}">已完成</view>
+              <view class="label active" wx:if="{{item.status == '1'}}">待处理</view>
+              <view class="label active" wx:if="{{item.status == '2'}}">待酒店确认</view>
+              <view class="label active" wx:if="{{item.status == '3'}}">已完成</view>
             </view>
-            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
+            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont iconfangjian"></icon>
               {{item.content}}
             </view>
-            <view class="hotelAddress" data-id="{{item.id}}" data-stat="{{item.clean_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
+            <view class="hotelAddress" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont icondingwei"></icon>
               {{item.detailed_address}}
             </view>
-            <view class="hotelInfo" data-id="{{item.id}}" wx:if="{{userInfo.type == 1}}">
-              <!-- <text>距您约{{item.distance}}</text> -->
+            <view class="hotelInfo" data-id="{{item.id}}">
               <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
             </view>
             <view class="hotelInfo">
@@ -55,9 +52,6 @@
               <view>
                 <button class="transfer" wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button>
                 <button wx:if="{{item.clean_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">抢单</button>
-                <!-- <button wx:if="{{item.clean_status == '2'}}" data-id="{{item.id}}" @tap="goOrderConfirm">确认订单</button> -->
-                <!-- <button wx:if="{{item.clean_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button> -->
-                <!-- <button class="carryOut" wx:if="{{item.clean_status == '4'}}">已完成</button> -->
               </view>
             </view>
           </view>
@@ -69,34 +63,31 @@
     <view class="orderList" wx:if="{{userInfo.type == 2}}">
       <repeat for="{{orderList}}" item="item">
         <view class="item" data-id="{{item.id}}">
-          <image src="{{item.image_url}}" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm" />
+          <image src="{{item.img}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm" />
           <view class="info">
-            <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
-              <view class="name">{{item.hotel_name}}({{item.sum}}间)</view>
-              <view class="label active" wx:if="{{item.wine_status == '1'}}">待处理</view>
-              <view class="label active" wx:if="{{item.wine_status == '2'}}">待确认</view>
-              <view class="label active" wx:if="{{item.wine_status == '3'}}">待评论</view>
-              <view class="label" wx:if="{{item.wine_status == '4'}}">已完成</view>
+            <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
+              <view class="name">{{item.name}}(￥{{item.money}})</view>
+              <view class="label active" wx:if="{{item.status == '1'}}">待接单</view>
+              <view class="label active" wx:if="{{item.status == '2'}}">待确认</view>
+              <view class="label active" wx:if="{{item.status == '3'}}">待评论</view>
+              <view class="label" wx:if="{{item.status == '4'}}">已完成</view>
             </view>
-            <view class="hotelAddress" wx:if="{{userInfo.type == 2}}" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
+            <view class="hotelAddress" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont iconfangjian"></icon>
-              {{item.content}}
+              {{item.room_floor}}层{{item.room_num}}号房（{{item.type_name}}）
             </view>
-            <view class="hotelAddress" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
+            <view class="hotelAddress" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">
               <icon class="iconfont icondingwei"></icon>
               {{item.detailed_address}}
-            </view>
-            <view class="hotelInfo" data-id="{{item.id}}" wx:if="{{userInfo.type == 1}}">
-              <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
             </view>
             <view class="hotelInfo">
               <text>{{item.make_time}}</text>
               <view>
-                <!-- <button class="transfer" wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button> -->
-                <!-- <button wx:if="{{item.wine_status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button> -->
-                <button wx:if="{{item.wine_status == '2'}}" data-id="{{item.id}}" data-stat="{{item.wine_status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">确认订单</button>
-                <button wx:if="{{item.wine_status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
-                <button class="carryOut" wx:if="{{item.wine_status == '4'}}">已完成</button>
+                <!-- <button class="transfer" wx:if="{{item.status == '1'}}" data-id="{{item.id}}" @tap="goOrderTransfer">转单</button> -->
+                <!-- <button wx:if="{{item.status == '1'}}" data-id="{{item.id}}" @tap="goOrderInfo">接单</button> -->
+                <button wx:if="{{item.status == '2'}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderConfirm">确认订单</button>
+                <button wx:if="{{item.status == '3'}}" data-id="{{item.id}}" @tap="goOrderEvaluation">评价订单</button>
+                <button class="carryOut" wx:if="{{item.status == '4'}}">已完成</button>
               </view>
             </view>
           </view>
@@ -132,7 +123,7 @@
       orderList: [],
       listStatus: 0,
       clean_status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
-      wine_status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
+      status: 0, // 状态 0=全部，1=待处理，2=待确认，3=已完成
       current_page: 0,
       last_page: 1,
       longitude: 0,
@@ -196,6 +187,7 @@
     }
 
     onLoad(options) {
+      console.log(options)
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
       this.$apply()
@@ -260,11 +252,11 @@
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
-            this.orderList = this.orderList.concat(data.data.data.data)
+            this.orderList = this.orderList.concat(data.data.data)
             // 当前页码
-            this.current_page = data.data.data.current_page
-            // 总页码
-            this.last_page = data.data.data.last_page
+            // this.current_page = data.data.data.current_page
+            // // 总页码
+            // this.last_page = data.data.data.last_page
             // "last_page": 1,     表示总页数
             // "per_page": 10,      表示每页条数
             // "current_page": 1,   表示当前页
