@@ -114,17 +114,17 @@ view .item:last-child{
       <label>房间总数</label>
       <input value="{{roomList.length}}" data-name="hotel_num" disabled @input="getSetData" placeholder="请输入房间总数" />
     </view>
-    <view class="item floor">
+    <view class="item floor" @tap="goRoomType">
       <label>房间列表</label>
       <view class="floorType">
         <repeat for="{{roomList}}" item="item">
           <view>
-            <text>{{item.room_number}}({{item.roomType}})</text>
-            <icon class="iconfont iconguanbi1" data-index="{{index}}" @tap="delRoom"></icon>
+            <text>{{item.room_floor}}层{{item.room_num}}号房</text>
+            <!-- <icon class="iconfont iconguanbi1" data-index="{{index}}" @tap="delRoom"></icon> -->
           </view>
         </repeat>
       </view>
-      <icon class="iconfont iconxiayibu" @tap="goRoomType"></icon>
+      <icon class="iconfont iconxiayibu"></icon>
     </view>
     <view class="item">
       <label>布草车数</label>
@@ -284,6 +284,12 @@ view .item:last-child{
     onShow() {
       this.formNode['fid'] = this.$parent.globalData.fid
       this.roomList = this.$parent.globalData.roomList
+      // room_floor: this.formNode.floor,
+      // room_num: this.formNode.room_num,
+      // room_type_id: this.formNode.room_type_id,
+      // room_type_name: this.typeList[index].name,
+      // room_id: data.data.data
+      console.log(this.roomList)
       // this.formNode['rooms'] = this.roomList
       this.formNode['hotel_num'] = this.roomList.length
       this.$apply()

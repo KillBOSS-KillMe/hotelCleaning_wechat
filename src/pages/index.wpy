@@ -227,6 +227,8 @@
               success: data => {
                 wx.hideToast()
                 data = this.$parent.null2str(data)
+                console.clear()
+                console.log(data)
                 if (data.data.code == 1) {
                   let userInfo = {openid: data.data.data}
                   this.userInfo = Object.assign(this.userInfo, userInfo)
@@ -255,11 +257,14 @@
         data: {
           openid: this.userInfo.openid
         },
-        success: data => {
+        success: res => {
           wx.hideToast()
-          data = this.$parent.null2str(data)
-          if (data.data.code == 1) {
-            this.userInfo = Object.assign(data.data.data, this.userInfo)
+          
+          console.log(res)
+          console.log('===========================================')
+          res = this.$parent.null2str(res)
+          if (res.data.code == 1) {
+            this.userInfo = Object.assign(res.data.data, this.userInfo)
             this.$parent.globalData.userInfo = this.userInfo
             if (this.userInfo.type == '0') {
               wx.showToast({

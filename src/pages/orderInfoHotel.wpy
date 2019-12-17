@@ -8,11 +8,11 @@
         <image src="/img/daw.jpg" wx:if="{{orderInfo.hotel.img == ''}}" />
       </view>
       <view class="name">{{orderInfo.hotel.name}}</view>
-      <view class="info active" wx:if="{{orderInfo.clean_status == 1}}">待打扫</view>
-      <view class="info active" wx:if="{{orderInfo.clean_status == 2}}">打扫中</view>
-      <view class="info active" wx:if="{{orderInfo.clean_status == 3}}">打扫结束</view>
+      <view class="info active" wx:if="{{orderInfo.status == 1}}">待打扫</view>
+      <view class="info active" wx:if="{{orderInfo.status == 2}}">打扫中</view>
+      <view class="info active" wx:if="{{orderInfo.status == 3}}">打扫结束</view>
       <view class="info">联系电话：{{orderInfo.hotel.mobile}}</view>
-      <view class="info">接单时间：{{orderInfo.perform_time}}</view>
+      <view class="info">打扫时间：{{orderInfo.perform_time}}</view>
     </view>
     <view class="orderList">
       <view class="item" data-id="{{orderInfo.id}}">
@@ -111,6 +111,7 @@
         },
         method: 'POST',
         success: data => {
+          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
@@ -135,6 +136,7 @@
         method: 'POST',
         success: data => {
           wx.hideToast()
+          console.log(data)
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             wx.showToast({

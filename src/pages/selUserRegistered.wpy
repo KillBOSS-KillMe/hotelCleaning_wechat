@@ -80,6 +80,7 @@
     mixins = [check]
 
     data = {
+      userInfo: {},
       formNode: {
         IDCard: '',
         name: '',
@@ -180,13 +181,8 @@
         wx.request({
           url: `${this.$parent.globalData.requestUrl}/health/login`,
           method: 'POST',
-          // header: {
-          //   'content-type':'application/json',
-          //   authorization: this.$parent.globalData.token,
-          //   apikey: this.$parent.globalData.apikey
-          // },
           data: {
-            // number: formNode.IDCard,
+            openid: this.userInfo.openid,
             username: formNode.name,
             mobile: formNode.phone,
             code: formNode.code,

@@ -18,8 +18,8 @@
           </view>
           <view class="notCleaningInfo" wx:if="{{item.name == ''}}">无人接单</view>
           <view class="time">
-            <text>预约时间：{{item.create_time}}</text>
-            <text>创建时间：{{item.perform_time}}</text>
+            <text>预约时间：{{item.perform_time}}</text>
+            <text>创建时间：{{item.create_time}}</text>
           </view>
         </view>
       </repeat>
@@ -79,7 +79,7 @@
           if (data.data.code === 1) {
             let orderList = data.data.data
             for (let i = 0; i < orderList.length; i++) {
-              orderList[i].create_time = this.$parent.transformTime(parseInt(orderList[i].create_time) * 1000)
+              orderList[i].create_time = this.$parent.transformTime(parseInt(orderList[i].create_time) * 1000).split(' ')[0]
               orderList[i].perform_time = this.$parent.transformTime(parseInt(orderList[i].perform_time) * 1000)
             }
             this.orderList = orderList

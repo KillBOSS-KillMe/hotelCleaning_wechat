@@ -3,27 +3,27 @@
     <!-- 保洁显示信息 -->
     <view wx:if="{{userInfo.type == 1}}">
       <view class="hotelName">
-        <image src="{{requestImgUrl + orderInfo.image_url}}" />
-        <view class="name">{{orderInfo.hotel_name}}</view>
+        <image src="{{orderInfo.hotel.img}}" />
+        <view class="name">{{orderInfo.hotel.name}}</view>
         <icon class="iconfont iconxiayibu"></icon>
       </view>
       <view class="hotelInfo">
         <view class="title">打扫地点</view>
         <view class="item">
           <image src="/img/address.png" />
-          <view>{{orderInfo.detailed_address}}</view>
+          <view>{{orderInfo.hotel.address}}</view>
           <icon class="iconfont iconxiayibu"></icon>
         </view>
         <view class="item">
           <image src="/img/phone.png" />
-          <view>{{orderInfo.principal_phone}}</view>
+          <view>{{orderInfo.hotel.mobile}}</view>
           <icon class="iconfont iconxiayibu"></icon>
         </view>
       </view>
       <view class="title">预约信息</view>
       <view class="time">
         <image src="/img/time.png" />
-        预约{{orderInfo.make_time}}到店
+        预约{{orderInfo.perform_time}}到店
       </view>
       <view class="roomList">
         <view class="item">
@@ -46,14 +46,12 @@
         </view>
       </view>
       <scroll-view scroll-y="true" class="roomList roomListCon">
-        <repeat for="{{orderInfo.content}}" item="item">
-          <view class="item">
-            <view>{{item.room_number}}</view>
-            <view>{{item.floor}}</view>
-            <view>{{item.type}}</view>
-            <view>{{item.money}}</view>
-          </view>
-        </repeat>
+        <view class="item">
+          <view>{{orderInfo.hotel_room.room_num}}</view>
+          <view>{{orderInfo.hotel_room.room_floor}}</view>
+          <view>{{orderInfo.hotel_room.room_type}}</view>
+          <view>{{orderInfo.hotel_room.room_money}}</view>
+        </view>
       </scroll-view>
       <view class="prompt">
         <view>温馨提示</view>
@@ -69,34 +67,34 @@
     <!-- 酒店显示信息 -->
     <view wx:if="{{userInfo.type == 2}}">
       <view class="hotelName">
-        <image src="{{orderInfo.image_url}}" />
-        <view class="name">{{orderInfo.hotel_name}}</view>
+        <image src="{{orderInfo.hotel.img}}" />
+        <view class="name">{{orderInfo.hotel.name}}</view>
         <icon class="iconfont iconxiayibu"></icon>
       </view>
       <view class="hotelInfo">
         <view class="title">打扫地点</view>
         <view class="item">
           <image src="/img/address.png" />
-          <view>{{orderInfo.detailed_address}}</view>
+          <view>{{orderInfo.hotel.address}}</view>
           <icon class="iconfont iconxiayibu"></icon>
         </view>
         <!-- 负责人电话 -->
         <view class="item">
           <image src="/img/phone.png" />
-          <view>{{orderInfo.principal_phone}}</view>
+          <view>{{orderInfo.hotel.mobile}}</view>
           <icon class="iconfont iconxiayibu"></icon>
         </view>
         <!-- 固定电话 -->
-        <view class="item">
+        <!-- <view class="item">
           <image src="/img/phone.png" />
-          <view>{{orderInfo.desk_tel}}</view>
+          <view>{{orderInfo.hotel.mobile}}</view>
           <icon class="iconfont iconxiayibu"></icon>
-        </view>
+        </view> -->
       </view>
       <view class="title">预约信息</view>
       <view class="time">
         <image src="/img/time.png" />
-        预约{{orderInfo.make_time}}到店
+        预约{{orderInfo.perform_time}}打扫
       </view>
       <view class="roomList">
         <view class="item">
@@ -112,17 +110,21 @@
             <image src="/img/shape.png" />
             房间类型
           </view>
+          <view>
+            <image src="/img/shape.png" />
+            价格
+          </view>
         </view>
       </view>
       <scroll-view scroll-y="true" class="roomList roomListCon">
-        <repeat for="{{orderInfo.content}}" item="item">
+        <!-- <repeat for="{{orderInfo.content}}" item="item"> -->
           <view class="item">
-            <view>{{item.room_number}}</view>
-            <view>{{item.floor}}</view>
-            <view>{{item.type}}</view>
-            <view>{{item.money}}</view>
+            <view>{{orderInfo.hotel_room.room_num}}</view>
+            <view>{{orderInfo.hotel_room.room_floor}}</view>
+            <view>{{orderInfo.hotel_room.room_type}}</view>
+            <view>{{orderInfo.hotel_room.room_money}}</view>
           </view>
-        </repeat>
+        <!-- </repeat> -->
       </scroll-view>
       <view class="prompt">
         <view>温馨提示</view>
@@ -186,28 +188,29 @@
         icon: 'loading',
         duration: 1000000
       });
-      let url = ''
-      if (this.userInfo.type == 2) {
-        // 执行酒店加载
-        url = 'get_wine_order_details'
-      } else if (this.userInfo.type == 1) {
-        // 执行保洁加载
-        url = 'set_clean_order_details'
-      }
+      let url = 'basis/order_details'
+      // if (this.userInfo.type == 2) {
+      //   // 执行酒店加载
+      //   url = 'get_wine_order_details'
+      // } else if (this.userInfo.type == 1) {
+      //   // 执行保洁加载
+      //   url = 'set_clean_order_details'
+      // }
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/order/${url}`,
+        url: `${this.$parent.globalData.requestUrl}/${url}`,
         header: {
           authorization: this.$parent.globalData.token,
           apikey: this.$parent.globalData.apikey
         },
         data: {
-          id: this.options.id
+          order_id: this.options.id
         },
-        method: 'GET',
+        method: 'POST',
         success: data => {
+          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             this.orderInfo = data.data.data
             this.$apply()
           }
@@ -221,19 +224,17 @@
         duration: 1000000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/order/set_clean_order_take`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/health/user_take_order`,
         data: {
-          id: this.options.id
+          uid: this.userInfo.id,
+          order_id: this.options.id,
         },
-        method: 'PUT',
+        method: 'POST',
         success: data => {
           wx.hideToast()
+          console.log(data)
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             wx.showToast({
               title: "接单成功",
               icon: 'success',
@@ -244,6 +245,12 @@
                 data: -1
               })
             }, 2000)
+          } else {
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none',
+              duration: 2000
+            });
           }
         }
       })

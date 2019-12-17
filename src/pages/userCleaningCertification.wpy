@@ -12,16 +12,12 @@
     </view>
     <view class="title">请上传您的身份证正反面照片</view>
     <view class="img" @tap="getFrontage">
-      <repeat for="{{frontageUrl}}" item="item">
-        <image src="{{item.path.image_url}}" />
-      </repeat>
-      <image src="/img/card0.png" wx:if="{{frontageUrl.length == 0}}" />
+      <image src="{{formNode.z_id_photo}}" wx:if="{{formNode.z_id_photo != ''}}" />
+      <image src="/img/card0.png" wx:if="{{formNode.z_id_photo == ''}}" />
     </view>
     <view class="img" @tap="getContrary">
-      <repeat for="{{contraryUrl}}" item="item">
-        <image src="{{item.path.image_url}}" />
-      </repeat>
-      <image src="/img/card1.png" wx:if="{{contraryUrl.length == 0}}" />
+      <image src="{{formNode.f_id_photo}}" wx:if="{{formNode.f_id_photo != ''}}" />
+      <image src="/img/card1.png" wx:if="{{formNode.f_id_photo == ''}}" />
     </view>
     <view class="prompt">
       <icon class="iconfont iconrenzheng"></icon>
@@ -46,6 +42,7 @@
 
     data = {
       formNode: {
+        uid: '',
         name: '',
         id_number: '',
         z_id_photo: '',
@@ -75,7 +72,7 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
-      this.formNode.uid = 
+      this.formNode.uid = this.userInfo.id
       this.$apply()
     }
     sub() {
@@ -110,7 +107,7 @@
         duration: 10000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/auth/clean_user_attestation`,
+        url: `${this.$parent.globalData.requestUrl}/health/realname`,
         method: 'POST',
         // header: {
         //   'content-type':'application/json',
@@ -121,7 +118,7 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             wx.showToast({
               title: "提交成功",
               icon: 'success',
@@ -171,8 +168,7 @@
             })
           })).then(e => {
             wx.hideToast()
-            this.frontageUrl = this.frontageUrl.concat(e)
-            this.formNode['z_id_photo'] = this.frontageUrl[0].path.image_id
+            this.formNode['z_id_photo'] = e[0].path
             this.$apply()
           }).catch(err => console.log(err))
         }
@@ -208,8 +204,7 @@
             })
           })).then(e => {
             wx.hideToast()
-            this.contraryUrl = this.contraryUrl.concat(e)
-            this.formNode['f_id_photo'] = this.contraryUrl[0].path.image_id
+            this.formNode['f_id_photo'] = e[0].path
             this.$apply()
           }).catch(err => console.log(err))
         }

@@ -2,11 +2,11 @@
   <view>
       <view class="item title">请选择身份</view>
       <view class="item active" data-type="1" @tap="goRegistered">
-        <image src="/img/hotelRegistered.png" />
+        <image src="/img/cleaningRegistered.png" />
         <view>我是保洁员</view>
       </view>
       <view class="item active" data-type="2" @tap="goRegistered">
-        <image src="/img/cleaningRegistered.png" />
+        <image src="/img/hotelRegistered.png" />
         <view>我是酒店方</view>
       </view>
   </view>

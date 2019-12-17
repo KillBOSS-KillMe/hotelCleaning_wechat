@@ -6,10 +6,10 @@
     <view>
       <view class="orderList">
         <view class="item">
-          <image src="{{orderInfo.image_url}}" />
+          <image src="{{orderInfo.hotel.img}}" />
           <view class="info">
             <view class="hotelTitle">
-              <view class="name">{{orderInfo.hotel_name}}({{orderInfo.content.length}}间)</view>
+              <view class="name">{{orderInfo.hotel.name}}</view>
             </view>
             <!-- <view class="hotelAddress">
               <icon class="iconfont iconfangjian"></icon>
@@ -17,20 +17,20 @@
             </view> -->
             <view class="hotelAddress">
               <icon class="iconfont icondingwei"></icon>
-              {{orderInfo.detailed_address}}
+              {{orderInfo.hotel.address}}
             </view>
             <view class="hotelInfo">
-              <text>{{orderInfo.created_at}}</text>
+              <text>{{orderInfo.perform_time}}</text>
             </view>
           </view>
         </view>
-        <view class="hotelInfoItem" data-phone="{{orderInfo.desk_tel}}" @tap="runCall">
+        <!-- <view class="hotelInfoItem" data-phone="{{orderInfo.desk_tel}}" @tap="runCall">
           <label>酒店前台固话:</label>
           <view>{{orderInfo.desk_tel}}</view>
-        </view>
-        <view class="hotelInfoItem" data-phone="{{orderInfo.principal_phone}}" @tap="runCall">
+        </view> -->
+        <view class="hotelInfoItem" data-phone="{{orderInfo.hotel.mobile}}" @tap="runCall">
           <label>酒店负责人电话:</label>
-          <view>{{orderInfo.principal_phone}}</view>
+          <view>{{orderInfo.hotel.mobile}}</view>
         </view>
       </view>
       <view class="roomList">
@@ -64,46 +64,6 @@
         </repeat>
       </scroll-view>
     </view>
-    <!-- 酒店显示 -->
-    <!-- <view wx:if="{{userInfo.type == 2}}">
-      <view class="title">接单保洁</view>
-      <view class="cleaningInfo">
-        <view class="imageBg">
-          <image wx:if="{{orderInfo.head_portrait == ''}}" src="/img/daw.jpg" />
-          <image wx:if="{{orderInfo.head_portrait != ''}}" src="{{orderInfo.head_portrait}}" />
-        </view>
-        <view class="name">{{orderInfo.name}}</view>
-        <view class="info active" wx:if="{{orderInfo.clean_status == 1}}">待打扫</view>
-        <view class="info active" wx:if="{{orderInfo.clean_status == 2}}">正在打扫中</view>
-        <view class="info active" wx:if="{{orderInfo.clean_status == 3}}">打扫结束</view>
-        <view class="info">接单时间：{{orderInfo.take_time}}</view>
-      </view>
-      <view class="orderList">
-        <view class="item">
-          <image src="{{orderInfo.image_url}}" />
-          <view class="info">
-            <view class="hotelTitle">
-              <view class="name">{{orderInfo.hotel_name}}({{orderInfo.sum}}间)</view>
-            </view>
-            <view class="hotelAddress">
-              <icon class="iconfont iconfangjian"></icon>
-              {{orderInfo.content}}
-            </view>
-            <view class="hotelAddress">
-              <icon class="iconfont icondingwei"></icon>
-              {{orderInfo.detailed_address}}
-            </view>
-            <view class="hotelInfo">
-              <text>{{orderInfo.created_at}}</text>
-            </view>
-          </view>
-        </view>
-      </view>
-    </view> -->
-    
-    <!-- <view class="sub">
-      <view @tap="sub">确认订单</view>
-    </view> -->
   </view>
 </template>
 
@@ -147,32 +107,21 @@
     // 获取订单详情
     getOrderInfo() {
       wx.showToast({
-        title: "订单确认中...",
+        title: "加载中...",
         icon: 'loading',
         duration: 1000000
       });
-      let url = ''
-      if (this.userInfo.type == 2) {
-        // 执行酒店
-        url = 'get_wine_order_details'
-      } else if (this.userInfo.type == 1) {
-        // 执行保洁
-        url = 'set_clean_order_details'
-      }
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/order/${url}`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/order/basis/order_details`,
         data: {
-          id: this.options.id
+          order_id: this.options.id
         },
-        method: 'GET',
+        method: 'POST',
         success: data => {
+          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             this.orderInfo = data.data.data
             this.$apply()
           }
@@ -195,15 +144,12 @@
       }
       wx.request({
         url: `${this.$parent.globalData.requestUrl}/order/${url}`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
         data: {
           id: this.options.id
         },
         method: 'PUT',
         success: data => {
+          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 8888) {

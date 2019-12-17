@@ -1,9 +1,9 @@
 <template>
   <view>
-    <view class="search">
+    <!-- <view class="search">
       <input type="text" @input="searchClean" placeholder="请输入转单人员姓名" />
       <icon class="iconfont iconsousuo"></icon>
-    </view>
+    </view> -->
     <view class="cleaningList">
       <checkbox-group bindchange="selCleaning" data-index="{{index}}" data-checks="{{item.checks}}">
         <repeat for="{{cleaningList}}" item="item">
@@ -60,20 +60,17 @@
           duration: 1000000
         });
         wx.request({
-          url: `${this.$parent.globalData.requestUrl}/order/set_clean_order_transfer`,
-          header: {
-            authorization: this.$parent.globalData.token,
-            apikey: this.$parent.globalData.apikey
-          },
+          url: `${this.$parent.globalData.requestUrl}/health/user_turn_order`,
           data: {
-            id: this.cleanId,
-            order_id: parseInt(this.options.id)
+            zid: this.cleanId,
+            order_id: this.options.id,
+            uid: this.userInfo.id
           },
           method: 'PUT',
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
-            if (data.data.code === 8888) {
+            if (data.data.code === 1) {
               wx.showToast({
                 title: "转单成功",
                 icon: 'success',

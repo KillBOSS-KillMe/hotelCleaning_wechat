@@ -131,7 +131,7 @@
     }
 
     onLoad() {
-      
+      this.roomList = this.$parent.globalData.roomList
       this.userInfo = this.$parent.globalData.userInfo
       let typeList = this.$parent.globalData.roomTypeList
       if (this.userInfo.hasOwnProperty('id')) {
@@ -206,6 +206,14 @@
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
+            this.roomList.push({
+              room_floor: this.formNode.floor,
+              room_num: this.formNode.room_num,
+              room_type_id: this.formNode.room_type_id,
+              room_type_name: this.typeList[this.index].name,
+              room_id: data.data.data
+            })
+            this.$parent.globalData.roomList = this.roomList
             wx.showToast({
               title: "创建成功",
               icon: 'success',

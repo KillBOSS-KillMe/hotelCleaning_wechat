@@ -7,8 +7,9 @@
       <image src="{{userInfo.img}}" wx:if="{{userInfo.img != ''}}" @tap="modifyAvatar"/>
       <view class="info">
         <view class="name">
-          <text wx:if="{{userInfo.type == 1}}">{{userInfo.name}}</text>
-          <text wx:if="{{userInfo.type == 2}}">{{userInfo.name}}</text>
+          <text wx:if="{{userInfo.name != ''}}">{{userInfo.name}}</text>
+          <text wx:if="{{userInfo.name == ''}}">{{userInfo.username}}</text>
+          <!-- <text wx:if="{{userInfo.type == 2}}">{{userInfo.username}}</text> -->
           <view class="lv" wx:if="{{userInfo.type == 1}}">
             <repeat for="{{lv}}" item="item">
               <icon class="iconfont iconwuxing2 {{userInfo.score >= index+1?'active':''}}"></icon>
@@ -48,33 +49,40 @@
       <view class="month">
         <view class="item">
           <view class="name">本月发单</view>
-          <view class="num">{{userInfo.have_order_month}}</view>
+          <view class="num" wx:if="{{userInfo.send_list_month == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.send_list_month != ''}}">{{userInfo.send_list_month}}</view>
         </view>
         <view class="item">
           <view class="name">本月完成</view>
-          <view class="num">{{userInfo.send_list_month}}</view>
+          <view class="num" wx:if="{{userInfo.complete_month == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.complete_month != ''}}">{{userInfo.complete_month}}</view>
         </view>
         <view class="item">
           <view class="name">本月支出</view>
-          <view class="num">{{userInfo.income_month}}</view>
+          <view class="num" wx:if="{{userInfo.income_month == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.income_month != ''}}">{{userInfo.income_month}}</view>
         </view>
       </view>
       <view class="order">
         <view class="item" data-status="0" @tap="goOrderList">
           <view class="name">全部</view>
-          <view class="num">{{userInfo.order_all}}</view>
+          <view class="num" wx:if="{{userInfo.order_all == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_all != ''}}">{{userInfo.order_all}}</view>
         </view>
         <view class="item" data-status="1" @tap="goOrderList">
           <view class="name">待接单</view>
-          <view class="num">{{userInfo.order_await}}</view>
+          <view class="num" wx:if="{{userInfo.order_await == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_await != ''}}">{{userInfo.order_await}}</view>
         </view>
         <view class="item" data-status="2" @tap="goOrderList">
           <view class="name">待确认</view>
-          <view class="num">{{userInfo.confirm}}</view>
+          <view class="num" wx:if="{{userInfo.order_confirm == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_confirm != ''}}">{{userInfo.order_confirm}}</view>
         </view>
         <view class="item" data-status="3" @tap="goOrderList">
           <view class="name">待评价</view>
-          <view class="num">{{userInfo.order_evaluation}}</view>
+          <view class="num" wx:if="{{userInfo.order_evaluation == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_evaluation != ''}}">{{userInfo.order_evaluation}}</view>
         </view>
       </view>
     </view>
@@ -82,33 +90,40 @@
       <view class="month">
         <view class="item">
           <view class="name">本月接单</view>
-          <view class="num">{{userInfo.have_order_month}}</view>
+          <view class="num" wx:if="{{userInfo.have_order_month == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.have_order_month != ''}}">{{userInfo.have_order_month}}</view>
         </view>
         <view class="item">
           <view class="name">本月完成</view>
-          <view class="num">{{userInfo.have_complete_month}}</view>
+          <view class="num" wx:if="{{userInfo.have_complete_month == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.have_complete_month != ''}}">{{userInfo.have_complete_month}}</view>
         </view>
         <view class="item">
           <view class="name">本月收入</view>
-          <view class="num">{{userInfo.income_month}}</view>
+          <view class="num" wx:if="{{userInfo.income_month == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.income_month != ''}}">{{userInfo.income_month}}</view>
         </view>
       </view>
       <view class="order">
         <view class="item" data-status="0" @tap="goOrderList">
           <view class="name">全部</view>
-          <view class="num">{{userInfo.order_all}}</view>
+          <view class="num" wx:if="{{userInfo.order_all == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_all != ''}}">{{userInfo.order_all}}</view>
         </view>
         <view class="item" data-status="2" @tap="goOrderList">
           <view class="name">待处理</view>
-          <view class="num">{{userInfo.order_await}}</view>
+          <view class="num" wx:if="{{userInfo.order_await == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_await != ''}}">{{userInfo.order_await}}</view>
         </view>
         <view class="item" data-status="3" @tap="goOrderList">
           <view class="name">已完成</view>
-          <view class="num">{{userInfo.order_complete}}</view>
+          <view class="num" wx:if="{{userInfo.order_complete == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_complete != ''}}">{{userInfo.order_complete}}</view>
         </view>
         <view class="item" data-status="4" @tap="goOrderList">
           <view class="name">已评价</view>
-          <view class="num">{{userInfo.order_evaluation}}</view>
+          <view class="num" wx:if="{{userInfo.order_evaluation == ''}}">0</view>
+          <view class="num" wx:if="{{userInfo.order_evaluation != ''}}">{{userInfo.order_evaluation}}</view>
         </view>
       </view>
     </view>
@@ -200,9 +215,10 @@
         }
         this.$navigate(url)
       },
-      // 进入订单列表e
+      // 进入订单列表
       goOrderList(e) {
         let status = e.currentTarget.dataset.status
+        this.$parent.globalData.navAction = ['noAction', 'action', 'noAction']
         this.$redirect(`/pages/orderList?status=${status}`)
       },
       // 进入酒店功能
@@ -316,6 +332,8 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
+      this.hotelFunctionList[0].val = this.userInfo.wallet
+      this.cleaningFunctionList[0].val = this.userInfo.wallet
       console.log(this.userInfo)
       this.$apply()
     }

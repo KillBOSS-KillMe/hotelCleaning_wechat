@@ -1,7 +1,7 @@
 <template>
   <view>
     <view class="allMoney">
-      <view class="money">￥{{userInfo.amount}}</view>
+      <view class="money">￥{{list.wallet}}</view>
       <view>总金额</view>
       <view class="button" @tap="recharge" wx:if="{{userInfo.type == 2}}">立即充值</view>
       <view class="button" @tap="recharge" wx:if="{{userInfo.type == 1}}">立即提现</view>
@@ -9,7 +9,7 @@
     <view class="title">资金明细</view>
     <view class="list">
       <!-- list -->
-      <repeat for="{{list}}" item="item">
+      <repeat for="{{list.income_month}}" item="item" wx:if="{{userInfo.type == 1}}">
         <view class="item" data-id="{{item.id}}">
           <view>
             <view class="name" wx:if="{{item.status == 2}}">充值成功</view>
@@ -31,8 +31,25 @@
           </view>
         </view>
       </repeat>
+      <repeat for="{{list.income_detail}}" item="item" wx:if="{{userInfo.type == 2}}">
+        <view class="item" data-id="{{item.id}}">
+          <view>
+            <view class="name">{{item.remarks}}</view>
+            <view class="money">
+              <text wx:if="{{item.type == 2 || item.type == 5}}">-</text>
+              <text wx:else>+</text>
+              <text>￥{{item.identity}}</text>
+              ￥{{list.wallet}}
+            </view>
+          </view>
+          <view>
+            <view>{{userInfo.hotel_name}}</view>
+            <view>{{item.create_time}}</view>
+          </view>
+        </view>
+      </repeat>
     </view>
-    <view class="listMore" @tap="getList" wx:if="{{current_page < last_page}}">
+    <view class="listMore" @tap="getList" wx:if="{{list.income_month.length > 0 && current_page < last_page}}">
       <text>加载更多</text>
       <icon class="iconfont iconxiala"></icon>
     </view>
@@ -72,6 +89,7 @@
 
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
+      console.log(this.userInfo)
       this.$apply()
     }
     onShow() {
@@ -107,7 +125,7 @@
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
-            this.list = this.list.concat(data.data.data.data)
+            this.list = data.data.data
             // 当前页码
             // this.current_page = data.data.data.current_page
             // // 总页码

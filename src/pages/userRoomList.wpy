@@ -1,7 +1,7 @@
 <template>
   <view>
     <view class="allMoney">
-      <view class="money">￥{{list.length}}</view>
+      <view class="money">{{list.length}}间</view>
       <view>总房间数</view>
       <view class="button" @tap="newRoom">新建房间</view>
     </view>
@@ -12,7 +12,7 @@
           <view class="roomInfo">
             <view>
               <view class="name">{{item.room_num}}号房</view>
-              <view class="money">
+              <view class="money" wx:if="{{item.room_money != ''}}}">
                 <text>￥{{item.room_money}}</text>
               </view>
             </view>
