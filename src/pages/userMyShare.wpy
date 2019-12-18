@@ -88,11 +88,6 @@
           this.getFriendList()
         }
       },
-      recharge(e) {
-        // 进入充值页
-        let url = `/pages/userRecharge`
-        this.$navigate(url)
-      },
       shareImgShow(e) {
         let url =  e.currentTarget.dataset.imgurl
         wx.previewImage({
@@ -225,9 +220,9 @@
   position: relative;
 }
 .QRCode{
-  margin-top: 2100rpx;
+  margin-top: 100rpx;
   width: 750rpx;
-  height: 600rpx;
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -240,7 +235,7 @@
   }
   image{
     width: 560rpx;
-    height: 560rpx;
+    height: 610rpx;
     border: 5rpx solid #30A2F4;
     margin-top: 20rpx;
   }

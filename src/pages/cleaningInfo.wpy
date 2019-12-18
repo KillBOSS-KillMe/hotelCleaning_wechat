@@ -42,6 +42,7 @@
     mixins = []
 
     data = {
+      userInfo: {},
       requestImgUrl: '',
       cleaningInfo: {},
       lv: 5,
@@ -62,6 +63,7 @@
     }
 
     onLoad(options) {
+      this.userInfo = this.$parent.globalData.userInfo
       this.options = options
       // 获取保洁详情
       this.getWineInfo()
@@ -76,7 +78,9 @@
       wx.request({
         url: `${this.$parent.globalData.requestUrl}/health/user_details`,
         data: {
-          uid: this.options.id
+          uid: this.options.id,
+          log: this.userInfo.log,
+          lat: this.userInfo.lat
         },
         method: 'POST',
         success: data => {
@@ -84,6 +88,7 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.cleaningInfo = data.data.data
+            // this.cleaningInfo.distance = this.cleaningInfo.distance.toFixed(2)
             this.$apply()
           }
         }

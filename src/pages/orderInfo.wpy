@@ -188,22 +188,12 @@
         icon: 'loading',
         duration: 1000000
       });
-      let url = 'basis/order_details'
-      // if (this.userInfo.type == 2) {
-      //   // 执行酒店加载
-      //   url = 'get_wine_order_details'
-      // } else if (this.userInfo.type == 1) {
-      //   // 执行保洁加载
-      //   url = 'set_clean_order_details'
-      // }
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/${url}`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/basis/order_details`,
         data: {
-          order_id: this.options.id
+          order_id: this.options.id,
+          log: this.userInfo.log,
+          lat: this.userInfo.lat
         },
         method: 'POST',
         success: data => {
@@ -212,6 +202,8 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.orderInfo = data.data.data
+            // this.orderInfo.distance = this.orderInfo.distance.toFixed(2)
+            this.orderInfo.perform_time = this.$parent.transformTime(parseInt(this.orderInfo.perform_time) * 1000)
             this.$apply()
           }
         }

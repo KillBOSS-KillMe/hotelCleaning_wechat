@@ -238,6 +238,8 @@
         let url = ``
         switch(id) {
           case '1':
+            // url += '/pages/userMyShare?type=1'
+            // url += '/pages/userMyShare?type=2'
             // 我的钱包
             url += '/pages/userWallet'
             break;

@@ -33,7 +33,7 @@
               {{item.address}}
             </view>
             <view class="hotelInfo">
-              <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}</text>
+              <text wx:if="{{item.distance != ''}}">距您约{{item.distance}}米</text>
               <text wx:if="{{item.distance == ''}}">      </text>
               <text>完成{{item.release_num}}单</text>
             </view>
@@ -355,6 +355,9 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.hotelList = data.data.data
+            for (let i = 0;i < this.hotelList.length; i++) {
+              this.hotelList[i].distance = this.hotelList[i].distance.toFixed(2)
+            }
             this.$parent.globalData.hotelListIndex = this.hotelList
             this.$apply()
           }

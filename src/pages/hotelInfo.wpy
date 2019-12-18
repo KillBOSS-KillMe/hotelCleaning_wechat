@@ -17,7 +17,7 @@
             <image src="/img/address.png" />
             {{hotelInfo.detailed_address}}
           </view>
-          <text wx:if="{{hotelInfo.distance != ''}}">距离您约{{hotelInfo.distance}}</text>
+          <text wx:if="{{hotelInfo.distance != ''}}">距离您约{{hotelInfo.distance}}米</text>
         </view>
         <view class="item">
           <image src="/img/phone.png" />
@@ -58,6 +58,7 @@
     mixins = []
 
     data = {
+      userInfo: {},
       requestImgUrl: '',
       swiperList: [],
       hotelInfo: {}
@@ -77,6 +78,7 @@
     }
 
     onLoad(options) {
+      this.userInfo = this.$parent.globalData.userInfo
       this.options = options
       // 获取楼盘详情
       this.getWineInfo()
@@ -91,7 +93,9 @@
       wx.request({
         url: `${this.$parent.globalData.requestUrl}/hotel/hotel_details`,
         data: {
-          hid: this.options.id
+          hid: this.options.id,
+          log: this.userInfo.log,
+          lat: this.userInfo.lat
         },
         method: 'POST',
         success: data => {
@@ -99,6 +103,7 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.hotelInfo = data.data.data
+            this.hotelInfo.distance = this.hotelInfo.distance.toFixed(2)
             this.$apply()
           }
         }
