@@ -31,7 +31,8 @@
           <image src="{{item.img}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderInfo" />
           <view class="info">
             <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderInfo">
-              <view class="name">{{item.hotel_name}}({{item.num}}间)</view>
+              <view class="name" wx:if="{{item.name != ''}}">{{item.name}}</view>
+              <view class="name notOrder" wx:if="{{item.name == ''}}">暂无人接单</view>
               <view class="label active" wx:if="{{item.status == '1'}}">待处理</view>
               <view class="label active" wx:if="{{item.status == '2'}}">待酒店确认</view>
               <view class="label active" wx:if="{{item.status == '3'}}">已完成</view>
@@ -64,10 +65,13 @@
     <view class="orderList" wx:if="{{userInfo.type == 2}}">
       <repeat for="{{orderList}}" item="item">
         <view class="item" data-id="{{item.id}}">
-          <image src="{{item.img}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderInfo" />
+          <image src="{{item.img}}" wx:if="{{item.img != ''}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderInfo" />
+          <image src="/img/daw.jpg" wx:if="{{item.img == ''}}" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderInfo" />
           <view class="info">
             <view class="hotelTitle" data-id="{{item.id}}" data-stat="{{item.status}}" data-type="{{userInfo.type}}" @tap="goOrderInfo">
-              <view class="name">{{item.name}}(￥{{item.money}})</view>
+              <!-- <view class="name">{{item.name}}(￥{{item.money}})</view> -->
+              <view class="name" wx:if="{{item.name != ''}}">{{item.name}}(￥{{item.money}})</view>
+              <view class="name notOrder" wx:if="{{item.name == ''}}">暂无人接单(￥{{item.money}})</view>
               <view class="label active" wx:if="{{item.status == '1'}}">待接单</view>
               <view class="label active" wx:if="{{item.status == '2'}}">待确认</view>
               <view class="label active" wx:if="{{item.status == '3'}}">待评论</view>
@@ -356,6 +360,9 @@
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
+    }
+    .notOrder{
+      color: #999;
     }
     .label{
       // margin-left: 20rpx;

@@ -10,7 +10,7 @@
         <checkbox-group bindchange="selCleaning" data-index="{{index}}" data-checks="{{item.checks}}">
           <view class="roomList">
             <repeat for="{{roomList}}" item="item">
-              <view class="itemRoom">
+              <view class="itemRoom" wx:if="{{item.room_money != ''}}">
                 <checkbox data-index="{{index}}" id="{{item.id}}" value="{{index}}" checked="{{item.checks}}"/>
                 <text>{{item.room_floor}}层{{item.room_num}}号（{{item.room_type}}）￥{{item.room_money}}</text>
               </view>

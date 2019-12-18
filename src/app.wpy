@@ -124,7 +124,8 @@ export default class extends wepy.app {
     hotelListIndex: [],
     cleaningListIndex: [],
     pid: '0',
-    admin_id: '0'
+    admin_id: '0',
+    serviceMobile: ''
   }
 
   // constructor () {}

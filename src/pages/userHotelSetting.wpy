@@ -114,7 +114,11 @@
         wx.request({
           url: `${this.$parent.globalData.requestUrl}/hotel/mobile_update`,
           method: 'POST',
-          data: formNode,
+          data: {
+            code: parseInt(formNode.code),
+            hid: formNode.hid,
+            hotel_head_mobile: formNode.hotel_head_mobile
+          },
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)

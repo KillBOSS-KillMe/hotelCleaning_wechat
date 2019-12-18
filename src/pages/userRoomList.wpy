@@ -36,7 +36,7 @@
   import wepy from 'wepy'
   export default class UserRoomList extends wepy.page {
     config = {
-      navigationBarTitleText: '我的钱包'
+      navigationBarTitleText: '房间列表'
     }
     components = {}
 
@@ -192,7 +192,7 @@
     height: 100rpx;
     padding: 20rpx 30rpx;
     display: flex;
-    align-items: center;
+    // align-items: center;
     justify-content: space-between;
     view{
       display: flex;
@@ -209,7 +209,7 @@
     }
     .roomDel{
       width: 60rpx;
-      height: 100%;
+      height: 50rpx;
       background: linear-gradient(to left, #30A2F4, #00E8BD);
       border-radius: 10rpx;
       padding: 0 10rpx;

@@ -16,13 +16,12 @@
             <view class="money">
               <text wx:if="{{item.status == 2 || item.status == 5}}">+</text>
               <text wx:else>-</text>
-              <text>￥{{item.identity}}</text>
-              ￥{{item.money}}
+              <text>￥{{item.money}}</text>
+              ￥{{item.money_surplus}}
             </view>
           </view>
           <view>
             <view wx:if="{{userInfo.type == 2}}">{{userInfo.hotel_name}}</view>
-            <view wx:if="{{userInfo.type == 1}}">{{userInfo.name}}</view>
             <view>{{item.create_time}}</view>
           </view>
         </view>
@@ -34,8 +33,8 @@
             <view class="money">
               <text wx:if="{{item.type == 2 || item.type == 5}}">-</text>
               <text wx:else>+</text>
-              <text>￥{{item.identity}}</text>
-              ￥{{list.wallet}}
+              <text>￥{{item.money}}</text>
+              ￥{{item.money_surplus}}
             </view>
           </view>
           <view>
