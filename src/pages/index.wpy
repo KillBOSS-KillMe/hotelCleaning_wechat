@@ -147,14 +147,17 @@
     }
 
     async onLoad(options) {
-      if (options.hasOwnProperty("scene")) {
-        let data = options.scene.split('%3D')
-        if (data[0] == 'fid') {
-          this.$parent.globalData.fid = data[1]
-        } else {
-          this.$parent.globalData.admin_id = data[1]
-        }
+      console.log(options)
+      if (options.hasOwnProperty("uid")) {
+        // let data = options.scene.split('%3D')
+        this.$parent.globalData.fid = options.uid
+        // if (data[0] == 'fid') {
+        //   this.$parent.globalData.fid = options.uid
+        // } else {
+        //   this.$parent.globalData.admin_id = options.uid
+        // }
       }
+      console.log(this.$parent.globalData.fid)
       this.mapKey = this.$parent.globalData.mapKey
       wx.showToast({
         title: "拼命加载中...",
@@ -171,39 +174,6 @@
       // this.getWineList()
       // 获取轮播图
       this.getSwiperList()
-      // wepy.login({
-      //   success: res => {
-      //     if (res.code) {
-      //       this.code = res.code
-      //       wx.request({
-      //         url: `${this.$parent.globalData.requestUrl}/basis/wx_login`,
-      //         method: 'POST',
-      //         data: {
-      //           code: res.code
-      //         },
-      //         success: data => {
-      //           console.clear()
-      //           console.log(data)
-      //           wx.request({
-      //             url: `${this.$parent.globalData.requestUrl}/basis/user`,
-      //             method: 'POST',
-      //             data: {
-      //               openid: data.data.data
-      //             },
-      //             success: res => {
-      //               console.log(res)
-      //               console.log('===========================================')
-      //             }
-      //           })
-      //         }
-      //       })
-            
-      //     } else {
-      //       console.log('登录失败！' + res.errMsg)
-      //     }
-      //   }
-      // })
-
     }
     
     onShow() {
@@ -260,8 +230,6 @@
               success: data => {
                 wx.hideToast()
                 data = this.$parent.null2str(data)
-                console.clear()
-                console.log(data)
                 if (data.data.code == 1) {
                   let userInfo = {openid: data.data.data}
                   this.userInfo = Object.assign(this.userInfo, userInfo)

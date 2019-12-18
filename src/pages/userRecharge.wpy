@@ -40,11 +40,11 @@
       // selRechargeList: []
       selRechargeList: [
         {id: '1', money: 1},
-        {id: '1', money: 10},
-        {id: '1', money: 10},
-        {id: '1', money: 10},
-        {id: '1', money: 10},
-        {id: '1', money: 10}
+        {id: '1', money: 10000},
+        {id: '1', money: 1000000},
+        {id: '1', money: 10000000},
+        {id: '1', money: 100000000},
+        {id: '1', money: 1000000000},
       ]
     }
 

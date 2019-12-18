@@ -225,7 +225,7 @@
   position: relative;
 }
 .QRCode{
-  margin-top: 200rpx;
+  margin-top: 2100rpx;
   width: 750rpx;
   height: 600rpx;
   display: flex;

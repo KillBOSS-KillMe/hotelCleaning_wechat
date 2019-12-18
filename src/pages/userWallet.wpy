@@ -122,16 +122,20 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.list = data.data.data
-            // if (this.list.hasOwnProperty('income_month')) {
-            //   let income_month = this.list.income_month
-            //   console.log(income_month)
-            //   for (let i = 0; i > income_month.length; i++) {
-            //     income_month[i].create_time = this.$parent.transformTime(parseInt(income_month[i].create_time) * 1000)
-            //   }
-            //   console.log(income_month)
-            //   this.list.income_month = income_month
-            //   console.log(this.list)
-            // }
+            if (this.list.hasOwnProperty('income_month')) {
+              let income_month = this.list.income_month
+              for (let i = 0; i < income_month.length; i++) {
+                income_month[i].create_time = this.$parent.transformTime(parseInt(income_month[i].create_time) * 1000)
+              }
+              this.list.income_month = income_month
+            }
+            if (this.list.hasOwnProperty('income_detail')) {
+              let income_detail = this.list.income_detail
+              for (let i = 0; i < income_detail.length; i++) {
+                income_detail[i].create_time = this.$parent.transformTime(parseInt(income_detail[i].create_time) * 1000)
+              }
+              this.list.income_detail = income_detail
+            }
             // 当前页码
             // this.current_page = data.data.data.current_page
             // // 总页码
