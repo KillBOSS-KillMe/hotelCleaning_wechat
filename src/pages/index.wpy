@@ -168,7 +168,7 @@
       // 获取保洁
       this.getCleanList()
       // 获取酒店列表
-      this.getWineList()
+      // this.getWineList()
       // 获取轮播图
       this.getSwiperList()
       // wepy.login({
@@ -377,11 +377,11 @@
       });
       wx.request({
         url: `${this.$parent.globalData.requestUrl}/basis/hotel`,
+        method: 'POST',
         data: {
-          lat: this.longitude,
-          lng: this.latitude
+          log: this.userInfo.log,
+          lat: this.userInfo.lat
         },
-        method: 'GET',
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
@@ -450,6 +450,12 @@
         success: res => { 
           this.longitude = res.longitude
           this.latitude = res.latitude
+          let locationNode = {
+            log: res.longitude,
+            lat: res.latitude
+          }
+          this.userInfo = Object.assign(locationNode, this.userInfo)
+          // 将经纬度保存至用户本地信息
           this.$apply()
           // 酒店列表
           this.getWineList()

@@ -43,9 +43,7 @@
       requestImgUrl: '',
       hotelList: [],
       current_page: 0,
-      last_page: 0,
-      longitude: 0,
-      latitude: 0
+      last_page: 0
     }
 
     // computed = {}
@@ -63,31 +61,10 @@
     }
 
     onLoad() {
-      // // 定位
-      this.getLocation()
-      // 酒店列表
-      // this.getWineList()
-    }
-    // 定位
-    getLocation() {
-      wx.getLocation({
-        type: 'wgs84',   //默认为 wgs84 返回 gps 坐标，gcj02 返回可用于 wx.openLocation 的坐标 
-        desc: '你的位置信息将用于小程序位置接口的效果展示',
-        success: res => { 
-          this.longitude = res.longitude
-          this.latitude = res.latitude
-          this.$apply()
-          // 酒店列表
-          this.getWineList()
-        },
-        fail: res => {
-          this.longitude = ''
-          this.latitude = ''
-          this.$apply()
-          // 酒店列表
-          this.getWineList()
-        }
-      })
+      this.userInfo = this.$parent.globalData.userInfo
+      this.$apply()
+      //  酒店列表
+      this.getWineList()
     }
     // 酒店列表
     getWineList() {
@@ -98,7 +75,11 @@
       });
       wx.request({
         url: `${this.$parent.globalData.requestUrl}/hotel/hotel_list`,
-        method: 'GET',
+        method: 'POST',
+        data: {
+          log: this.userInfo.log,
+          lat: this.userInfo.lat
+        },
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
