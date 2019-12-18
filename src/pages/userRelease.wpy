@@ -20,7 +20,7 @@
       </view>
       <view class="item code">
         <label>预约时间</label>
-        <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{formNode.perform_time}}" range="{{multiArray}}">
+        <picker mode="multiSelector" bindchange="bindMultiPickerChange" value="{{multiIndex}}" range="{{multiArray}}">
           <input type="text" disabled data-name="code" value="{{formNode.perform_time}}" placeholder="请选择日期" />
         </picker>
         <!-- <view class="getCode" @tap="getCode">发送验证码</view> -->
@@ -40,6 +40,11 @@ const months = []
 const days = []
 const hours = []
 const minutes = []
+
+const monthsTime = parseInt(date.getMonth())
+const daysTime  = parseInt(date.getDate() - 1)
+const hoursTime  = parseInt(date.getHours())
+const minutesTime  = parseInt(date.getMinutes())
 // 获取年
 for (let i = date.getFullYear(); i <= date.getFullYear() + 1; i++) {
   years.push('' + i)
@@ -82,7 +87,7 @@ for (let i = 0; i < 60; i++) {
     mixins = []
 
     data = {
-      multiIndex: [0, 9, 16, 10, 17],
+      multiIndex: [0, monthsTime, daysTime, hoursTime, minutesTime],
       multiArray: [years, months, days, hours, minutes],
       requestImgUrl: '',
       // 房间列表
@@ -173,6 +178,17 @@ for (let i = 0; i < 60; i++) {
             icon: 'none'
           });
           return
+      } else {
+        // 获取当前时间戳
+        let nowTimestamp=new Date().getTime()
+        let timestamp = new Date(formNode.perform_time).getTime()
+        if (timestamp < nowTimestamp) {
+          wx.showToast({
+            title: '不能选择过去的时间',
+            icon: 'none'
+          });
+          return
+        }
       }
       wx.showToast({
         title: "发布中...",
