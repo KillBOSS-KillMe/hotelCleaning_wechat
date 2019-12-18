@@ -106,9 +106,9 @@ view .item:last-child{
         <input data-name="address" value="{{region[0]}} - {{region[1]}} - {{region[2]}}" disabled placeholder="请选择地址" />
       </picker>
     </view>
-    <view class="item">
+    <view class="item" @tap="getAddress">
       <label>详细地址</label>
-      <input data-name="detailed_address" @input="getSetData" value="{{formNode.detailed_address}}" placeholder="请输入地址(包含省市区)" />
+      <input data-name="detailed_address" @input="getSetData" value="{{formNode.detailed_address}}" disabled placeholder="请选择位置" />
     </view>
     <view class="item">
       <label>房间总数</label>
@@ -203,7 +203,9 @@ view .item:last-child{
         img: '',               // 酒店logo（单图）
         hotel_room: '1,2,3,4',  // 房间id
         hotel_img: '',          // 酒店图片（多图用|线隔开）
-        openid: ''              // 用户openID
+        openid: '',              // 用户openID
+        lat: 0,
+        log: 0,
       },
       // rooms: [],              // 酒店房间信息
       disabled: false,
@@ -217,6 +219,23 @@ view .item:last-child{
       goRoomType() {
         let url = `/pages/roomEntry`
         this.$navigate(url)
+      },
+      getAddress() {
+        // 地图选择
+        wx.chooseLocation({
+          success: res => {
+            this.formNode.detailed_address = res.address
+            this.formNode.lat = res.latitude
+            this.formNode.log = res.longitude
+            this.$apply()
+          },
+          fail: () => {
+            // fail
+          },
+          complete: () =>  {
+            // complete
+          }
+        })
       },
       // 表单数据获取
       getSetData(e) {
@@ -245,7 +264,6 @@ view .item:last-child{
       changeRegin(e) {
         let region = e.detail.value
         this.formNode['address'] = region[0] + region[1] + region[2]
-        this.formNode['detailed_address'] = region[0] + region[1] + region[2]
         this.region = region
         this.$apply()
       },
@@ -284,13 +302,6 @@ view .item:last-child{
     onShow() {
       this.formNode['fid'] = this.$parent.globalData.fid
       this.roomList = this.$parent.globalData.roomList
-      // room_floor: this.formNode.floor,
-      // room_num: this.formNode.room_num,
-      // room_type_id: this.formNode.room_type_id,
-      // room_type_name: this.typeList[index].name,
-      // room_id: data.data.data
-      console.log(this.roomList)
-      // this.formNode['rooms'] = this.roomList
       this.formNode['hotel_num'] = this.roomList.length
       this.$apply()
     }
@@ -320,15 +331,7 @@ view .item:last-child{
       }
       if (formNode.detailed_address == '') {
         wx.showToast({
-          title: '请输入详细地址',
-          icon: 'none'
-        });
-        return
-      }
-      let address = formNode.address
-      if (formNode.detailed_address.indexOf(address) == -1) {
-        wx.showToast({
-          title: '请在详细地址中输入省市区，格式与地址项相同',
+          title: '请选择酒店所在位置',
           icon: 'none'
         });
         return

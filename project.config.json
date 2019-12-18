@@ -71,6 +71,13 @@
 					"id": -1,
 					"name": "pages/userMyShare",
 					"pathName": "pages/index",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages selHoteRegistered",
+					"pathName": "pages/selHoteRegistered",
 					"scene": null
 				}
 			]
