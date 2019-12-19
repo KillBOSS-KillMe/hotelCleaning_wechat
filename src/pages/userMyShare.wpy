@@ -28,29 +28,33 @@
     </view>
     <view class="pageSel" wx:if="{{selShow == 2}}">
       <view class="userList">
+        
         <repeat for="{{friendList}}" item="item">
           <view class="item">
-            <image src="/img/daw.jpg" wx:if="{{item.image_url == ''}}"/>
-            <image src="{{item.image_url}}" wx:if="{{item.image_url != ''}}"/>
+            <image src="/img/daw.jpg" wx:if="{{item.img == ''}}"/>
+            <image src="{{item.img}}" wx:if="{{item.img != ''}}"/>
             <view class="userInfo">
-              <view class="name">{{item.name}}</view>
-              <view class="active" wx:if="{{item.status == '0'}}">未认证</view>
-              <view class="active" wx:if="{{item.status == '1'}}">已认证</view>
-              <view class="active" wx:if="{{item.status == '2'}}">未注册</view>
-              <view class="active" wx:if="{{item.status == '3'}}">审核中</view>
-              <view wx:if="{{item.money != ''}}">
-              <!-- <view> -->
-                累计进贡：
-                <text>￥{{item.money}}</text>
+              <view class="name" wx:if="{{item.name != ''}}">{{item.name}}</view>
+              <view class="name" wx:if="{{item.name == ''}}">{{item.username}}</view>
+              <view>
+                打扫房间数量：
+                <text>{{item.hotel_num}}</text>
               </view>
             </view>
-            <view class="time">绑定时间：{{item.updated_at}}</view>
+            <view class="itemInfo">
+              <view class="time">绑定时间：{{item.create_time}}</view>
+              <view class="name" wx:if="{{item.name == ''}}">{{item.username}}</view>
+              <view class="active" wx:if="{{item.is_real_name == '0'}}">未认证</view>
+              <view class="active" wx:if="{{item.is_real_name == '1'}}">已认证</view>
+              <view class="active" wx:if="{{item.is_real_name == '2'}}">未注册</view>
+              <view class="active" wx:if="{{item.is_real_name == '3'}}">审核中</view>
+            </view>
           </view>
         </repeat>
-        <view class="listMore" @tap="getFriendList" wx:if="{{current_page < last_page}}">
+        <!-- <view class="listMore" @tap="getFriendList" wx:if="{{current_page < last_page}}">
           <text>加载更多</text>
           <icon class="iconfont iconxiala"></icon>
-        </view>
+        </view> -->
         <view class="listNull" wx:if="{{friendList.length == 0}}">暂无数据</view>
       </view>
     </view>
@@ -130,8 +134,6 @@
           openid: this.userInfo.openid
         },
         success: data => {
-          // console.clear()
-          // console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
@@ -148,9 +150,6 @@
     }
     // 好友列表获取
     getFriendList() {
-      // if (this.friendList.length > 0) {
-      //   return false
-      // }
       wx.showToast({
         title: "拼命加载中...",
         icon: 'loading',
@@ -165,19 +164,12 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 1) {
-            this.friendNode = data.data.data
-            this.friendList = this.friendList.concat(data.data.data)
-            // // 当前页码
-            // this.current_page = data.data.data.current_page
-            // // 总页码
-            // this.last_page = data.data.data.last_page
-
-            // "last_page": 1,     表示总页数
-            // "per_page": 10,      表示每页条数
-            // "current_page": 1,   表示当前页
-            // "total": 1           表示总条数
+            let friendList = data.data.data
+            for (let i = 0; i < friendList.length; i++) {
+              friendList[i].create_time = this.$parent.transformTime(parseInt(friendList[i].create_time ) * 1000).split(' ')[0]
+            }
+            this.friendList = friendList
             this.$apply()
           }
         }
@@ -343,7 +335,7 @@
     border-radius: 10rpx;
     display: flex;
     // align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     margin: auto;
     margin-bottom: 30rpx;
     image{
@@ -351,11 +343,26 @@
       height: 116rpx;
       border-radius: 115rpx;
     }
-    .userInfo{
-      width: 252rpx;
+    .itemInfo{
       display: flex;
       align-items: flex-start;
-      justify-content: flex-start;
+      justify-content: space-between;
+      flex-direction: column;
+      color: #222;
+      text{
+        font-weight: 600;
+        color: #FE892F;
+      }
+      view{
+        width: 100%;
+        text-align: right;
+      }
+    }
+    .userInfo{
+      width: 276rpx;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
       flex-direction: column;
       font-size: 26rpx;
       color: #222;

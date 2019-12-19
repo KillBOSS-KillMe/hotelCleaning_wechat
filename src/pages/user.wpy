@@ -387,7 +387,7 @@
           data = this.$parent.null2str(data)
           if (data.data.code == 1) {
             this.serviceMobile = data.data.data
-            this.$parent.globalData.serviceMobile = this.userInfo
+            this.$parent.globalData.serviceMobile = data.data.data
             this.$apply()
           }
         }

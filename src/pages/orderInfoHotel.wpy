@@ -7,7 +7,7 @@
         <image src="{{orderInfo.health_user.img}}" wx:if="{{orderInfo.health_user.img != ''}}" />
         <image src="/img/daw.jpg" wx:if="{{orderInfo.health_user.img == ''}}" />
       </view>
-      <view class="name">{{orderInfo.hotel.name}}</view>
+      <view class="name">{{orderInfo.health_user.name}}</view>
       <view class="info active" wx:if="{{orderInfo.status == 1}}">待打扫</view>
       <view class="info active" wx:if="{{orderInfo.status == 2}}">打扫中</view>
       <view class="info active" wx:if="{{orderInfo.status == 3}}">打扫结束</view>
