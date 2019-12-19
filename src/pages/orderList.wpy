@@ -253,6 +253,7 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
+          console.log(data)
           if (data.data.code === 1) {
             this.orderList = this.orderList.concat(data.data.data)
             for (let i = 0;i < this.orderList.length; i++) {

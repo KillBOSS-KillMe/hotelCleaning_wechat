@@ -3,10 +3,10 @@
     <view class="title">
       账户余额：<text>￥{{userInfo.wallet}}</text>
     </view>
-    <view class="title">
+    <view class="title" wx:if="{{userInfo.type == 1}}">
       可提现金额：
-      <text wx:if="{{userInfo.amount > 500}}">￥{{userInfo.amount - 500}}</text>
-      <text wx:if="{{userInfo.amount <= 500}}">￥0</text>
+      <text wx:if="{{userInfo.wallet > withdrawLimit}}">￥{{userInfo.wallet - withdrawLimit}}</text>
+      <text wx:if="{{userInfo.wallet <= withdrawLimit}}">￥0</text>
     </view>
     <view class="list">
       <repeat for="{{selRechargeList}}" item="item">
@@ -39,13 +39,14 @@
       serNode: 0,
       // selRechargeList: []
       selRechargeList: [
-        {id: '1', money: 1},
+        {id: '1', money: 500},
         {id: '1', money: 1000},
         {id: '1', money: 5000},
         {id: '1', money: 10000},
         {id: '1', money: 50000},
         {id: '1', money: 100000},
-      ]
+      ],
+      withdrawLimit: 0
     }
 
     computed = {}
@@ -73,6 +74,8 @@
         name = '充值'
       } else {
         name = '提现'
+        // 提现金额限制
+        this.getWithdrawLimit()
       }
       wx.setNavigationBarTitle({
         title: name
@@ -81,13 +84,15 @@
     // 提现
     withdraw() {
       let moneyNode = this.selRechargeList[this.serNode]
-      if (this.userInfo.type == 1 && parseFloat(this.userInfo.amount - 500) < parseFloat(moneyNode.money)) {
+      let withdrawLimit = this.withdrawLimit
+      if (this.userInfo.type == 1 && parseFloat(this.userInfo.wallet - withdrawLimit) < parseFloat(moneyNode.money/100)) {
+        // console.log(123123)
         wx.showToast({
-          title: "平台储蓄金需要大于500，如需提现请联系人工客服",
+          title: `平台储蓄金需要大于${withdrawLimit}，如需提现请联系人工客服`,
           icon: 'none'
         });
         return false
-      } else if (parseFloat(this.userInfo.amount - 500) < parseFloat(moneyNode.money)) {
+      } else if (parseFloat(this.userInfo.wallet - withdrawLimit) < parseFloat(moneyNode.money/100)) {
         wx.showToast({
           title: "余额不足",
           icon: 'none'
@@ -95,32 +100,33 @@
         return false
       }
       wx.showToast({
-        title: "拼命加载中...",
+        title: "提现中...",
         icon: 'loading',
         duration: 1000000
       });
       wx.request({
-        url: `${this.$parent.globalData.requestUrl}/withdraw/set_withdraw`,
-        header: {
-          authorization: this.$parent.globalData.token,
-          apikey: this.$parent.globalData.apikey
-        },
+        url: `${this.$parent.globalData.requestUrl}/health/withdrawal`,
         data: {
-          id: this.id
+          type: 1,
+          uid: this.userInfo.id,
+          money: this.money
         },
         method: 'POST',
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          if (data.data.code === 8888) {
+          if (data.data.code === 1) {
             wx.showToast({
               title: "提现成功",
               icon: 'success',
               duration: 2000
             });
             setTimeout(() => {
-              wx.navigateBack({
-                data: -1
+              // wx.navigateBack({
+              //   data: -1
+              // })
+              wx.reLaunch({
+                url: `/pages/user`
               })
             }, 2000)
             this.$apply()
@@ -152,6 +158,31 @@
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.runRecharge(data.data.data)
+          } else {
+            wx.showToast({
+              title: data.data.msg,
+              icon: 'none'
+            });
+          }
+        }
+      })
+    }
+    // 获取提现限制
+    getWithdrawLimit() {
+      wx.showToast({
+        title: "加载中...",
+        icon: 'loading',
+        duration: 1000000
+      });
+      wx.request({
+        url: `${this.$parent.globalData.requestUrl}/basis/withdrawal_set`,
+        method: 'GET',
+        success: data => {
+          wx.hideToast()
+          data = this.$parent.null2str(data)
+          if (data.data.code == 1) {
+            this.withdrawLimit = data.data.data
+            this.$apply()
           } else {
             wx.showToast({
               title: data.data.msg,

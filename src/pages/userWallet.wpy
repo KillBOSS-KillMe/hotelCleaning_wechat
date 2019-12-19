@@ -14,7 +14,9 @@
           <view>
             <view class="name">{{item.remarks}}</view>
             <view class="money">
-              <text wx:if="{{item.status == 2 || item.status == 5}}">+</text>
+              <!-- 134>>>+
+              25>>>>- -->
+              <text wx:if="{{item.type == '1' || item.type == '3' || item.type == '4'}}">+</text>
               <text wx:else>-</text>
               <text>￥{{item.money}}</text>
               ￥{{item.money_surplus}}
@@ -31,8 +33,8 @@
           <view>
             <view class="name">{{item.remarks}}</view>
             <view class="money">
-              <text wx:if="{{item.type == 2 || item.type == 5}}">-</text>
-              <text wx:else>+</text>
+              <text wx:if="{{item.type == '1' || item.type == '3' || item.type == '4'}}">+</text>
+              <text wx:else>-</text>
               <text>￥{{item.money}}</text>
               ￥{{item.money_surplus}}
             </view>
@@ -72,7 +74,7 @@
 
     methods = {
       recharge(e) {
-        // 进入充值页
+        // 进入充值页、提现页
         let url = `/pages/userRecharge`
         this.$navigate(url)
       }
@@ -117,6 +119,7 @@
         method: 'POST',
         success: data => {
           wx.hideToast()
+          console.log(data)
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             this.list = data.data.data
