@@ -197,7 +197,6 @@
     onLoad() {
       this.userInfo = this.$parent.globalData.userInfo
       this.formNode.hid = this.userInfo.id
-      console.log(this.userInfo)
     }
 
     // 倒计时

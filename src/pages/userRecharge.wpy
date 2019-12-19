@@ -150,7 +150,6 @@
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 1) {
             this.runRecharge(data.data.data)
           } else {
@@ -168,7 +167,6 @@
         icon: 'loading',
         duration: 1000000
       });
-      console.log(payNode)
       wx.requestPayment({
         'timeStamp': payNode.timestamp,
         'nonceStr': payNode.nonceStr,

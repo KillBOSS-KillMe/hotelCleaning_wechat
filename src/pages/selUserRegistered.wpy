@@ -176,8 +176,6 @@
           duration: 10000
         });
         let timestamp = new Date().getTime()
-        console.log(timestamp)
-        
         wx.request({
           url: `${this.$parent.globalData.requestUrl}/health/login`,
           method: 'POST',
@@ -241,7 +239,6 @@
           success: data => {
             wx.hideToast()
             data = this.$parent.null2str(data)
-            console.log(data)
             if (data.data.code === 1) {
               wx.showToast({
                 title: data.data.msg,

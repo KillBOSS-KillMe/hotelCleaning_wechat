@@ -360,7 +360,6 @@
       this.userInfo = this.$parent.globalData.userInfo
       this.hotelFunctionList[0].val = this.userInfo.wallet
       this.cleaningFunctionList[0].val = this.userInfo.wallet
-      console.log(this.userInfo)
       this.$apply()
       this.serviceMobile = this.$parent.globalData.serviceMobile
       if (this.serviceMobile == '') {
@@ -407,9 +406,6 @@
         },
         success: res => {
           wx.hideToast()
-          
-          console.log(res)
-          console.log('===========================================')
           res = this.$parent.null2str(res)
           if (res.data.code == 1) {
             this.userInfo = Object.assign(this.userInfo, res.data.data)

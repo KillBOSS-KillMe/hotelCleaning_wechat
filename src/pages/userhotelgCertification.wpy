@@ -78,8 +78,6 @@
 
     sub() {
       let formNode = this.formNode
-      console.log(formNode)
-      // return false
       if (formNode.name == '') {
         wx.showToast({
           title: '请输入酒店名称',

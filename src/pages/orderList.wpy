@@ -181,7 +181,6 @@
         } else {
           url = `/pages/orderConfirm?id=${id}&type=${type}&stat=${stat}`
         }
-        console.log(url)
         this.$navigate(url)
       },
     }
@@ -191,7 +190,6 @@
     }
 
     onLoad(options) {
-      console.log(options)
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
       this.$apply()
@@ -253,7 +251,6 @@
         data: data,
         method: 'POST',
         success: data => {
-          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {

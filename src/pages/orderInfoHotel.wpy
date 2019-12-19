@@ -82,7 +82,6 @@
     }
 
     onLoad(options) {
-      console.log(options)
       this.options = options
       this.userInfo = this.$parent.globalData.userInfo
       this.$apply()
@@ -113,7 +112,6 @@
         },
         method: 'POST',
         success: data => {
-          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
@@ -140,7 +138,6 @@
         method: 'POST',
         success: data => {
           wx.hideToast()
-          console.log(data)
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
             wx.showToast({

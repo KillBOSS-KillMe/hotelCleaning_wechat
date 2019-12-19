@@ -118,7 +118,6 @@
         },
         method: 'POST',
         success: data => {
-          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
@@ -151,7 +150,6 @@
         },
         method: 'PUT',
         success: data => {
-          console.log(data)
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {

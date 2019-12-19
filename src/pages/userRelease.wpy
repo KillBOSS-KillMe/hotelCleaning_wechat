@@ -102,9 +102,7 @@ for (let i = 0; i < 60; i++) {
 
     methods = {
       selCleaning(e) {
-        
         let indexArr = e.detail.value
-        console.log(e)
         let roomList = this.roomList
         let room = ''
         for (let i = 0; i < indexArr.length; i++) {
@@ -112,7 +110,6 @@ for (let i = 0; i < 60; i++) {
           room += roomList[parseInt(indexArr[i])].id
         }
         this.formNode['room'] = room.substr(1)
-        console.log(this.formNode)
         this.$apply()
       },
       // 获取预约时间

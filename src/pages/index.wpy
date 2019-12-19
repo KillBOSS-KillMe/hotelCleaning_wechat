@@ -147,7 +147,6 @@
     }
 
     async onLoad(options) {
-      console.log(options)
       if (options.hasOwnProperty("uid")) {
         // let data = options.scene.split('%3D')
         this.$parent.globalData.fid = options.uid
@@ -157,7 +156,6 @@
         //   this.$parent.globalData.admin_id = options.uid
         // }
       }
-      console.log(this.$parent.globalData.fid)
       this.mapKey = this.$parent.globalData.mapKey
       wx.showToast({
         title: "拼命加载中...",
@@ -260,9 +258,6 @@
         },
         success: res => {
           wx.hideToast()
-          
-          console.log(res)
-          console.log('===========================================')
           res = this.$parent.null2str(res)
           if (res.data.code == 1) {
             this.userInfo = Object.assign(res.data.data, this.userInfo)
@@ -304,7 +299,6 @@
           if (data.data.code == 1) {
             this.userInfo = Object.assign(this.userInfo, data.data.data)
             this.$parent.globalData.userInfo = this.userInfo
-            console.log(this.userInfo)
             this.$apply()
           }
         }

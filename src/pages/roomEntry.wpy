@@ -118,8 +118,6 @@
           })
           return
         }
-        // console.log(formNode)
-        // return false
         // 新建房间
         this.newRoomSub()
         

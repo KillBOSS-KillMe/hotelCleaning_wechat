@@ -308,7 +308,6 @@ view .item:last-child{
     sub() {
       let formNode = this.formNode
       // let rooms = formNode.rooms
-      // console.log(formNode)
       // return false
       // for (var i = 0; i < rooms.length; i++) {
       //   delete rooms[i]["roomType"]
@@ -445,7 +444,6 @@ view .item:last-child{
                 filePath: item.path,
                 name: 'img',
                 success: res => {
-                  console.log(res)
                   resolve({
                     path: JSON.parse(res.data).data
                   })
@@ -453,11 +451,9 @@ view .item:last-child{
               })
             })
           })).then(e => {
-            console.log(e)
             wx.hideToast()
             this.hotelLogo = this.hotelLogo.concat(e)
             this.formNode['img'] = this.hotelLogo[0].path
-            console.log(this.hotelLogo)
             this.$apply()
           }).catch(err => console.log(err))
         }
@@ -481,7 +477,6 @@ view .item:last-child{
                 filePath: item.path,
                 name: 'img',
                 success: res => {
-                  console.log(res)
                   resolve({
                     path: JSON.parse(res.data).data
                   })
@@ -489,7 +484,6 @@ view .item:last-child{
               })
             })
           })).then(e => {
-            console.log(e)
             wx.hideToast()
             this.hotelImgList = this.hotelImgList.concat(e)
             let hotelImgList = this.hotelImgList
@@ -500,7 +494,6 @@ view .item:last-child{
             }
             hotel_img = hotel_img.substr(1)
             this.formNode['hotel_img'] = hotel_img
-            console.log(hotel_img)
             this.$apply()
           }).catch(err => console.log(err))
         }
@@ -535,7 +528,6 @@ view .item:last-child{
         success: data => {
           wx.hideToast()
           data = this.$parent.null2str(data)
-          console.log(data)
           if (data.data.code === 1) {
             wx.showToast({
               title: data.data.msg,
