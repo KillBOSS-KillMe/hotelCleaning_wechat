@@ -110,10 +110,10 @@
             <image src="/img/shape.png" />
             房间类型
           </view>
-          <view>
+          <!-- <view>
             <image src="/img/shape.png" />
             价格
-          </view>
+          </view> -->
         </view>
       </view>
       <scroll-view scroll-y="true" class="roomList roomListCon">
@@ -122,7 +122,7 @@
             <view>{{orderInfo.hotel_room.room_num}}</view>
             <view>{{orderInfo.hotel_room.room_floor}}</view>
             <view>{{orderInfo.hotel_room.room_type}}</view>
-            <view>{{orderInfo.hotel_room.room_money}}</view>
+            <!-- <view>{{orderInfo.hotel_room.room_money}}</view> -->
           </view>
         <!-- </repeat> -->
       </scroll-view>

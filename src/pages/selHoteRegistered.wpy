@@ -197,11 +197,11 @@ view .item:last-child{
         linen_truck: '',        // 布草车数
         hotel_head: '',         // 酒店方负责人
         hotel_head_mobile: '',  // 酒店负责人电话
-        fid: '0',          // 上级id  0表示没有上级
+        fid: '0',               // 上级id  0表示没有上级
         code: '',               // 验证码六位数字
         mobile: '',             // 酒店前台固话
         img: '',               // 酒店logo（单图）
-        hotel_room: '1,2,3,4',  // 房间id
+        hotel_room: '',         // 房间id
         hotel_img: '',          // 酒店图片（多图用|线隔开）
         openid: '',              // 用户openID
         lat: 0,
@@ -302,11 +302,20 @@ view .item:last-child{
     onShow() {
       this.formNode['fid'] = this.$parent.globalData.fid
       this.roomList = this.$parent.globalData.roomList
+      let roomList = this.roomList
+      let hotel_room = ''
+      for (let i = 0; i < roomList.length; i++) {
+        hotel_room += roomList[i].room_id
+        hotel_room += ','
+      }
+      hotel_room = hotel_room.substring(0, hotel_room.length - 1)
+      this.formNode['hotel_room'] = hotel_room
       this.formNode['hotel_num'] = this.roomList.length
       this.$apply()
     }
     sub() {
       let formNode = this.formNode
+      // console.log(formNode)
       // let rooms = formNode.rooms
       // return false
       // for (var i = 0; i < rooms.length; i++) {
