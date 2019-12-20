@@ -71,7 +71,6 @@
         {id: 1, name: "经济型"}
       ],
       index: '',
-      roomList: []
     }
 
     computed = {}
@@ -204,14 +203,22 @@
           wx.hideToast()
           data = this.$parent.null2str(data)
           if (data.data.code === 1) {
-            this.roomList.push({
-              room_floor: this.formNode.floor,
-              room_num: this.formNode.room_num,
-              room_type_id: this.formNode.room_type_id,
-              room_type_name: this.typeList[this.index].name,
-              room_id: data.data.data
-            })
-            this.$parent.globalData.roomList = this.roomList
+            // this.roomList.push({
+            //   room_floor: this.formNode.floor,
+            //   room_num: this.formNode.room_num,
+            //   room_type_id: this.formNode.room_type_id,
+            //   room_type_name: this.typeList[this.index].name,
+            //   room_id: data.data.data
+            // })
+            let roomList = this.$parent.globalData.roomList
+            let newRoomList = data.data.data
+            for (let i = 0; i < newRoomList.length; i++) {
+              newRoomList[i]['room_type_name'] = this.typeList[this.index].name
+              newRoomList[i]['room_id'] = newRoomList[i].id
+              roomList.push(newRoomList[i])
+            }
+
+            this.$parent.globalData.roomList = roomList
             wx.showToast({
               title: "创建成功",
               icon: 'success',
