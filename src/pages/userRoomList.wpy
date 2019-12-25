@@ -208,11 +208,11 @@
       height: 100%;
     }
     .roomDel{
-      width: 60rpx;
+      width: auto;
       height: 50rpx;
+      padding: 0 20rpx;
       background: linear-gradient(to left, #30A2F4, #00E8BD);
       border-radius: 10rpx;
-      padding: 0 10rpx;
       display: flex;
       align-items: center;
       justify-content: center;
